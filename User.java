@@ -7,7 +7,7 @@ import java.util.*;
 
 public class User {
     
-	private ArrayList<Document> liked;
+    private ArrayList<Document> liked;
     private Simulation sim;
     private String userTaste;
     private int userIDCount;

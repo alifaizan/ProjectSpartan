@@ -30,7 +30,7 @@ public class Document {
     //Returns the id of the document
     public int getDocumentId(){
     
-    return this.documentIDCount;
+    	return this.documentIDCount;
     
     }
     
