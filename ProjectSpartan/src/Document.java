@@ -21,27 +21,25 @@ public class Document {
        popularity = 0;
     }
 
+    public static void main(String[] args) {
+        Document d1 = new Document("Test");
+        Document d2 = new Document("Test2");
+        System.out.println(d1.getDocumentId() + " " + d2.getDocumentId());
+
+
+    }
     
     //Returns the tag of the document
     public String getDocumentTag(){
-        
+
         return this.tag;
     }
     
-    
     //Returns the id of the document
     public int getDocumentId(){
-    
-    	return this.documentIDCount;
-    
-    }
-    
-    public static void main(String[] args){
-    	Document d1 = new Document("Test");
-    	Document d2 = new Document("Test2");
-    	System.out.println(d1.getDocumentId());
-    	System.out.println(d2.getDocumentId());
-    	
+
+        return this.documentIDCount;
+
     }
    
 }
