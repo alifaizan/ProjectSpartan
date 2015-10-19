@@ -3,12 +3,12 @@
 //Date: October 19,2015
 //Version #: 1
 
-import java.util.*;
+import java.util.ArrayList;
 
 public class User {
     
     private ArrayList<Document> liked;
-    //private Simulation sim;
+    private Simulation sim;
     private String userTaste, name;
     private int userIDCount;
     private int userCount=0;
@@ -27,8 +27,8 @@ public class User {
     } 
 
     //Allows the users to find the top documents and likes it based on users taste
-    /*public void act(){
-    	
+    public void act() {
+
         for(Document doc: sim.search()){
         	
             if(doc.getDocumentTag()== userTaste){
@@ -36,8 +36,8 @@ public class User {
             	like(doc);
             }
         }
-    
-    } */
+
+    }
     
     //Returns the Id of the user
     public int getUserId(){
