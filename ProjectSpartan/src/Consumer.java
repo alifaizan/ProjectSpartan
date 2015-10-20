@@ -9,11 +9,9 @@ import java.util.List;
 
 public class Consumer extends User {
 
-    private List<User> following;
-
     public Consumer(Simulation simulation, String name, String taste) {
         super(simulation, name, taste);
-        following = new ArrayList<User>();
+        this.setFollowing(new ArrayList<>());
     }
 
     public List<Document> act(List<Document> documentList, int numberToReturn) {
@@ -46,24 +44,12 @@ public class Consumer extends User {
                 System.out.println(this.getName() + " just liked: " + document.getName());
             }
             document.getLikedBy().forEach((user) -> {
-                if (user instanceof Producer && user != this) {
+                if (user instanceof Producer && user != this && !this.getFollowing().contains(user)) {
                     this.followUser(user);
                     System.out.println(this.getName() + " just followed: " + user.getName());
                 }
             });
         });
-    }
-
-
-    public List<User> getFollowing() {
-        return following;
-    }
-
-    private void followUser(User user) {
-        if (!this.getFollowing().contains(user)) {
-            this.following.add(user);
-            this.setAmountFollowed(this.getAmountFollowed() + 1);
-        }
     }
 
     public void calculatePayoff(List<Document> documents) {

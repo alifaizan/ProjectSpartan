@@ -11,6 +11,7 @@ public abstract class User {
     private Simulation sim;
     private String taste, name;
     private int amountFollowed;
+    private List<User> following;
 
     //Constructor for User that is passed "sim" of type Simulation 
     //and a "str" of type String such as the users name
@@ -33,6 +34,13 @@ public abstract class User {
     //Returns false otherwise
     public boolean likes(Document doc) {
         return doc.getLikedBy() != null && doc.getLikedBy().contains(this);
+    }
+
+    public void followUser(User user) {
+        if (!this.getFollowing().contains(user)) {
+            this.following.add(user);
+            this.setAmountFollowed(this.getAmountFollowed() + 1);
+        }
     }
 
     //-----Getters and Setters------
@@ -66,5 +74,13 @@ public abstract class User {
 
     public void setAmountFollowed(int followed) {
         this.amountFollowed = followed;
+    }
+
+    public List<User> getFollowing() {
+        return this.following;
+    }
+
+    public void setFollowing(List<User> following) {
+        this.following = following;
     }
 }

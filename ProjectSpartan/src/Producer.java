@@ -4,6 +4,7 @@
 //Version #: 1
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Producer extends User {
@@ -15,14 +16,17 @@ public class Producer extends User {
         super(simulation, name, taste);
         followers = new ArrayList<User>();
         created = new ArrayList<Document>();
+        this.setFollowing(new ArrayList<>());
     }
 
     public List<Document> act(List<Document> documentList, int numberToReturn) {
-        return new ArrayList<Document>();
-    }
+        List<Document> relevantDocuments = search(documentList, numberToReturn);
 
-    public void addfollower(User user) {
-        followers.add(user);
+        calculatePayoff(relevantDocuments);
+
+        updateLikesAndFollowers(relevantDocuments);
+
+        return relevantDocuments;
     }
 
     public List<User> getFollowers() {
@@ -36,15 +40,39 @@ public class Producer extends User {
     }
 
     public List<Document> search(List<Document> documentList, int numberToReturn) {
+        ArrayList<Document> documentsToReturn = new ArrayList<>();
+        System.out.println("Searching for top " + String.valueOf(numberToReturn) + " documents...");
+        Collections.sort(documentList);
 
-        return new ArrayList<Document>();
+        for (int i = 0; i < numberToReturn; i++) {
+            documentsToReturn.add(documentList.get(i));
+            System.out.println("Returning " + documentList.get(i).getName() + " with a score of: " + String.valueOf(documentList.get(i).getScore()));
+        }
+
+        return documentsToReturn;
+    }
+
+    public void updateLikesAndFollowers(List<Document> documents) {
+        documents.forEach((document) -> {
+            if (document.getTag().equals(this.getTaste()) && !document.getLikedBy().contains(this)) {
+                document.likeDocument(this);
+                System.out.println(this.getName() + " just liked: " + document.getName());
+            }
+            document.getLikedBy().forEach((user) -> {
+                if (user instanceof Producer && user != this && !this.getFollowing().contains(user)) {
+                    this.followUser(user);
+                    System.out.println(this.getName() + " just followed: " + user.getName());
+                }
+            });
+        });
     }
 
     public void calculatePayoff(List<Document> documents) {
         int payoff = 0;
 
         for (final Document document : documents) {
-            if (document.getTag().equals(super.getTaste()) && !(super.likes(document))) payoff++;
+            if (document.getTag().equals(this.getTaste()) && !(this.likes(document))) payoff += 2;
+            else if (document.getTag().equals(this.getTaste())) payoff++;
         }
 
         System.out.println("This search gave " + this.getName() + " a payoff of: " + String.valueOf(payoff));
