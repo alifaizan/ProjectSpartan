@@ -3,43 +3,61 @@
 //Date: October 19,2015
 //Version #: 1
 
+import java.util.Set;
+
 public class Document {
-   
-	
-   private String tag;
-   private int documentCounter = 0;
-   private int documentIDCount;
-   private int popularity;
-   
-   //Constructor for Document that takes in a String
-   //Increments documentCounter and documentIDCount everytime a document is created
-    public Document(String tag){
-    	
-       this.tag = tag;
-       documentCounter+=1;
-       documentIDCount=documentCounter;
-       popularity = 0;
+
+    //Instance Variables
+    private String tag;
+    private String name;
+    private int popularity;
+    private Set<User> likedBy;
+
+    //Constructor for Document that takes in a String
+    //Increments documentCounter and documentIDCount every time a document is created
+    public Document(String tag, String name) {
+        this.tag = tag;
+        this.name = name;
+        this.popularity = 0;
     }
 
-    public static void main(String[] args) {
-        Document d1 = new Document("Test");
-        Document d2 = new Document("Test2");
-        System.out.println(d1.getDocumentId() + " " + d2.getDocumentId());
-
-
+    public void likeDocument(User user) {
+        if (!this.getLikedBy().contains(user)) {
+            this.likedBy.add(user);
+            this.popularity++;
+        }
     }
-    
-    //Returns the tag of the document
-    public String getDocumentTag(){
 
+    //-----Getters and Setters------
+    public String getTag() {
         return this.tag;
     }
-    
-    //Returns the id of the document
-    public int getDocumentId(){
 
-        return this.documentIDCount;
-
+    public void setTag(String tag) {
+        this.tag = tag;
     }
-   
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getPopularity() {
+        return this.popularity;
+    }
+
+    public void setPopularity(int popularity) {
+        this.popularity = popularity;
+    }
+
+    public Set<User> getLikedBy() {
+        return this.likedBy;
+    }
+
+    public void setLikedBy(Set<User> likedBy) {
+        this.likedBy = likedBy;
+    }
 }
