@@ -3,28 +3,26 @@
 //Date: October 19,2015
 //Version #: 1
 
+import java.security.SecureRandom;
 import java.util.*;
 
 public class Simulation {
 
+    private static final SecureRandom random = new SecureRandom();
     private List<Document> documents;
     private List<User> users;
     private List<Producer> producers;
-    private List<String> tags;
     private Map<User, ArrayList<Document>> likedDocuments;
-
     public Simulation() {
         documents = new ArrayList<Document>();
         users = new ArrayList<User>();
         producers = new ArrayList<Producer>();
-        tags = new ArrayList<String>();
         likedDocuments = new HashMap<User, ArrayList<Document>>();
-        tags.add("News");
-        tags.add("Sports");
-        tags.add("Music");
-        tags.add("Comedy");
-        tags.add("Cartoons");
-        tags.add("Movies");
+    }
+
+    public static Simulation.Tags randomTag(Class<Simulation.Tags> tag) {
+        int index = random.nextInt(tag.getEnumConstants().length);
+        return tag.getEnumConstants()[index];
     }
 
     public static void main(String[] args) {
@@ -43,26 +41,23 @@ public class Simulation {
     }
 
     private void setupConsumers(int number) {
-        Random random = new Random();
         for (int i = 0; i < number; i++) {
-            Consumer consumer = new Consumer(this, "Consumer #" + i, tags.get(random.nextInt(tags.size())));
+            Consumer consumer = new Consumer(this, "Consumer #" + i, randomTag(Tags.class).toString());
             users.add(consumer);
         }
     }
 
     private void setupProducers(int number) {
-        Random random = new Random();
         for (int i = 0; i < number; i++) {
-            Producer producer = new Producer(this, "Producer #" + i, tags.get(random.nextInt(tags.size())));
+            Producer producer = new Producer(this, "Producer #" + i, randomTag(Tags.class).toString());
             users.add(producer);
             producers.add(producer);
         }
     }
 
     private void setupDocuments(int number) {
-        Random random = new Random();
         for (int i = 0; i < number; i++) {
-            Document document = new Document("Document #" + i, tags.get(random.nextInt(tags.size())), producers.get(random.nextInt(producers.size())));
+            Document document = new Document("Document #" + i, randomTag(Tags.class).toString(), producers.get(random.nextInt(producers.size())));
             documents.add(document);
         }
     }
@@ -76,11 +71,11 @@ public class Simulation {
         }
     }
 
-    //-----Getters and Setters------
-
     public List<Document> getDocuments() {
         return this.documents;
     }
+
+    //-----Getters and Setters------
 
     public void setDocuments(List<Document> documents) {
         this.documents = documents;
@@ -94,19 +89,35 @@ public class Simulation {
         this.users = users;
     }
 
-    public List<String> getTags() {
-        return this.tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
     public Map<User, ArrayList<Document>> getLikedDocuments() {
         return this.likedDocuments;
     }
 
     public void setLikedDocuments(Map<User, ArrayList<Document>> likedDocuments) {
         this.likedDocuments = likedDocuments;
+    }
+
+    private enum Tags {
+        News("News"),
+        Sports("Sports"),
+        Music("Music"),
+        Comedy("Comedy"),
+        Cartoons("Cartoons"),
+        Movies("Movies");
+
+        private final String name;
+
+        private Tags(String name) {
+            this.name = name;
+        }
+
+        public boolean sameTag(String tag) {
+            return (tag != null) && name.equals(tag);
+        }
+
+        public String toString() {
+            return this.name;
+        }
+
     }
 }
