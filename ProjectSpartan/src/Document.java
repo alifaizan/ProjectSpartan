@@ -35,7 +35,8 @@ public class Document implements Comparable<Document> {
 
     /**
      * Adds a user to the list of users that like the document
-     * @param user  The user that liked the document
+     *
+     * @param user The user that liked the document
      */
     public void likeDocument(User user) {
         if (!this.getLikedBy().contains(user)) {

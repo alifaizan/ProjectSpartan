@@ -47,7 +47,7 @@ public class Consumer extends User {
      */
     public List<Document> search(List<Document> documentList, int numberToReturn) {
         ArrayList<Document> documentsToReturn = new ArrayList<>();
-        System.out.println("Searching for top " + String.valueOf(numberToReturn) + " documents...");
+        System.out.println("Searching for top " + String.valueOf(numberToReturn) + " documents for " + this.getName() + "...");
         Collections.sort(documentList);
 
         for (int i = 0; i < numberToReturn; i++) {
@@ -80,6 +80,7 @@ public class Consumer extends User {
 
     /**
      * Calculates payoff based on ranked documents
+     *
      * @param documents The documents to analyze
      */
     public void calculatePayoff(List<Document> documents) {
