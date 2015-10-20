@@ -37,7 +37,7 @@ public class Simulation {
 
         for (int i = 0; i < NUMBER_OF_ITERATIONS; i++) {
             User user = simulation.users.get(random.nextInt(simulation.users.size()));
-            for (final Document document : user.act(simulation.getDocuments())) {
+            for (final Document document : user.act(simulation.getDocuments(), 10)) {
                 simulation.likeDocument(user, document);
             }
         }

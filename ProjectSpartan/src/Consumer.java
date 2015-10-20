@@ -3,40 +3,76 @@
 //Date: October 19,2015
 //Version #: 1
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Consumer extends User {
-	
-	private List<User> following;
 
-	public Consumer(Simulation simulation, String name, String taste) {
-		super(simulation, name, taste);
-		following = new ArrayList<User>();
-	}
-	
-	public void follow(User user){
-		following.add(user);
-		System.out.println(super.getName() + " followed " + user.getName());
-	}
+    private List<User> following;
 
-	public List<Document> act(List<Document> documentList) {
-		return new ArrayList<Document>();
-	}
-	
-	public List<User> getFollowing(){
-		return following;
-	}
+    public Consumer(Simulation simulation, String name, String taste) {
+        super(simulation, name, taste);
+        following = new ArrayList<User>();
+    }
 
-	private void followUser(User user) {
-		if (!this.getFollowing().contains(user)) {
-			this.following.add(user);
-			this.setAmountFollowed(this.getAmountFollowed() + 1);
-		}
-	}
-	
-	public void updatePayoff(Document doc){
-		if(doc.getTag() == super.getTaste() && !(super.likes(doc))){
-			payoff++;
-		}
-	}
+    public void follow(User user) {
+        following.add(user);
+        System.out.println(super.getName() + " followed " + user.getName());
+    }
+
+    public List<Document> act(List<Document> documentList, int numberToReturn) {
+        List<Document> relevantDocuments = search(documentList, numberToReturn);
+
+        calculatePayoff(relevantDocuments);
+
+        updateLikesAndFollowers(relevantDocuments);
+
+        return relevantDocuments;
+    }
+
+    public List<Document> search(List<Document> documentList, int numberToReturn) {
+        ArrayList<Document> documentsToReturn = new ArrayList<>();
+        System.out.println("Searching for top " + String.valueOf(numberToReturn) + " documents...");
+        Collections.sort(documentList);
+
+        for (int i = 0; i < numberToReturn; i++) {
+            documentsToReturn.add(documentList.get(i));
+            System.out.println("Returning document " + documentList.get(i).getName() + " with a score of: " + String.valueOf(documentList.get(i).getScore()));
+        }
+
+        return documentsToReturn;
+    }
+
+    public void updateLikesAndFollowers(List<Document> documents) {
+        documents.forEach((document) -> {
+            if (document.getTag().equals(this.getTaste()) && !document.getLikedBy().contains(this))
+                document.likeDocument(this);
+            document.getLikedBy().forEach((user) -> {
+                if (user instanceof Producer && user != this) this.follow(user);
+            });
+        });
+    }
+
+
+    public List<User> getFollowing() {
+        return following;
+    }
+
+    private void followUser(User user) {
+        if (!this.getFollowing().contains(user)) {
+            this.following.add(user);
+            this.setAmountFollowed(this.getAmountFollowed() + 1);
+        }
+    }
+
+    public void calculatePayoff(List<Document> documents) {
+        int payoff = 0;
+
+        for (final Document document : documents) {
+            if (document.getTag().equals(this.getTaste()) && !(this.likes(document))) payoff++;
+        }
+
+        System.out.println("This search gave " + this.getName() + " a payoff of: " + String.valueOf(payoff));
+    }
 }

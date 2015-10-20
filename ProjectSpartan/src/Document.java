@@ -3,9 +3,10 @@
 //Date: October 19,2015
 //Version #: 1
 
+import java.util.HashSet;
 import java.util.Set;
 
-public class Document {
+public class Document implements Comparable<Document> {
 
     //Instance Variables
     private String tag;
@@ -21,6 +22,7 @@ public class Document {
         this.name = name;
         this.popularity = 0;
         this.producer = p;
+        this.likedBy = new HashSet<>();
     }
 
     public void likeDocument(User user) {
@@ -28,6 +30,10 @@ public class Document {
             this.likedBy.add(user);
             this.popularity++;
         }
+    }
+
+    public int compareTo(Document document) {
+        return document.getScore() - this.getScore();
     }
 
     //-----Getters and Setters------
@@ -69,5 +75,9 @@ public class Document {
 
     public void setLikedBy(Set<User> likedBy) {
         this.likedBy = likedBy;
+    }
+
+    public int getScore() {
+        return this.getPopularity() + this.getProducer().getFollowers().size();
     }
 }

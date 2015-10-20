@@ -11,8 +11,7 @@ public abstract class User {
     private Simulation sim;
     private String taste, name;
     private int amountFollowed;
-    protected int payoff;
-    
+
     //Constructor for User that is passed "sim" of type Simulation 
     //and a "str" of type String such as the users name
     //Increments userCount and userIDCount every time a new user is created
@@ -21,17 +20,19 @@ public abstract class User {
         this.taste = taste;
         this.sim = simulation;
         amountFollowed = 0;
-        payoff = 0;
     }
 
-    //Abstract Methods to be Implemented Seperately in Consumer and Producer classes
+    //-----Abstract Methods to be Implemented Separately in Consumer and Producer classes-----
     //Allows the users to find the top documents and likes it based on users taste
-    public abstract List<Document> act(List<Document> documentList);
+    public abstract List<Document> act(List<Document> documentList, int numberToReturn);
+
+    //Return specified number of documents based on users taste
+    public abstract List<Document> search(List<Document> documentList, int numberToReturn);
 
     //Return true if the document passed is liked by the user
     //Returns false otherwise
     public boolean likes(Document doc) {
-        return doc.getLikedBy().contains(this);
+        return doc.getLikedBy() != null && doc.getLikedBy().contains(this);
     }
 
     //-----Getters and Setters------
@@ -59,10 +60,6 @@ public abstract class User {
         this.name = name;
     }
 
-    public int getPayoff(){
-    	return payoff;
-    }
-    
     public int getAmountFollowed() {
         return this.amountFollowed;
     }
