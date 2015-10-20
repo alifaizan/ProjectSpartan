@@ -3,16 +3,15 @@
 //Date: October 19,2015
 //Version #: 1
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Consumer extends User {
 	
-	List<User> following;
+	private List<User> following;
 
 	public Consumer(Simulation simulation, String name, String taste) {
 		super(simulation, name, taste);
-		following = new ArrayList<>();
+		following = new ArrayList<User>();
 	}
 	
 	public void follow(User user){
@@ -21,7 +20,7 @@ public class Consumer extends User {
 	}
 
 	public List<Document> act(List<Document> documentList) {
-		return new ArrayList<>();
+		return new ArrayList<Document>();
 	}
 	
 	public List<User> getFollowing(){
@@ -32,6 +31,12 @@ public class Consumer extends User {
 		if (!this.getFollowing().contains(user)) {
 			this.following.add(user);
 			this.setAmountFollowed(this.getAmountFollowed() + 1);
+		}
+	}
+	
+	public void updatePayoff(Document doc){
+		if(doc.getTag() == super.getTaste() && !(super.likes(doc))){
+			payoff++;
 		}
 	}
 }

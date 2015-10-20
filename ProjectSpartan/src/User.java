@@ -11,6 +11,7 @@ public abstract class User {
     private Simulation sim;
     private String taste, name;
     private int amountFollowed;
+    protected int payoff;
     
     //Constructor for User that is passed "sim" of type Simulation 
     //and a "str" of type String such as the users name
@@ -20,6 +21,7 @@ public abstract class User {
         this.taste = taste;
         this.sim = simulation;
         amountFollowed = 0;
+        payoff = 0;
     }
 
     //Abstract Methods to be Implemented Seperately in Consumer and Producer classes
@@ -57,6 +59,10 @@ public abstract class User {
         this.name = name;
     }
 
+    public int getPayoff(){
+    	return payoff;
+    }
+    
     public int getAmountFollowed() {
         return this.amountFollowed;
     }

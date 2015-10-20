@@ -9,14 +9,16 @@ public class Simulation {
 
     private List<Document> documents;
     private List<User> users;
+    private List<Producer> producers;
     private List<String> tags;
     private Map<User, ArrayList<Document>> likedDocuments;
 
     public Simulation() {
-        documents = new ArrayList<>();
-        users = new ArrayList<>();
-        tags = new ArrayList<>();
-        likedDocuments = new HashMap<>();
+        documents = new ArrayList<Document>();
+        users = new ArrayList<User>();
+        producers = new ArrayList<Producer>();
+        tags = new ArrayList<String>();
+        likedDocuments = new HashMap<User, ArrayList<Document>>();
         tags.add("News");
         tags.add("Sports");
         tags.add("Music");
@@ -53,13 +55,14 @@ public class Simulation {
         for (int i = 0; i < number; i++) {
             Producer producer = new Producer(this, "Producer #" + i, tags.get(random.nextInt(tags.size())));
             users.add(producer);
+            producers.add(producer);
         }
     }
 
     private void setupDocuments(int number) {
         Random random = new Random();
         for (int i = 0; i < number; i++) {
-            Document document = new Document("Document #" + i, tags.get(random.nextInt(tags.size())));
+            Document document = new Document("Document #" + i, tags.get(random.nextInt(tags.size())), producers.get(random.nextInt(producers.size())));
             documents.add(document);
         }
     }
@@ -67,7 +70,7 @@ public class Simulation {
     private void likeDocument(User user, Document document) {
         if (likedDocuments.containsKey(user)) likedDocuments.get(user).add(document);
         else {
-            ArrayList<Document> documents = new ArrayList<>();
+            ArrayList<Document> documents = new ArrayList<Document>();
             documents.add(document);
             likedDocuments.put(user, documents);
         }
