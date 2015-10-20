@@ -15,7 +15,7 @@ public class Document {
 
     //Constructor for Document that takes in a String
     //Increments documentCounter and documentIDCount every time a document is created
-    public Document(String tag, String name) {
+    public Document(String name, String tag) {
         this.tag = tag;
         this.name = name;
         this.popularity = 0;
