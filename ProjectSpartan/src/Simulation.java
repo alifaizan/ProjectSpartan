@@ -65,7 +65,7 @@ public class Simulation {
             try {
                 System.out.println("Please enter the number of iterations you would like the simulator to perform (1-1000): ");
                 numberOfIterations = Integer.parseInt(in.next());
-                if (numberOfIterations > 1 && numberOfIterations < 1001) {
+                if (numberOfIterations > 0 && numberOfIterations < 1001) {
                     System.out.println("The simulator will run for " + numberOfIterations + " iterations.");
                     valid = true;
                 } else {
@@ -81,7 +81,7 @@ public class Simulation {
             try {
                 System.out.println("Please enter the number of consumers you would like the simulator to create (1-50): ");
                 numberOfConsumers = Integer.parseInt(in.next());
-                if (numberOfConsumers > 1 && numberOfConsumers < 51) {
+                if (numberOfConsumers > 0 && numberOfConsumers < 51) {
                     System.out.println("The simulator will create " + numberOfConsumers + " consumers.");
                     valid = true;
                 } else {
@@ -97,7 +97,7 @@ public class Simulation {
             try {
                 System.out.println("Please enter the number of producers you would like the simulator to create (1-50): ");
                 numberOfProducers = Integer.parseInt(in.next());
-                if (numberOfProducers > 1 && numberOfProducers < 51) {
+                if (numberOfProducers > 0 && numberOfProducers < 51) {
                     System.out.println("The simulator will create " + numberOfProducers + " producers.");
                     valid = true;
                 } else {
@@ -113,7 +113,7 @@ public class Simulation {
             try {
                 System.out.println("Please enter the number of documents you would like the simulator to create (1-1000): ");
                 numberOfDocuments = Integer.parseInt(in.next());
-                if (numberOfDocuments > 1 && numberOfDocuments < 1001) {
+                if (numberOfDocuments > 0 && numberOfDocuments < 1001) {
                     System.out.println("The simulator will create " + numberOfDocuments + " documents.");
                     valid = true;
                 } else {
@@ -129,7 +129,11 @@ public class Simulation {
             try {
                 System.out.println("Please enter the number of search results you would like to show for each iteration (1-50): ");
                 numberOfSearchResults = Integer.parseInt(in.next());
-                if (numberOfSearchResults > 1 && numberOfDocuments < 51) {
+                if (numberOfSearchResults > 0 && numberOfSearchResults < 51) {
+                    if (numberOfSearchResults > numberOfDocuments) {
+                        System.out.println("You have requested a higher number of search results than there are documents! Using max number of documents instead.");
+                        numberOfSearchResults = numberOfDocuments;
+                    }
                     System.out.println("The simulator will show " + numberOfSearchResults + " search results.");
                     valid = true;
                 } else {
@@ -143,7 +147,8 @@ public class Simulation {
 
     /**
      * Creates a specified number of consumers with a random taste
-     * @param number    The amount of consumers to create
+     *
+     * @param number The amount of consumers to create
      */
     private void setupConsumers(int number) {
         System.out.println("Setting up Consumers: ");
@@ -157,7 +162,8 @@ public class Simulation {
 
     /**
      * Creates a specified number of producers with a random taste
-     * @param number    The amount of producers to create
+     *
+     * @param number The amount of producers to create
      */
     private void setupProducers(int number) {
         System.out.println("Setting up Producers: ");
@@ -171,7 +177,8 @@ public class Simulation {
 
     /**
      * Creates a specified number of documents with a random tag
-     * @param number    The amount of documents to create
+     *
+     * @param number The amount of documents to create
      */
     private void setupDocuments(int number) {
         System.out.println("Setting up Documents: ");
@@ -188,8 +195,9 @@ public class Simulation {
 
     /**
      * Adds document and user pairing to a map
-     * @param user      The user that liked the document
-     * @param document  The document that was liked
+     *
+     * @param user     The user that liked the document
+     * @param document The document that was liked
      */
     private void likeDocument(User user, Document document) {
         if (likedDocuments.containsKey(user)) likedDocuments.get(user).add(document);
