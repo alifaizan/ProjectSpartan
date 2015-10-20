@@ -3,6 +3,8 @@
 //Date: October 19,2015
 //Version #: 1
 
+import java.util.List;
+
 public abstract class User {
 
     //Instance Variables
@@ -22,7 +24,7 @@ public abstract class User {
 
     //Abstract Methods to be Implemented Seperately in Consumer and Producer classes
     //Allows the users to find the top documents and likes it based on users taste
-    public abstract void act();
+    public abstract List<Document> act(List<Document> documentList);
 
     //Return true if the document passed is liked by the user
     //Returns false otherwise

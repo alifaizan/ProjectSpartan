@@ -3,21 +3,20 @@
 //Date: October 19,2015
 //Version #: 1
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Simulation {
 
     private List<Document> documents;
     private List<User> users;
     private List<String> tags;
-
+    private Map<User, ArrayList<Document>> likedDocuments;
 
     public Simulation() {
         documents = new ArrayList<>();
         users = new ArrayList<>();
         tags = new ArrayList<>();
+        likedDocuments = new HashMap<>();
         tags.add("News");
         tags.add("Sports");
         tags.add("Music");
@@ -31,6 +30,14 @@ public class Simulation {
         simulation.setupConsumers(5);
         simulation.setupProducers(10);
         simulation.setupDocuments(20);
+        Random random = new Random();
+
+        for (int i = 0; i < 100; i++) {
+            User user = simulation.users.get(random.nextInt(simulation.users.size()));
+            for (final Document document : user.act(simulation.getDocuments())) {
+                simulation.likeDocument(user, document);
+            }
+        }
     }
 
     private void setupConsumers(int number) {
@@ -57,9 +64,13 @@ public class Simulation {
         }
     }
 
-    protected ArrayList<Document> search() {
-
-        return new ArrayList<Document>();
+    private void likeDocument(User user, Document document) {
+        if (likedDocuments.containsKey(user)) likedDocuments.get(user).add(document);
+        else {
+            ArrayList<Document> documents = new ArrayList<>();
+            documents.add(document);
+            likedDocuments.put(user, documents);
+        }
     }
 
     //-----Getters and Setters------
@@ -86,5 +97,13 @@ public class Simulation {
 
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    public Map<User, ArrayList<Document>> getLikedDocuments() {
+        return this.likedDocuments;
+    }
+
+    public void setLikedDocuments(Map<User, ArrayList<Document>> likedDocuments) {
+        this.likedDocuments = likedDocuments;
     }
 }

@@ -20,7 +20,8 @@ public class Consumer extends User {
 		System.out.println(super.getName() + " followed " + user.getName());
 	}
 
-	public void act() {
+	public List<Document> act(List<Document> documentList) {
+		return new ArrayList<>();
 	}
 	
 	public List<User> getFollowing(){

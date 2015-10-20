@@ -15,7 +15,8 @@ public class Producer extends User{
 		followers = new ArrayList<>();
 	}
 
-	public void act() {
+	public List<Document> act(List<Document> documentList) {
+		return new ArrayList<>();
 	}
 
 	public void addfollower(User user){
