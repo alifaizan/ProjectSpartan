@@ -4,15 +4,12 @@
 //Version #: 1
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Simulation {
 
     private static final SecureRandom random = new SecureRandom();
-    private static final int NUMBER_OF_ITERATIONS = 100;
+    private static int numberOfIterations, numberOfConsumers, numberOfProducers, numberOfDocuments, numberOfSearchResults;
     private List<Document> documents;
     private List<User> users;
     private Map<User, ArrayList<Document>> likedDocuments;
@@ -38,19 +35,110 @@ public class Simulation {
     }
 
     public static void main(String[] args) {
+        userInteraction();
+
         System.out.println("Beginning Simulation...");
         Simulation simulation = new Simulation();
-        simulation.setupConsumers(5);
-        simulation.setupProducers(10);
-        simulation.setupDocuments(20);
+        simulation.setupConsumers(numberOfConsumers);
+        simulation.setupProducers(numberOfProducers);
+        simulation.setupDocuments(numberOfDocuments);
 
-        for (int i = 0; i < NUMBER_OF_ITERATIONS; i++) {
+        for (int i = 0; i < numberOfIterations; i++) {
             User user = simulation.users.get(random.nextInt(simulation.users.size()));
-            for (final Document document : user.act(simulation.getDocuments(), 10)) {
+            for (final Document document : user.act(simulation.getDocuments(), numberOfSearchResults)) {
                 simulation.likeDocument(user, document);
             }
         }
         System.out.println("Simulation Terminated.");
+    }
+
+    /**
+     * Obtains parameter values from users
+     */
+    private static void userInteraction() {
+        Scanner in = new Scanner(System.in);
+        boolean valid = false;
+
+        System.out.println("Welcome to the Project Spartan simulation.");
+
+        while (!valid) {
+            try {
+                System.out.println("Please enter the number of iterations you would like the simulator to perform (1-1000): ");
+                numberOfIterations = Integer.parseInt(in.next());
+                if (numberOfIterations > 1 && numberOfIterations < 1001) {
+                    System.out.println("The simulator will run for " + numberOfIterations + " iterations.");
+                    valid = true;
+                } else {
+                    System.out.println("ERROR: Please enter a number in the range 1-1000!");
+                }
+            } catch (Exception e) {
+                System.out.println("ERROR: Please only enter numeric characters!");
+            }
+        }
+        valid = false;
+
+        while (!valid) {
+            try {
+                System.out.println("Please enter the number of consumers you would like the simulator to create (1-50): ");
+                numberOfConsumers = Integer.parseInt(in.next());
+                if (numberOfConsumers > 1 && numberOfConsumers < 51) {
+                    System.out.println("The simulator will create " + numberOfConsumers + " consumers.");
+                    valid = true;
+                } else {
+                    System.out.println("ERROR: Please enter a number in the range 1-50!");
+                }
+            } catch (Exception e) {
+                System.out.println("ERROR: Please only enter numeric characters!");
+            }
+        }
+        valid = false;
+
+        while (!valid) {
+            try {
+                System.out.println("Please enter the number of producers you would like the simulator to create (1-50): ");
+                numberOfProducers = Integer.parseInt(in.next());
+                if (numberOfProducers > 1 && numberOfProducers < 51) {
+                    System.out.println("The simulator will create " + numberOfProducers + " producers.");
+                    valid = true;
+                } else {
+                    System.out.println("ERROR: Please enter a number in the range 1-50!");
+                }
+            } catch (Exception e) {
+                System.out.println("ERROR: Please only enter numeric characters!");
+            }
+        }
+        valid = false;
+
+        while (!valid) {
+            try {
+                System.out.println("Please enter the number of documents you would like the simulator to create (1-1000): ");
+                numberOfDocuments = Integer.parseInt(in.next());
+                if (numberOfDocuments > 1 && numberOfDocuments < 1001) {
+                    System.out.println("The simulator will create " + numberOfDocuments + " documents.");
+                    valid = true;
+                } else {
+                    System.out.println("ERROR: Please enter a number in the range 1-1000!");
+                }
+            } catch (Exception e) {
+                System.out.println("ERROR: Please only enter numeric characters!");
+            }
+        }
+        valid = false;
+
+        while (!valid) {
+            try {
+                System.out.println("Please enter the number of search results you would like to show for each iteration (1-50): ");
+                numberOfSearchResults = Integer.parseInt(in.next());
+                if (numberOfSearchResults > 1 && numberOfDocuments < 51) {
+                    System.out.println("The simulator will show " + numberOfSearchResults + " search results.");
+                    valid = true;
+                } else {
+                    System.out.println("ERROR: Please enter a number in the range 1-1000!");
+                }
+            } catch (Exception e) {
+                System.out.println("ERROR: Please only enter numeric characters!");
+            }
+        }
     }
 
     /**
