@@ -9,7 +9,7 @@ import java.util.*;
 public class Simulation {
 
     private static final SecureRandom random = new SecureRandom();
-    private static int numberOfIterations, numberOfConsumers, numberOfProducers, numberOfDocuments, numberOfSearchResults;
+    private static int numberOfIterations, numberOfConsumers, numberOfProducers, numberOfDocuments, numberOfSearchResults, numberOfTags;
     private List<Document> documents;
     private List<User> users;
     private Map<User, ArrayList<Document>> likedDocuments;
@@ -30,7 +30,7 @@ public class Simulation {
      * @return A random tag
      */
     public static Simulation.Tags randomTag(Class<Simulation.Tags> tags) {
-        int index = random.nextInt(tags.getEnumConstants().length);
+        int index = random.nextInt(numberOfTags);
         return tags.getEnumConstants()[index];
     }
 
@@ -42,6 +42,8 @@ public class Simulation {
         simulation.setupConsumers(numberOfConsumers);
         simulation.setupProducers(numberOfProducers);
         simulation.setupDocuments(numberOfDocuments);
+
+        simulation.printSetup();
 
         for (int i = 0; i < numberOfIterations; i++) {
             User user = simulation.users.get(random.nextInt(simulation.users.size()));
@@ -143,6 +145,50 @@ public class Simulation {
                 System.out.println("ERROR: Please only enter numeric characters!");
             }
         }
+        valid = false;
+
+        while (!valid) {
+            try {
+                System.out.println("Please enter the number of tags you would like to use for the simulation (1-10): ");
+                numberOfTags = Integer.parseInt(in.next());
+                if (numberOfTags > 0 && numberOfTags < 11) {
+                    System.out.println("The simulator will use " + numberOfTags + " tags.");
+                    valid = true;
+                } else {
+                    System.out.println("ERROR: Please enter a number in the range 1-10!");
+                }
+            } catch (Exception e) {
+                System.out.println("ERROR: Please only enter numeric characters!");
+            }
+        }
+    }
+
+    private void printSetup() {
+        System.out.println("The tags which will be used are: ");
+        for (int i = 0; i < numberOfTags; i++) {
+            System.out.print(Tags.values()[i].name + " ");
+        }
+        System.out.println();
+        System.out.println();
+
+        System.out.println("The consumers which will be used are: ");
+        users.forEach((user) -> {
+            if (user instanceof Consumer) System.out.print(user.getName() + " - " + user.getTaste() + ", ");
+        });
+        System.out.println();
+        System.out.println();
+
+        System.out.println("The producers which will be used are: ");
+        users.forEach((user) -> {
+            if (user instanceof Producer) System.out.print(user.getName() + " - " + user.getTaste() + ", ");
+        });
+        System.out.println();
+        System.out.println();
+
+        System.out.println("The documents which will be used are: ");
+        documents.forEach((document) -> System.out.print(document.getName() + " - " + document.getTag() + ", "));
+        System.out.println();
+        System.out.println();
     }
 
     /**
@@ -236,12 +282,16 @@ public class Simulation {
 
     //-----Enums------
     private enum Tags {
-        News("News"),
+        Technology("Technology"),
         Sports("Sports"),
         Music("Music"),
         Comedy("Comedy"),
         Cartoons("Cartoons"),
-        Movies("Movies");
+        Movies("Movies"),
+        Animals("Animals"),
+        Environment("Environment"),
+        Food("Food"),
+        Drinks("Drinks");
 
         private final String name;
 
