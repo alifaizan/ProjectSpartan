@@ -16,11 +16,6 @@ public class Consumer extends User {
         following = new ArrayList<User>();
     }
 
-    public void follow(User user) {
-        following.add(user);
-        System.out.println(super.getName() + " followed " + user.getName());
-    }
-
     public List<Document> act(List<Document> documentList, int numberToReturn) {
         List<Document> relevantDocuments = search(documentList, numberToReturn);
 
@@ -38,7 +33,7 @@ public class Consumer extends User {
 
         for (int i = 0; i < numberToReturn; i++) {
             documentsToReturn.add(documentList.get(i));
-            System.out.println("Returning document " + documentList.get(i).getName() + " with a score of: " + String.valueOf(documentList.get(i).getScore()));
+            System.out.println("Returning " + documentList.get(i).getName() + " with a score of: " + String.valueOf(documentList.get(i).getScore()));
         }
 
         return documentsToReturn;
@@ -46,10 +41,15 @@ public class Consumer extends User {
 
     public void updateLikesAndFollowers(List<Document> documents) {
         documents.forEach((document) -> {
-            if (document.getTag().equals(this.getTaste()) && !document.getLikedBy().contains(this))
+            if (document.getTag().equals(this.getTaste()) && !document.getLikedBy().contains(this)) {
                 document.likeDocument(this);
+                System.out.println(this.getName() + " just liked: " + document.getName());
+            }
             document.getLikedBy().forEach((user) -> {
-                if (user instanceof Producer && user != this) this.follow(user);
+                if (user instanceof Producer && user != this) {
+                    this.followUser(user);
+                    System.out.println(this.getName() + " just followed: " + user.getName());
+                }
             });
         });
     }
@@ -70,7 +70,8 @@ public class Consumer extends User {
         int payoff = 0;
 
         for (final Document document : documents) {
-            if (document.getTag().equals(this.getTaste()) && !(this.likes(document))) payoff++;
+            if (document.getTag().equals(this.getTaste()) && !(this.likes(document))) payoff += 2;
+            else if (document.getTag().equals(this.getTaste())) payoff++;
         }
 
         System.out.println("This search gave " + this.getName() + " a payoff of: " + String.valueOf(payoff));
