@@ -17,15 +17,24 @@ public class Simulation {
     private List<User> users;
     private Map<User, ArrayList<Document>> likedDocuments;
 
+    /**
+     * Default constructor for Simulation class
+     */
     public Simulation() {
         documents = new ArrayList<Document>();
         users = new ArrayList<User>();
         likedDocuments = new HashMap<User, ArrayList<Document>>();
     }
 
-    public static Simulation.Tags randomTag(Class<Simulation.Tags> tag) {
-        int index = random.nextInt(tag.getEnumConstants().length);
-        return tag.getEnumConstants()[index];
+    /**
+     * Randomly selects a tag from the enumerated class
+     *
+     * @param tags The class of tags to pick from
+     * @return A random tag
+     */
+    public static Simulation.Tags randomTag(Class<Simulation.Tags> tags) {
+        int index = random.nextInt(tags.getEnumConstants().length);
+        return tags.getEnumConstants()[index];
     }
 
     public static void main(String[] args) {
@@ -44,6 +53,10 @@ public class Simulation {
         System.out.println("Simulation Terminated.");
     }
 
+    /**
+     * Creates a specified number of consumers with a random taste
+     * @param number    The amount of consumers to create
+     */
     private void setupConsumers(int number) {
         System.out.println("Setting up Consumers: ");
         for (int i = 1; i < number + 1; i++) {
@@ -54,6 +67,10 @@ public class Simulation {
         System.out.println("-----------------------------");
     }
 
+    /**
+     * Creates a specified number of producers with a random taste
+     * @param number    The amount of producers to create
+     */
     private void setupProducers(int number) {
         System.out.println("Setting up Producers: ");
         for (int i = 1; i < number + 1; i++) {
@@ -64,6 +81,10 @@ public class Simulation {
         System.out.println("-----------------------------");
     }
 
+    /**
+     * Creates a specified number of documents with a random tag
+     * @param number    The amount of documents to create
+     */
     private void setupDocuments(int number) {
         System.out.println("Setting up Documents: ");
         for (int i = 1; i < number + 1; i++) {
@@ -77,6 +98,11 @@ public class Simulation {
         System.out.println("-----------------------------");
     }
 
+    /**
+     * Adds document and user pairing to a map
+     * @param user      The user that liked the document
+     * @param document  The document that was liked
+     */
     private void likeDocument(User user, Document document) {
         if (likedDocuments.containsKey(user)) likedDocuments.get(user).add(document);
         else {

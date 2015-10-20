@@ -16,6 +16,14 @@ public abstract class User {
     //Constructor for User that is passed "sim" of type Simulation 
     //and a "str" of type String such as the users name
     //Increments userCount and userIDCount every time a new user is created
+
+    /**
+     * Default constructor for User class
+     *
+     * @param simulation The associated simulation
+     * @param name       The name of the producer
+     * @param taste      The taste of the producer
+     */
     public User(Simulation simulation, String name, String taste) {
         this.name = name;
         this.taste = taste;
@@ -36,6 +44,11 @@ public abstract class User {
         return doc.getLikedBy() != null && doc.getLikedBy().contains(this);
     }
 
+    /**
+     * Adds user to following list and increases number of followers the user has
+     *
+     * @param user The user to follow
+     */
     public void followUser(User user) {
         if (!this.getFollowing().contains(user)) {
             this.following.add(user);

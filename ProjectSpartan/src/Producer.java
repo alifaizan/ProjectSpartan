@@ -12,6 +12,13 @@ public class Producer extends User {
     private List<User> followers;
     private List<Document> created;
 
+    /**
+     * The default constructor for the Producer class
+     *
+     * @param simulation The associated simulation
+     * @param name       The name of the producer
+     * @param taste      The taste of the producer
+     */
     public Producer(Simulation simulation, String name, String taste) {
         super(simulation, name, taste);
         followers = new ArrayList<User>();
@@ -19,6 +26,13 @@ public class Producer extends User {
         this.setFollowing(new ArrayList<>());
     }
 
+    /**
+     * Analyzes a given list of documents and determines how related it is to the user and whether to like/follow anyone else
+     *
+     * @param documentList   The list of documents to analyze
+     * @param numberToReturn The number of documents to return
+     * @return List of documents that have been sorted and analyzed
+     */
     public List<Document> act(List<Document> documentList, int numberToReturn) {
         List<Document> relevantDocuments = search(documentList, numberToReturn);
 
@@ -39,6 +53,13 @@ public class Producer extends User {
         return d;
     }
 
+    /**
+     * Ranks list of documents according to taste
+     *
+     * @param documentList   List of documents to rank
+     * @param numberToReturn The number of documents to return
+     * @return List of sorted documents
+     */
     public List<Document> search(List<Document> documentList, int numberToReturn) {
         ArrayList<Document> documentsToReturn = new ArrayList<>();
         System.out.println("Searching for top " + String.valueOf(numberToReturn) + " documents...");
@@ -52,6 +73,11 @@ public class Producer extends User {
         return documentsToReturn;
     }
 
+    /**
+     * Likes given documents and follows associated users
+     *
+     * @param documents The documents to analyze
+     */
     public void updateLikesAndFollowers(List<Document> documents) {
         documents.forEach((document) -> {
             if (document.getTag().equals(this.getTaste()) && !document.getLikedBy().contains(this)) {
@@ -67,6 +93,10 @@ public class Producer extends User {
         });
     }
 
+    /**
+     * Calculates payoff based on ranked documents
+     * @param documents The documents to analyze
+     */
     public void calculatePayoff(List<Document> documents) {
         int payoff = 0;
 

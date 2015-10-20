@@ -17,6 +17,14 @@ public class Document implements Comparable<Document> {
 
     //Constructor for Document that takes in a String
     //Increments documentCounter and documentIDCount every time a document is created
+
+    /**
+     * Default constructor for the Document class
+     *
+     * @param name Name of the document
+     * @param tag  Tag for the document
+     * @param p    Producer of document
+     */
     public Document(String name, String tag, Producer p) {
         this.tag = tag;
         this.name = name;
@@ -25,6 +33,10 @@ public class Document implements Comparable<Document> {
         this.likedBy = new HashSet<>();
     }
 
+    /**
+     * Adds a user to the list of users that like the document
+     * @param user  The user that liked the document
+     */
     public void likeDocument(User user) {
         if (!this.getLikedBy().contains(user)) {
             this.likedBy.add(user);
