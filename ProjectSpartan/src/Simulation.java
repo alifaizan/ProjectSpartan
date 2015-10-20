@@ -4,19 +4,22 @@
 //Version #: 1
 
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Simulation {
 
     private static final SecureRandom random = new SecureRandom();
+    private static final int NUMBER_OF_ITERATIONS = 100;
     private List<Document> documents;
     private List<User> users;
-    private List<Producer> producers;
     private Map<User, ArrayList<Document>> likedDocuments;
+
     public Simulation() {
         documents = new ArrayList<Document>();
         users = new ArrayList<User>();
-        producers = new ArrayList<Producer>();
         likedDocuments = new HashMap<User, ArrayList<Document>>();
     }
 
@@ -26,40 +29,52 @@ public class Simulation {
     }
 
     public static void main(String[] args) {
+        System.out.println("Beginning Simulation...");
         Simulation simulation = new Simulation();
         simulation.setupConsumers(5);
         simulation.setupProducers(10);
         simulation.setupDocuments(20);
-        Random random = new Random();
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < NUMBER_OF_ITERATIONS; i++) {
             User user = simulation.users.get(random.nextInt(simulation.users.size()));
             for (final Document document : user.act(simulation.getDocuments())) {
                 simulation.likeDocument(user, document);
             }
         }
+        System.out.println("Simulation Terminated.");
     }
 
     private void setupConsumers(int number) {
-        for (int i = 0; i < number; i++) {
-            Consumer consumer = new Consumer(this, "Consumer #" + i, randomTag(Tags.class).toString());
+        System.out.println("Setting up Consumers: ");
+        for (int i = 1; i < number + 1; i++) {
+            Consumer consumer = new Consumer(this, "Consumer #" + String.valueOf(i), randomTag(Tags.class).toString());
             users.add(consumer);
+            System.out.println(consumer.getName() + "  created");
         }
+        System.out.println("-----------------------------");
     }
 
     private void setupProducers(int number) {
-        for (int i = 0; i < number; i++) {
-            Producer producer = new Producer(this, "Producer #" + i, randomTag(Tags.class).toString());
+        System.out.println("Setting up Producers: ");
+        for (int i = 1; i < number + 1; i++) {
+            Producer producer = new Producer(this, "Producer #" + String.valueOf(i), randomTag(Tags.class).toString());
             users.add(producer);
-            producers.add(producer);
+            System.out.println(producer.getName() + "  created");
         }
+        System.out.println("-----------------------------");
     }
 
     private void setupDocuments(int number) {
-        for (int i = 0; i < number; i++) {
-            Document document = new Document("Document #" + i, randomTag(Tags.class).toString(), producers.get(random.nextInt(producers.size())));
+        System.out.println("Setting up Documents: ");
+        for (int i = 1; i < number + 1; i++) {
+            User user = users.get(random.nextInt(users.size()));
+            while (user instanceof Consumer)
+                user = users.get(random.nextInt(users.size())); //Keep picking a random user until it is a producer
+            Document document = new Document("Document #" + String.valueOf(i), randomTag(Tags.class).toString(), (Producer) user);
             documents.add(document);
+            System.out.println(document.getName() + "  created");
         }
+        System.out.println("-----------------------------");
     }
 
     private void likeDocument(User user, Document document) {
@@ -97,6 +112,7 @@ public class Simulation {
         this.likedDocuments = likedDocuments;
     }
 
+    //-----Enums------
     private enum Tags {
         News("News"),
         Sports("Sports"),

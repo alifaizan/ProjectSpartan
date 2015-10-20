@@ -3,7 +3,7 @@
 //Date: October 19,2015
 //Version #: 1
 
-import java.util.*;
+import java.util.Set;
 
 public class Document {
 
@@ -12,16 +12,15 @@ public class Document {
     private String name;
     private int popularity;
     private Set<User> likedBy;
-    List<Producer> producer;
+    private Producer producer;
 
     //Constructor for Document that takes in a String
     //Increments documentCounter and documentIDCount every time a document is created
-    public Document(String tag, String name, Producer p) {
+    public Document(String name, String tag, Producer p) {
         this.tag = tag;
         this.name = name;
         this.popularity = 0;
-        producer = new ArrayList<Producer>();
-        producer.add(p);
+        this.producer = p;
     }
 
     public void likeDocument(User user) {
@@ -39,9 +38,13 @@ public class Document {
     public void setTag(String tag) {
         this.tag = tag;
     }
-    
-    public Producer getProducer(){
-    	return producer.get(0);
+
+    public Producer getProducer() {
+        return this.producer;
+    }
+
+    public void setProducer(Producer producer) {
+        this.producer = producer;
     }
 
     public String getName() {
