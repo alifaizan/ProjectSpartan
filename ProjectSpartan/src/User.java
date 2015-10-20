@@ -59,6 +59,9 @@ public class User {
     	liked.add(doc);
     }
     
+    public String getName(){
+    	return name;
+    }
    
     //Return true if the document passed matches the document in the liked ArrayList
     //Returns false otherwise

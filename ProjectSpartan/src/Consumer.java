@@ -17,6 +17,7 @@ public class Consumer extends User {
 	
 	public void follow(User user){
 		following.add(user);
+		System.out.println(super.getName() + " followed " + user.getName());
 	}
 	
 	
