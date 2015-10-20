@@ -6,17 +6,18 @@
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Producer extends User{
 	
 	List<User> followers;
 
-
-	public Producer(String name, String taste){
-		super(name, taste);
-		followers = new ArrayList<User>();
+	public Producer(Simulation simulation, String name, String taste) {
+		super(simulation, name, taste);
+		followers = new ArrayList<>();
 	}
-	
+
+	public void act() {
+	}
+
 	public void addfollower(User user){
 		followers.add(user);
 	}

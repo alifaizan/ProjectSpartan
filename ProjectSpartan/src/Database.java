@@ -6,9 +6,6 @@
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Zameer on 2015-10-19.
- */
 public class Database {
 
     private List<Document> documents;

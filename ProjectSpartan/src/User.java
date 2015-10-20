@@ -3,76 +3,63 @@
 //Date: October 19,2015
 //Version #: 1
 
-import java.util.ArrayList;
+public abstract class User {
 
-public class User {
-    
-    private ArrayList<Document> liked;
+    //Instance Variables
     private Simulation sim;
-    private String userTaste, name;
-    private int userIDCount;
-    private int userCount=0;
-  
+    private String taste, name;
+    private int amountFollowed;
     
     //Constructor for User that is passed "sim" of type Simulation 
     //and a "str" of type String such as the users name
-    //Increments userCount and userIDCount everytime a new user is created
-    public User(String name, String taste){
-    	
-     this.name = name;
-     userTaste = taste;
-     liked = new ArrayList<Document>();
-     userCount+=1;
-     userIDCount=userCount;
-    } 
+    //Increments userCount and userIDCount every time a new user is created
+    public User(Simulation simulation, String name, String taste) {
+        this.name = name;
+        this.taste = taste;
+        this.sim = simulation;
+        amountFollowed = 0;
+    }
 
+    //Abstract Methods to be Implemented Seperately in Consumer and Producer classes
     //Allows the users to find the top documents and likes it based on users taste
-    public void act() {
+    public abstract void act();
 
-        for(Document doc: sim.search()){
-        	
-            if(doc.getTag()== userTaste){
-            	
-            	like(doc);
-            }
-        }
-
-    }
-    
-    //Returns the Id of the user
-    public int getUserId(){
-    
-    	return this.userIDCount;
-    }
-    
-    
-    //Returns the taste of the user
-    public String getUserTaste(){
-    	
-    	return this.userTaste;
-    }
-    
-   
-    //Adds a document that is liked to the liked ArrayList
-    public void like(Document doc){
-    
-    	liked.add(doc);
-    }
-    
-    public String getName(){
-    	return name;
-    }
-   
-    //Return true if the document passed matches the document in the liked ArrayList
+    //Return true if the document passed is liked by the user
     //Returns false otherwise
-    public boolean likes(Document doc){
-        
-    	for(Document userDocument: liked){
-            
-        	return userDocument == doc;
-        }
-        return false;
-    
+    public boolean likes(Document doc) {
+        return doc.getLikedBy().contains(this);
     }
-    
+
+    //-----Getters and Setters------
+    public Simulation getSim() {
+        return this.sim;
+    }
+
+    public void setSim(Simulation sim) {
+        this.sim = sim;
+    }
+
+    public String getTaste() {
+        return this.taste;
+    }
+
+    public void setTaste(String taste) {
+        this.taste = taste;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAmountFollowed() {
+        return this.amountFollowed;
+    }
+
+    public void setAmountFollowed(int followed) {
+        this.amountFollowed = followed;
+    }
 }

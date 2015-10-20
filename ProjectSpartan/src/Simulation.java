@@ -5,12 +5,10 @@
 
 import java.util.ArrayList;
 
-/**
- * Created by Zameer on 2015-10-19.
- */
 public class Simulation {
 
     public static void main(String[] args) {
+        Database database = new Database();
 
     }
 
@@ -18,6 +16,11 @@ public class Simulation {
 
         return new ArrayList<Document>();
     }
+
+    public void createProducers() {
+
+    }
+
 
 
 }
