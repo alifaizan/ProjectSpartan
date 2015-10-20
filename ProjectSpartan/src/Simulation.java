@@ -16,7 +16,7 @@ public class Simulation {
 
     protected ArrayList<Document> search() {
 
-        return new ArrayList<>();
+        return new ArrayList<Document>();
     }
 
 

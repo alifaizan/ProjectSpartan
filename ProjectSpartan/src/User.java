@@ -31,7 +31,7 @@ public class User {
 
         for(Document doc: sim.search()){
         	
-            if(doc.getDocumentTag()== userTaste){
+            if(doc.getTag()== userTaste){
             	
             	like(doc);
             }

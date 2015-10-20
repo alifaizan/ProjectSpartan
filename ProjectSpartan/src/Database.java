@@ -15,7 +15,7 @@ public class Database {
     private int quantity;
 
     public Database() {
-        documents = new ArrayList<>();
+        documents = new ArrayList<Document>();
         quantity = 0;
     }
 
