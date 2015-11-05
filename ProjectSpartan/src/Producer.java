@@ -43,10 +43,6 @@ public class Producer extends User {
         return relevantDocuments;
     }
 
-    public List<User> getFollowers() {
-        return followers;
-    }
-
     public Document newDoc(String name, String tag) {
         Document d = new Document(name, tag, this);
         created.add(d);
@@ -99,13 +95,28 @@ public class Producer extends User {
      * @param documents The documents to analyze
      */
     public void calculatePayoff(List<Document> documents) {
-        int payoff = 0;
+        int payoff = this.getFollowers().size();
 
-        for (final Document document : documents) {
-            if (document.getTag().equals(this.getTaste()) && !(this.likes(document))) payoff += 2;
-            else if (document.getTag().equals(this.getTaste())) payoff++;
+        for (final Document document : this.getCreated()) {
+            payoff += document.getPopularity();
         }
 
         System.out.println("This search gave " + this.getName() + " a payoff of: " + String.valueOf(payoff));
+    }
+
+    public List<User> getFollowers() {
+        return this.followers;
+    }
+
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
+    }
+
+    public List<Document> getCreated() {
+        return this.created;
+    }
+
+    public void setCreated(List<Document> created) {
+        this.created = created;
     }
 }
