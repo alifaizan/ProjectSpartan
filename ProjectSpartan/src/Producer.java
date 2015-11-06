@@ -12,6 +12,7 @@ public class Producer extends User {
     private List<User> followers;
     private List<Document> created;
 
+
     /**
      * The default constructor for the Producer class
      *
@@ -34,18 +35,21 @@ public class Producer extends User {
      * @return List of documents that have been sorted and analyzed
      */
     public List<Document> act(List<Document> documentList, int numberToReturn) {
+        this.newDoc("Document #" + String.valueOf(this.getSim().getNumberOfDocuments()));
+
         List<Document> relevantDocuments = search(documentList, numberToReturn);
 
-        calculatePayoff(relevantDocuments);
+        this.calculatePayoff(relevantDocuments);
 
-        updateLikesAndFollowers(relevantDocuments);
+        this.updateLikesAndFollowers(relevantDocuments);
 
         return relevantDocuments;
     }
 
-    public Document newDoc(String name, String tag) {
-        Document d = new Document(name, tag, this);
+    public Document newDoc(String name) {
+        Document d = new Document(name, this.getTaste(), this);
         created.add(d);
+        System.out.println(name + "  created");
         return d;
     }
 

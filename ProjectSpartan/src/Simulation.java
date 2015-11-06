@@ -232,18 +232,19 @@ public class Simulation {
             User user = users.get(random.nextInt(users.size()));
             while (user instanceof Consumer)
                 user = users.get(random.nextInt(users.size())); //Keep picking a random user until it is a producer
-            Document document = new Document("Document #" + String.valueOf(i), randomTag(Tags.class).toString(), (Producer) user);
-            documents.add(document);
-            System.out.println(document.getName() + "  created");
+            documents.add(((Producer) user).newDoc("Document #" + String.valueOf(i)));
         }
         System.out.println("-----------------------------");
     }
 
-    public List<Document> getDocuments() {
-        return this.documents;
+    public int getNumberOfDocuments() {
+        return this.getDocuments().size();
     }
 
     //-----Getters and Setters------
+    public List<Document> getDocuments() {
+        return this.documents;
+    }
 
     public void setDocuments(List<Document> documents) {
         this.documents = documents;
