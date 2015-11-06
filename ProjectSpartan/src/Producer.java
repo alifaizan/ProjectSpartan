@@ -95,10 +95,11 @@ public class Producer extends User {
      * @param documents The documents to analyze
      */
     public void calculatePayoff(List<Document> documents) {
-        int payoff = this.getFollowers().size();
+        int payoff = 0;
 
-        for (final Document document : this.getCreated()) {
-            payoff += document.getPopularity();
+        for (final Document document : documents) {
+            if (document.getTag().equals(this.getTaste()) && !(this.likes(document))) payoff += 2;
+            else if (document.getTag().equals(this.getTaste())) payoff++;
         }
 
         System.out.println("This search gave " + this.getName() + " a payoff of: " + String.valueOf(payoff));

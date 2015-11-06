@@ -4,7 +4,9 @@
 //Version #: 1
 
 import java.security.SecureRandom;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Simulation {
 
@@ -12,7 +14,6 @@ public class Simulation {
     private static int numberOfIterations, numberOfConsumers, numberOfProducers, numberOfDocuments, numberOfSearchResults, numberOfTags;
     private List<Document> documents;
     private List<User> users;
-    private Map<User, ArrayList<Document>> likedDocuments;
 
     /**
      * Default constructor for Simulation class
@@ -20,7 +21,6 @@ public class Simulation {
     public Simulation() {
         documents = new ArrayList<Document>();
         users = new ArrayList<User>();
-        likedDocuments = new HashMap<User, ArrayList<Document>>();
     }
 
     /**
@@ -48,7 +48,7 @@ public class Simulation {
         for (int i = 0; i < numberOfIterations; i++) {
             User user = simulation.users.get(random.nextInt(simulation.users.size()));
             for (final Document document : user.act(simulation.getDocuments(), numberOfSearchResults)) {
-                simulation.likeDocument(user, document);
+                user.likeDocument(document);
             }
         }
         System.out.println("Simulation Terminated.");
@@ -139,7 +139,7 @@ public class Simulation {
                     System.out.println("The simulator will show " + numberOfSearchResults + " search results.");
                     valid = true;
                 } else {
-                    System.out.println("ERROR: Please enter a number in the range 1-1000!");
+                    System.out.println("ERROR: Please enter a number in the range 1-50!");
                 }
             } catch (Exception e) {
                 System.out.println("ERROR: Please only enter numeric characters!");
@@ -239,21 +239,6 @@ public class Simulation {
         System.out.println("-----------------------------");
     }
 
-    /**
-     * Adds document and user pairing to a map
-     *
-     * @param user     The user that liked the document
-     * @param document The document that was liked
-     */
-    private void likeDocument(User user, Document document) {
-        if (likedDocuments.containsKey(user)) likedDocuments.get(user).add(document);
-        else {
-            ArrayList<Document> documents = new ArrayList<Document>();
-            documents.add(document);
-            likedDocuments.put(user, documents);
-        }
-    }
-
     public List<Document> getDocuments() {
         return this.documents;
     }
@@ -270,14 +255,6 @@ public class Simulation {
 
     public void setUsers(List<User> users) {
         this.users = users;
-    }
-
-    public Map<User, ArrayList<Document>> getLikedDocuments() {
-        return this.likedDocuments;
-    }
-
-    public void setLikedDocuments(Map<User, ArrayList<Document>> likedDocuments) {
-        this.likedDocuments = likedDocuments;
     }
 
     //-----Enums------

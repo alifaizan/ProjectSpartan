@@ -3,15 +3,19 @@
 //Date: October 19,2015
 //Version #: 1
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public abstract class User {
 
     //Instance Variables
     private Simulation sim;
     private String taste, name;
-    private int amountFollowed;
+    private List<User> followers;
     private List<User> following;
+    private Set<Document> likedDocuments;
 
     //Constructor for User that is passed "sim" of type Simulation 
     //and a "str" of type String such as the users name
@@ -28,7 +32,9 @@ public abstract class User {
         this.name = name;
         this.taste = taste;
         this.sim = simulation;
-        amountFollowed = 0;
+        followers = new ArrayList<>();
+        following = new ArrayList<>();
+        likedDocuments = new HashSet<>();
     }
 
     //-----Abstract Methods to be Implemented Separately in Consumer and Producer classes-----
@@ -52,8 +58,17 @@ public abstract class User {
     public void followUser(User user) {
         if (!this.getFollowing().contains(user)) {
             this.following.add(user);
-            this.setAmountFollowed(this.getAmountFollowed() + 1);
+            user.followers.add(this);
         }
+    }
+
+    /**
+     * Adds document and user pairing to a map
+     *
+     * @param document The document that was liked
+     */
+    public void likeDocument(Document document) {
+        likedDocuments.add(document);
     }
 
     //-----Getters and Setters------
@@ -81,12 +96,12 @@ public abstract class User {
         this.name = name;
     }
 
-    public int getAmountFollowed() {
-        return this.amountFollowed;
+    public List<User> getFollowers() {
+        return this.followers;
     }
 
-    public void setAmountFollowed(int followed) {
-        this.amountFollowed = followed;
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
     }
 
     public List<User> getFollowing() {

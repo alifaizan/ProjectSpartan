@@ -11,7 +11,6 @@ public class Document implements Comparable<Document> {
     //Instance Variables
     private String tag;
     private String name;
-    private int popularity;
     private Set<User> likedBy;
     private Producer producer;
 
@@ -28,7 +27,6 @@ public class Document implements Comparable<Document> {
     public Document(String name, String tag, Producer p) {
         this.tag = tag;
         this.name = name;
-        this.popularity = 0;
         this.producer = p;
         this.likedBy = new HashSet<>();
     }
@@ -39,10 +37,8 @@ public class Document implements Comparable<Document> {
      * @param user The user that liked the document
      */
     public void likeDocument(User user) {
-        if (!this.getLikedBy().contains(user)) {
-            this.likedBy.add(user);
-            this.popularity++;
-        }
+        this.likedBy.add(user);
+
     }
 
     public int compareTo(Document document) {
@@ -74,14 +70,6 @@ public class Document implements Comparable<Document> {
         this.name = name;
     }
 
-    public int getPopularity() {
-        return this.popularity;
-    }
-
-    public void setPopularity(int popularity) {
-        this.popularity = popularity;
-    }
-
     public Set<User> getLikedBy() {
         return this.likedBy;
     }
@@ -91,6 +79,14 @@ public class Document implements Comparable<Document> {
     }
 
     public int getScore() {
-        return this.getPopularity() + this.getProducer().getFollowers().size();
+        int score = 0;
+
+        //Increase score by number of likes the document has
+        score += this.getLikedBy().size();
+
+        //Increase score by popularity of the documents producer
+        score += this.getProducer().getFollowers().size();
+
+        return score;
     }
 }
