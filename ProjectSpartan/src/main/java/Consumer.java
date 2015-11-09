@@ -37,25 +37,6 @@ public class Consumer extends User {
         return relevantDocuments;
     }
 
-    /**
-     * Likes given documents and follows associated users
-     *
-     * @param documents The documents to analyze
-     */
-    public void updateLikesAndFollowers(List<Document> documents) {
-        documents.forEach((document) -> {
-            if (document.getTag().equals(this.getTaste()) && !document.getLikedBy().contains(this)) {
-                document.likeDocument(this);
-                System.out.println(this.getName() + " just liked: " + document.getName());
-            }
-            document.getLikedBy().forEach((user) -> {
-                if (user instanceof Producer && user != this && !this.getFollowing().contains(user)) {
-                    this.followUser(user);
-                    System.out.println(this.getName() + " just followed: " + user.getName());
-                }
-            });
-        });
-    }
 
     /**
      * Calculates payoff based on ranked documents

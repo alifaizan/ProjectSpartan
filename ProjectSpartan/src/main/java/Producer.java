@@ -32,7 +32,7 @@ public class Producer extends User {
      * @return List of documents that have been sorted and analyzed
      */
     public List<Document> act(List<Document> documentList, int numberToReturn) {
-        this.newDoc("Document #" + String.valueOf(this.getSim().getNumberOfDocuments()));
+        this.newDoc("Document #" + String.valueOf(this.getSim().getNumberOfDocuments() + 1));
 
         List<Document> relevantDocuments = search(documentList, numberToReturn);
 
@@ -56,18 +56,8 @@ public class Producer extends User {
      * @param documents The documents to analyze
      */
     public void updateLikesAndFollowers(List<Document> documents) {
-        documents.forEach((document) -> {
-            if (document.getTag().equals(this.getTaste()) && !document.getLikedBy().contains(this)) {
-                document.likeDocument(this);
-                System.out.println(this.getName() + " just liked: " + document.getName());
-            }
-            document.getLikedBy().forEach((user) -> {
-                if (user instanceof Producer && user != this && !this.getFollowing().contains(user)) {
-                    this.followUser(user);
-                    System.out.println(this.getName() + " just followed: " + user.getName());
-                }
-            });
-        });
+        super.updateLikesAndFollowers(documents);
+
     }
 
     /**

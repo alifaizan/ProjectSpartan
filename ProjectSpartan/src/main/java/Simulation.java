@@ -11,6 +11,10 @@ import java.util.Scanner;
 
 public class Simulation {
 
+    private static final int MAX_PRODUCERS = 50;
+    private static final int MAX_CONSUMERS = 50;
+    private static final int MAX_DOCUMENTS = 10;
+    private static final int MAX_TAGS = 10;
     private static final SecureRandom random = new SecureRandom();
     private static int numberOfConsumers, numberOfProducers, numberOfDocuments, numberOfSearchResults, numberOfTags;
     private boolean quit;
@@ -72,11 +76,11 @@ public class Simulation {
             try {
                 System.out.println("Please enter the number of consumers you would like the simulator to create (1-50): ");
                 numberOfConsumers = Integer.parseInt(in.next());
-                if (numberOfConsumers > 0 && numberOfConsumers < 51) {
+                if (numberOfConsumers > 0 && numberOfConsumers <= MAX_CONSUMERS) {
                     System.out.println("The simulator will create " + numberOfConsumers + " consumers.");
                     valid = true;
                 } else {
-                    System.out.println("ERROR: Please enter a number in the range 1-50!");
+                    System.out.println("ERROR: Please enter a number in the range 1-" + MAX_CONSUMERS + "!");
                 }
             } catch (Exception e) {
                 System.out.println("ERROR: Please only enter numeric characters!");
@@ -88,11 +92,11 @@ public class Simulation {
             try {
                 System.out.println("Please enter the number of producers you would like the simulator to create (1-50): ");
                 numberOfProducers = Integer.parseInt(in.next());
-                if (numberOfProducers > 0 && numberOfProducers < 51) {
+                if (numberOfProducers > 0 && numberOfProducers <= MAX_PRODUCERS) {
                     System.out.println("The simulator will create " + numberOfProducers + " producers.");
                     valid = true;
                 } else {
-                    System.out.println("ERROR: Please enter a number in the range 1-50!");
+                    System.out.println("ERROR: Please enter a number in the range 1-" + MAX_PRODUCERS + "!");
                 }
             } catch (Exception e) {
                 System.out.println("ERROR: Please only enter numeric characters!");
@@ -104,11 +108,11 @@ public class Simulation {
             try {
                 System.out.println("Please enter the number of documents you would like the simulator to create (1-10): ");
                 numberOfDocuments = Integer.parseInt(in.next());
-                if (numberOfDocuments > 0 && numberOfDocuments < 11) {
+                if (numberOfDocuments > 0 && numberOfDocuments <= MAX_DOCUMENTS) {
                     System.out.println("The simulator will create " + numberOfDocuments + " documents.");
                     valid = true;
                 } else {
-                    System.out.println("ERROR: Please enter a number in the range 1-10!");
+                    System.out.println("ERROR: Please enter a number in the range 1-" + MAX_DOCUMENTS + "!");
                 }
             } catch (Exception e) {
                 System.out.println("ERROR: Please only enter numeric characters!");
@@ -120,14 +124,14 @@ public class Simulation {
             try {
                 System.out.println("Please enter the number of tags you would like to use for the simulation (1-10): ");
                 numberOfTags = Integer.parseInt(in.next());
-                if (numberOfTags > 0 && numberOfTags < 11) {
+                if (numberOfTags > 0 && numberOfTags <= MAX_TAGS) {
                     System.out.println("The simulator will use " + numberOfTags + " tags.");
                     valid = true;
                 } else {
-                    System.out.println("ERROR: Please enter a number in the range 1-10!");
+                    System.out.println("ERROR: Please enter a number in the range 1-" + MAX_TAGS + "!");
                 }
             } catch (Exception e) {
-                System.out.println("ERROR: Please only enter numeric characters or 'q'!");
+                System.out.println("ERROR: Please only enter numeric characters!");
             }
         }
     }
@@ -227,7 +231,7 @@ public class Simulation {
                     this.quit = true;
                     valid = true;
                 } else {
-                    System.out.println("ERROR: Please only enter numeric characters!");
+                    System.out.println("ERROR: Please only enter numeric characters or 'q'!");
                 }
             }
         }
