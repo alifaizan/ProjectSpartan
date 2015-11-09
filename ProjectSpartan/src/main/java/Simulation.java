@@ -128,12 +128,15 @@ public class Simulation {
                     System.out.println("ERROR: Please enter a number in the range 1-10!");
                 }
             } catch (Exception e) {
-                System.out.println("ERROR: Please only enter numeric characters!");
+                System.out.println("ERROR: Please only enter numeric characters or 'q'!");
             }
         }
     }
 
     private void printSetup() {
+        String toPrintConsumer = "The consumers which will be used are: \n";
+        String toPrintProducer = "The producers which will be used are: \n";
+        String toPrintDocument = "The documents which will be used are: \n";
         System.out.println("The tags which will be used are: ");
         for (int i = 0; i < numberOfTags; i++) {
             System.out.print(Tags.values()[i].name + " ");
@@ -141,23 +144,18 @@ public class Simulation {
         System.out.println();
         System.out.println();
 
-        System.out.println("The consumers which will be used are: ");
-        users.forEach((user) -> {
-            if (user instanceof Consumer) System.out.print(user.getName() + " - " + user.getTaste() + ", ");
-        });
-        System.out.println();
-        System.out.println();
+        for (final User user : users) {
+            if (user instanceof Consumer) toPrintConsumer += user.getName() + " - " + user.getTaste() + ", ";
+            if (user instanceof Producer) toPrintProducer += user.getName() + " - " + user.getTaste() + ", ";
+        }
 
-        System.out.println("The producers which will be used are: ");
-        users.forEach((user) -> {
-            if (user instanceof Producer) System.out.print(user.getName() + " - " + user.getTaste() + ", ");
-        });
-        System.out.println();
-        System.out.println();
+        for (final Document document : documents) {
+            toPrintDocument += document.getName() + " - " + document.getTag() + ", ";
+        }
 
-        System.out.println("The documents which will be used are: ");
-        documents.forEach((document) -> System.out.print(document.getName() + " - " + document.getTag() + ", "));
-        System.out.println();
+        System.out.println(toPrintConsumer.substring(0, toPrintConsumer.length() - 2)); //format to get rid of extra trailing comma
+        System.out.println(toPrintProducer.substring(0, toPrintProducer.length() - 2));
+        System.out.println(toPrintDocument.substring(0, toPrintDocument.length() - 2));
         System.out.println();
     }
 
