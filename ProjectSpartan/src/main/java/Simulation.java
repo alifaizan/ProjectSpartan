@@ -222,17 +222,14 @@ public class Simulation {
     }
 
     private User runIteration() {
-        Scanner in = new Scanner(System.in);
-        String input = "";
         boolean valid = false;
         User user = this.users.get(random.nextInt(this.users.size()));
 
         printToGUI("\n" + user.getName() + " was randomly selected to perform a search.");
         while (!valid) {
             try {
-                gui.dialog("Please enter the number of documents you would like to search for (1-" + this.getNumberOfDocuments() + ") or 'q' to quit: ");
-                input = in.next();
-                numberOfSearchResults = Integer.parseInt(input);
+                numberOfSearchResults = gui.dialog("Please enter the number of documents you would like to search for (1-" + this.getNumberOfDocuments() + ") or 'q' to quit: ");
+                
                 if (numberOfSearchResults > numberOfDocuments) {
                     printToGUI("You have requested a higher number of search results than there are documents! Using max number of documents instead.");
                     numberOfSearchResults = numberOfDocuments;
@@ -240,12 +237,8 @@ public class Simulation {
                 printToGUI("The simulator will show " + numberOfSearchResults + " search results.");
                 valid = true;
             } catch (Exception e) {
-                if (input.equals("q")) {
-                    this.quit = true;
-                    valid = true;
-                } else {
-                    printToGUI("ERROR: Please only enter numeric characters or 'q'!");
-                }
+            	 printToGUI("ERROR: Please only enter numeric characters or 'q'!");
+            	 numberOfSearchResults = gui.dialog("Please enter the number of documents you would like to search for (1-" + this.getNumberOfDocuments() + ") or 'q' to quit: ");
             }
         }
 
