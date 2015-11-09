@@ -38,7 +38,7 @@ public class Document implements Comparable<Document> {
      */
     public void likeDocument(User user) {
         this.likedBy.add(user);
-
+        this.getProducer().calculatePayoff();
     }
 
     public int compareTo(Document document) {

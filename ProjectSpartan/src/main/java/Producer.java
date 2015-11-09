@@ -39,7 +39,7 @@ public class Producer extends User {
 
         List<Document> relevantDocuments = search(documentList, numberToReturn);
 
-        this.calculatePayoff(relevantDocuments);
+        this.calculatePayoff();
 
         this.updateLikesAndFollowers(relevantDocuments);
 
@@ -94,19 +94,19 @@ public class Producer extends User {
     }
 
     /**
-     * Calculates payoff based on ranked documents
-     *
-     * @param documents The documents to analyze
+     * Calculates payoff based on total followers and likes between all produced documents
      */
-    public void calculatePayoff(List<Document> documents) {
-        int payoff = 0;
+    public void calculatePayoff() {
+        int followers = this.getFollowers().size();
+        int totalDocumentLikes = 0;
 
-        for (final Document document : documents) {
-            if (document.getTag().equals(this.getTaste()) && !(this.likes(document))) payoff += 2;
-            else if (document.getTag().equals(this.getTaste())) payoff++;
+        for (final Document document : this.getCreated()) {
+            totalDocumentLikes += document.getLikedBy().size();
         }
 
-        System.out.println("This search gave " + this.getName() + " a payoff of: " + String.valueOf(payoff));
+        int payoff = followers + totalDocumentLikes;
+
+        System.out.println(this.getName() + " now has a payoff of: " + String.valueOf(payoff) + ", from " + followers + " total followers and " + totalDocumentLikes + " total document likes.");
     }
 
     public List<User> getFollowers() {
