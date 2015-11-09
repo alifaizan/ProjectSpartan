@@ -9,7 +9,6 @@ import java.util.List;
 
 public class Producer extends User {
 
-    private List<User> followers;
     private List<Document> created;
 
 
@@ -22,7 +21,6 @@ public class Producer extends User {
      */
     public Producer(Simulation simulation, String name, String taste) {
         super(simulation, name, taste);
-        followers = new ArrayList<User>();
         created = new ArrayList<Document>();
         this.setFollowing(new ArrayList<>());
     }
@@ -98,11 +96,7 @@ public class Producer extends User {
      */
     public void calculatePayoff() {
         int followers = this.getFollowers().size();
-        int totalDocumentLikes = 0;
-
-        for (final Document document : this.getCreated()) {
-            totalDocumentLikes += document.getLikedBy().size();
-        }
+        int totalDocumentLikes = this.totalLikes();
 
         int payoff = followers + totalDocumentLikes;
 
@@ -110,12 +104,14 @@ public class Producer extends User {
         System.out.println(this.getName() + " now has a payoff of: " + String.valueOf(payoff) + ", from " + followers + " total followers and " + totalDocumentLikes + " total document likes.");
     }
 
-    public List<User> getFollowers() {
-        return this.followers;
-    }
+    public int totalLikes() {
+        int totalDocumentLikes = 0;
 
-    public void setFollowers(List<User> followers) {
-        this.followers = followers;
+        for (final Document document : this.getCreated()) {
+            totalDocumentLikes += document.getLikedBy().size();
+        }
+
+        return totalDocumentLikes;
     }
 
     public List<Document> getCreated() {

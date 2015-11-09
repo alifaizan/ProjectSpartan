@@ -77,6 +77,13 @@ public abstract class User {
             payoffString += payoff + ", ";
         }
         payoffString = payoffString.substring(0, payoffString.length() - 2);
+        payoffString += "\n";
+
+        payoffString += "Total Followers =  " + this.getFollowers().size() + ", Total Following =  " + this.getFollowing().size() + ", Total Liked Documents = " + this.getLikedDocuments().size();
+
+        if (this instanceof Producer) {
+            payoffString += ", Total Created = " + ((Producer) this).getCreated().size() + ", Total Document Likes = " + ((Producer) this).totalLikes();
+        }
 
         return payoffString;
     }
@@ -137,5 +144,13 @@ public abstract class User {
 
     public void setPayoffs(List<Integer> payoff) {
         this.payoffs = payoff;
+    }
+
+    public Set<Document> getLikedDocuments() {
+        return this.likedDocuments;
+    }
+
+    public void setLikedDocuments(Set<Document> likedDocuments) {
+        this.likedDocuments = likedDocuments;
     }
 }
