@@ -10,7 +10,6 @@ public class Producer extends User {
 
     private List<Document> created;
 
-
     /**
      * The default constructor for the Producer class
      *
@@ -32,7 +31,7 @@ public class Producer extends User {
      * @return List of documents that have been sorted and analyzed
      */
     public List<Document> act(List<Document> documentList, int numberToReturn) {
-        this.newDoc("Document #" + String.valueOf(this.getSim().getNumberOfDocuments() + 1));
+        this.getSim().getDocuments().add(this.newDoc("Document #" + String.valueOf(this.getSim().getNumberOfDocuments() + 1)));
 
         List<Document> relevantDocuments = search(documentList, numberToReturn);
 
