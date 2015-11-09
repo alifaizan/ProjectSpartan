@@ -40,6 +40,10 @@ public abstract class User {
     //Allows the users to find the top documents and likes it based on users taste
     public abstract List<Document> act(List<Document> documentList, int numberToReturn);
 
+    //Calculates the payoff for the users. Either based off a search for the consumer or off followers/likes for a producer
+    public void calculatePayoff(List<Document> documents) {
+    }
+
     //Return true if the document passed is liked by the user
     //Returns false otherwise
     public boolean likes(Document doc) {
@@ -82,15 +86,14 @@ public abstract class User {
         return payoffString;
     }
 
-
     /**
      * Likes given documents and follows associated users
      *
      * @param documents The documents to analyze
      */
-    public void updateLikesAndFollowers(List<Document> documents) {
+    public void updateLikesAndFollowers(List<Document> documents, String taste) {
         documents.forEach((document) -> {
-            if (document.getTag().equals(this.getTaste()) && !document.getLikedBy().contains(this)) {
+            if (document.getTag().equals(taste) && !document.getLikedBy().contains(this)) {
                 document.likeDocument(this);
                 System.out.println(this.getName() + " just liked: " + document.getName());
             }

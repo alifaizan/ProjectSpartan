@@ -35,9 +35,9 @@ public class Producer extends User {
 
         List<Document> relevantDocuments = search(documentList, numberToReturn);
 
-        this.calculatePayoff();
+        calculatePayoff(relevantDocuments);
 
-        this.updateLikesAndFollowers(relevantDocuments);
+        updateLikesAndFollowers(relevantDocuments);
 
         return relevantDocuments;
     }
@@ -55,8 +55,12 @@ public class Producer extends User {
      * @param documents The documents to analyze
      */
     public void updateLikesAndFollowers(List<Document> documents) {
-        super.updateLikesAndFollowers(documents);
+        super.updateLikesAndFollowers(documents, this.getTaste());
 
+        String randomTag = this.getTaste(); //Find a taste other than the producers taste to like these documents as per project description
+        while (randomTag.equals(this.getTaste())) randomTag = Simulation.randomTag().toString();
+
+        super.updateLikesAndFollowers(documents, randomTag);
     }
 
     /**

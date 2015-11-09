@@ -32,11 +32,10 @@ public class Consumer extends User {
 
         calculatePayoff(relevantDocuments);
 
-        updateLikesAndFollowers(relevantDocuments);
+        updateLikesAndFollowers(relevantDocuments, this.getTaste());
 
         return relevantDocuments;
     }
-
 
     /**
      * Calculates payoff based on ranked documents

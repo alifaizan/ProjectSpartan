@@ -33,12 +33,11 @@ public class Simulation {
     /**
      * Randomly selects a tag from the enumerated class
      *
-     * @param tags The class of tags to pick from
      * @return A random tag
      */
-    public static Simulation.Tags randomTag(Class<Simulation.Tags> tags) {
+    public static Simulation.Tags randomTag() {
         int index = random.nextInt(numberOfTags);
-        return tags.getEnumConstants()[index];
+        return Tags.class.getEnumConstants()[index];
     }
 
     public static void main(String[] args) {
@@ -183,7 +182,7 @@ public class Simulation {
     private void setupConsumers(int number) {
         printToGUI("Setting up Consumers: ");
         for (int i = 1; i < number + 1; i++) {
-            Consumer consumer = new Consumer(this, "Consumer #" + String.valueOf(i), randomTag(Tags.class).toString());
+            Consumer consumer = new Consumer(this, "Consumer #" + String.valueOf(i), randomTag().toString());
             users.add(consumer);
             printToGUI(consumer.getName() + "  created");
         }
@@ -198,7 +197,7 @@ public class Simulation {
     private void setupProducers(int number) {
         printToGUI("Setting up Producers: ");
         for (int i = 1; i < number + 1; i++) {
-            Producer producer = new Producer(this, "Producer #" + String.valueOf(i), randomTag(Tags.class).toString());
+            Producer producer = new Producer(this, "Producer #" + String.valueOf(i), randomTag().toString());
             users.add(producer);
             printToGUI(producer.getName() + "  created");
         }
@@ -268,7 +267,7 @@ public class Simulation {
     }
 
     //-----Enums------
-    private enum Tags {
+    public enum Tags {
         Technology("Technology"),
         Sports("Sports"),
         Music("Music"),
@@ -292,6 +291,10 @@ public class Simulation {
 
         public String toString() {
             return this.name;
+        }
+
+        public Tags getTags() {
+            return this;
         }
 
     }
