@@ -3,10 +3,7 @@ package main.java;//Name: Ali Faizan
 //Date: October 19,2015
 //Version #: 1
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class User {
 
@@ -42,9 +39,6 @@ public abstract class User {
     //-----Abstract Methods to be Implemented Separately in Consumer and Producer classes-----
     //Allows the users to find the top documents and likes it based on users taste
     public abstract List<Document> act(List<Document> documentList, int numberToReturn);
-
-    //Return specified number of documents based on users taste
-    public abstract List<Document> search(List<Document> documentList, int numberToReturn);
 
     //Return true if the document passed is liked by the user
     //Returns false otherwise
@@ -86,6 +80,26 @@ public abstract class User {
         }
 
         return payoffString;
+    }
+
+    /**
+     * Ranks list of documents according to taste
+     *
+     * @param documentList   List of documents to rank
+     * @param numberToReturn The number of documents to return
+     * @return List of sorted documents
+     */
+    public List<Document> search(List<Document> documentList, int numberToReturn) {
+        ArrayList<Document> documentsToReturn = new ArrayList<>();
+        System.out.println("Searching for top " + String.valueOf(numberToReturn) + " documents for " + this.getName() + "...");
+        Collections.sort(documentList);
+
+        for (int i = 0; i < numberToReturn; i++) {
+            documentsToReturn.add(documentList.get(i));
+            System.out.println("Returning " + documentList.get(i).getName() + " with a score of: " + String.valueOf(documentList.get(i).getScore()));
+        }
+
+        return documentsToReturn;
     }
 
     /**

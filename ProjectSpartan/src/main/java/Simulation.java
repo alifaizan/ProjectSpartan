@@ -48,8 +48,7 @@ public class Simulation {
         simulation.printSetup();
 
         while (!simulation.quit) {
-            simulation.runIteration();
-            User user = simulation.users.get(random.nextInt(simulation.users.size()));
+            User user = simulation.runIteration();
             user.act(simulation.getDocuments(), numberOfSearchResults);
         }
 
@@ -205,12 +204,13 @@ public class Simulation {
         System.out.println("-----------------------------");
     }
 
-    private void runIteration() {
+    private User runIteration() {
         Scanner in = new Scanner(System.in);
         String input = "";
         boolean valid = false;
+        User user = this.users.get(random.nextInt(this.users.size()));
 
-        System.out.println("A random user/producer is going to be selected to search.");
+        System.out.println("\n" + user.getName() + " was randomly selected to perform a search.");
         while (!valid) {
             try {
                 System.out.println("Please enter the number of documents you would like to search for (1-" + this.getNumberOfDocuments() + ") or 'q' to quit: ");
@@ -231,6 +231,8 @@ public class Simulation {
                 }
             }
         }
+
+        return user;
     }
 
     public int getNumberOfDocuments() {

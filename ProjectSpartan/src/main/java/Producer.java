@@ -4,7 +4,6 @@ package main.java;//Name: Yash Patel
 //Version #: 1
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Producer extends User {
@@ -49,26 +48,6 @@ public class Producer extends User {
         created.add(d);
         System.out.println(name + " created by " + this.getName());
         return d;
-    }
-
-    /**
-     * Ranks list of documents according to taste
-     *
-     * @param documentList   List of documents to rank
-     * @param numberToReturn The number of documents to return
-     * @return List of sorted documents
-     */
-    public List<Document> search(List<Document> documentList, int numberToReturn) {
-        ArrayList<Document> documentsToReturn = new ArrayList<>();
-        System.out.println("Searching for top " + String.valueOf(numberToReturn) + " documents for " + this.getName() + "...");
-        Collections.sort(documentList);
-
-        for (int i = 0; i < numberToReturn; i++) {
-            documentsToReturn.add(documentList.get(i));
-            System.out.println("Returning " + documentList.get(i).getName() + " with a score of: " + String.valueOf(documentList.get(i).getScore()));
-        }
-
-        return documentsToReturn;
     }
 
     /**
