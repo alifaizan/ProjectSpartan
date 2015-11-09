@@ -20,6 +20,7 @@ public class Simulation {
     private boolean quit;
     private List<Document> documents;
     private List<User> users;
+    static GUI gui;
 
     /**
      * Default constructor for Simulation class
@@ -41,9 +42,10 @@ public class Simulation {
     }
 
     public static void main(String[] args) {
+    	gui = new GUI();
         userInteraction();
 
-        System.out.println("Beginning Simulation...");
+        printToGUI("Beginning Simulation...");
         Simulation simulation = new Simulation();
         simulation.setupConsumers(numberOfConsumers);
         simulation.setupProducers(numberOfProducers);
@@ -57,10 +59,10 @@ public class Simulation {
         }
 
         for (final User user : simulation.getUsers()) {
-            System.out.println(user.payoffHistory());
+            printToGUI(user.payoffHistory());
         }
 
-        System.out.println("Simulation Terminated.");
+        printToGUI("Simulation Terminated.");
     }
 
     /**
@@ -70,82 +72,93 @@ public class Simulation {
         Scanner in = new Scanner(System.in);
         boolean valid = false;
 
-        System.out.println("Welcome to the Project Spartan simulation.");
+        printToGUI("Welcome to the Project Spartan simulation.");
 
         while (!valid) {
             try {
-                System.out.println("Please enter the number of consumers you would like the simulator to create (1-50): ");
-                numberOfConsumers = Integer.parseInt(in.next());
+            	numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-50): ");
+                
                 if (numberOfConsumers > 0 && numberOfConsumers <= MAX_CONSUMERS) {
-                    System.out.println("The simulator will create " + numberOfConsumers + " consumers.");
+                    printToGUI("The simulator will create " + numberOfConsumers + " consumers.");
                     valid = true;
                 } else {
-                    System.out.println("ERROR: Please enter a number in the range 1-" + MAX_CONSUMERS + "!");
+                    printToGUI("ERROR: Please enter a number in the range 1-" + MAX_CONSUMERS + "!");
+                    numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-50): ");
                 }
             } catch (Exception e) {
-                System.out.println("ERROR: Please only enter numeric characters!");
+                printToGUI("ERROR: Please only enter numeric characters!");
+                numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-50): ");
             }
         }
         valid = false;
 
         while (!valid) {
             try {
-                System.out.println("Please enter the number of producers you would like the simulator to create (1-50): ");
-                numberOfProducers = Integer.parseInt(in.next());
+            	numberOfProducers = gui.dialog("Please enter the number of producers you would like the simulator to create (1-50): ");
+                
                 if (numberOfProducers > 0 && numberOfProducers <= MAX_PRODUCERS) {
-                    System.out.println("The simulator will create " + numberOfProducers + " producers.");
+                    printToGUI("The simulator will create " + numberOfProducers + " producers.");
                     valid = true;
                 } else {
-                    System.out.println("ERROR: Please enter a number in the range 1-" + MAX_PRODUCERS + "!");
+                    printToGUI("ERROR: Please enter a number in the range 1-" + MAX_PRODUCERS + "!");
+                    numberOfProducers = gui.dialog("Please enter the number of producers you would like the simulator to create (1-50): ");
                 }
             } catch (Exception e) {
-                System.out.println("ERROR: Please only enter numeric characters!");
+                printToGUI("ERROR: Please only enter numeric characters!");
+                numberOfProducers = gui.dialog("Please enter the number of producers you would like the simulator to create (1-50): ");
             }
         }
         valid = false;
 
         while (!valid) {
             try {
-                System.out.println("Please enter the number of documents you would like the simulator to create (1-10): ");
-                numberOfDocuments = Integer.parseInt(in.next());
+            	numberOfDocuments = gui.dialog("Please enter the number of documents you would like the simulator to create (1-10): ");
+                
                 if (numberOfDocuments > 0 && numberOfDocuments <= MAX_DOCUMENTS) {
-                    System.out.println("The simulator will create " + numberOfDocuments + " documents.");
+                    printToGUI("The simulator will create " + numberOfDocuments + " documents.");
                     valid = true;
                 } else {
-                    System.out.println("ERROR: Please enter a number in the range 1-" + MAX_DOCUMENTS + "!");
+                    printToGUI("ERROR: Please enter a number in the range 1-" + MAX_DOCUMENTS + "!");
+                    numberOfDocuments = gui.dialog("Please enter the number of documents you would like the simulator to create (1-10): ");
                 }
             } catch (Exception e) {
-                System.out.println("ERROR: Please only enter numeric characters!");
+                printToGUI("ERROR: Please only enter numeric characters!");
+                numberOfDocuments = gui.dialog("Please enter the number of documents you would like the simulator to create (1-10): ");
             }
         }
         valid = false;
 
         while (!valid) {
             try {
-                System.out.println("Please enter the number of tags you would like to use for the simulation (1-10): ");
-                numberOfTags = Integer.parseInt(in.next());
+            	numberOfTags = gui.dialog("Please enter the number of tags you would like to use for the simulation (1-10): ");
+                
                 if (numberOfTags > 0 && numberOfTags <= MAX_TAGS) {
-                    System.out.println("The simulator will use " + numberOfTags + " tags.");
+                    printToGUI("The simulator will use " + numberOfTags + " tags.");
                     valid = true;
                 } else {
-                    System.out.println("ERROR: Please enter a number in the range 1-" + MAX_TAGS + "!");
+                    printToGUI("ERROR: Please enter a number in the range 1-" + MAX_TAGS + "!");
+                    numberOfTags = gui.dialog("Please enter the number of tags you would like to use for the simulation (1-10): ");                    
                 }
             } catch (Exception e) {
-                System.out.println("ERROR: Please only enter numeric characters!");
+                printToGUI("ERROR: Please only enter numeric characters!");
+                numberOfTags = gui.dialog("Please enter the number of tags you would like to use for the simulation (1-10): ");
             }
         }
     }
 
+    public static void printToGUI(String s){
+    	gui.print(s);
+    }
     private void printSetup() {
         String toPrintConsumer = "The consumers which will be used are: \n";
         String toPrintProducer = "The producers which will be used are: \n";
         String toPrintDocument = "The documents which will be used are: \n";
-        System.out.println("The tags which will be used are: ");
+        printToGUI("The tags which will be used are: ");
         for (int i = 0; i < numberOfTags; i++) {
             System.out.print(Tags.values()[i].name + " ");
         }
-        System.out.println();
-        System.out.println();
+        printToGUI("");
+        printToGUI("");
 
         for (final User user : users) {
             if (user instanceof Consumer) toPrintConsumer += user.getName() + " - " + user.getTaste() + ", ";
@@ -156,10 +169,10 @@ public class Simulation {
             toPrintDocument += document.getName() + " - " + document.getTag() + ", ";
         }
 
-        System.out.println(toPrintConsumer.substring(0, toPrintConsumer.length() - 2)); //format to get rid of extra trailing comma
-        System.out.println(toPrintProducer.substring(0, toPrintProducer.length() - 2));
-        System.out.println(toPrintDocument.substring(0, toPrintDocument.length() - 2));
-        System.out.println();
+        printToGUI(toPrintConsumer.substring(0, toPrintConsumer.length() - 2)); //format to get rid of extra trailing comma
+        printToGUI(toPrintProducer.substring(0, toPrintProducer.length() - 2));
+        printToGUI(toPrintDocument.substring(0, toPrintDocument.length() - 2));
+        printToGUI("");
     }
 
     /**
@@ -168,13 +181,13 @@ public class Simulation {
      * @param number The amount of consumers to create
      */
     private void setupConsumers(int number) {
-        System.out.println("Setting up Consumers: ");
+        printToGUI("Setting up Consumers: ");
         for (int i = 1; i < number + 1; i++) {
             Consumer consumer = new Consumer(this, "Consumer #" + String.valueOf(i), randomTag(Tags.class).toString());
             users.add(consumer);
-            System.out.println(consumer.getName() + "  created");
+            printToGUI(consumer.getName() + "  created");
         }
-        System.out.println("-----------------------------");
+        printToGUI("-----------------------------");
     }
 
     /**
@@ -183,13 +196,13 @@ public class Simulation {
      * @param number The amount of producers to create
      */
     private void setupProducers(int number) {
-        System.out.println("Setting up Producers: ");
+        printToGUI("Setting up Producers: ");
         for (int i = 1; i < number + 1; i++) {
             Producer producer = new Producer(this, "Producer #" + String.valueOf(i), randomTag(Tags.class).toString());
             users.add(producer);
-            System.out.println(producer.getName() + "  created");
+            printToGUI(producer.getName() + "  created");
         }
-        System.out.println("-----------------------------");
+        printToGUI("-----------------------------");
     }
 
     /**
@@ -198,14 +211,14 @@ public class Simulation {
      * @param number The amount of documents to create
      */
     private void setupDocuments(int number) {
-        System.out.println("Setting up Documents: ");
+        printToGUI("Setting up Documents: ");
         for (int i = 1; i < number + 1; i++) {
             User user = users.get(random.nextInt(users.size()));
             while (user instanceof Consumer)
                 user = users.get(random.nextInt(users.size())); //Keep picking a random user until it is a producer
             documents.add(((Producer) user).newDoc("Document #" + String.valueOf(i)));
         }
-        System.out.println("-----------------------------");
+        printToGUI("-----------------------------");
     }
 
     private User runIteration() {
@@ -214,24 +227,24 @@ public class Simulation {
         boolean valid = false;
         User user = this.users.get(random.nextInt(this.users.size()));
 
-        System.out.println("\n" + user.getName() + " was randomly selected to perform a search.");
+        printToGUI("\n" + user.getName() + " was randomly selected to perform a search.");
         while (!valid) {
             try {
-                System.out.println("Please enter the number of documents you would like to search for (1-" + this.getNumberOfDocuments() + ") or 'q' to quit: ");
+                gui.dialog("Please enter the number of documents you would like to search for (1-" + this.getNumberOfDocuments() + ") or 'q' to quit: ");
                 input = in.next();
                 numberOfSearchResults = Integer.parseInt(input);
                 if (numberOfSearchResults > numberOfDocuments) {
-                    System.out.println("You have requested a higher number of search results than there are documents! Using max number of documents instead.");
+                    printToGUI("You have requested a higher number of search results than there are documents! Using max number of documents instead.");
                     numberOfSearchResults = numberOfDocuments;
                 }
-                System.out.println("The simulator will show " + numberOfSearchResults + " search results.");
+                printToGUI("The simulator will show " + numberOfSearchResults + " search results.");
                 valid = true;
             } catch (Exception e) {
                 if (input.equals("q")) {
                     this.quit = true;
                     valid = true;
                 } else {
-                    System.out.println("ERROR: Please only enter numeric characters or 'q'!");
+                    printToGUI("ERROR: Please only enter numeric characters or 'q'!");
                 }
             }
         }
