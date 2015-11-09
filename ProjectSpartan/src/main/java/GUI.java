@@ -11,7 +11,7 @@ public class GUI extends Simulation implements ActionListener{
 	JFrame frame;
 	JMenuBar menuBar;
 	JMenu simulation, test;
-	JMenuItem run, stop, runTest;
+	JMenuItem run, exit, runTest;
 	JTextArea display;
 	JScrollPane pane;
 	
@@ -22,8 +22,8 @@ public class GUI extends Simulation implements ActionListener{
 		test = new JMenu("Test");
 		run = new JMenuItem("Run");
 		run.addActionListener(this);
-		stop = new JMenuItem("Stop");
-		stop.addActionListener(this);
+		exit = new JMenuItem("Exit");
+		exit.addActionListener(this);
 		runTest = new JMenuItem("Run Unit Tests");
 		runTest.addActionListener(this);
 		display = new JTextArea();
@@ -40,7 +40,8 @@ public class GUI extends Simulation implements ActionListener{
 		//menus
 		menuBar.add(simulation);
 		simulation.add(run);
-		simulation.add(stop);
+		simulation.add(runTest);
+		simulation.add(exit);
 		
 	}
 	
@@ -56,8 +57,16 @@ public class GUI extends Simulation implements ActionListener{
 		return input;
 	}
 	
+	public String dialogString(String s){
+		JOptionPane parameters = new JOptionPane("Simulation Parameters");
+		String input = (parameters.showInputDialog(s));
+		return input;
+	}
+	
 	public void stop(){
 		// TODO
+		print("Simulation terminated");
+		System.exit(0);
 	}
 	
 	public void unitTest(){
@@ -74,7 +83,7 @@ public class GUI extends Simulation implements ActionListener{
 		System.out.println(e.getActionCommand());
 		if(e.getActionCommand().equals("Run"))
 			run();
-		if(e.getActionCommand().equals("Stop"))
+		if(e.getActionCommand().equals("Exit"))
 			stop();
 		if(e.getActionCommand().equals("Run Unit Tests"))
 			unitTest();

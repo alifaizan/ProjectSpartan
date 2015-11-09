@@ -14,6 +14,7 @@ public abstract class User {
     private List<User> followers;
     private List<User> following;
     private Set<Document> likedDocuments;
+    String toPrint;
 
     //Constructor for User that is passed "sim" of type Simulation 
     //and a "str" of type String such as the users name
@@ -190,5 +191,13 @@ public abstract class User {
 
     public void setLikedDocuments(Set<Document> likedDocuments) {
         this.likedDocuments = likedDocuments;
+    }
+    
+    public void setToPrint(String s){
+    	toPrint = s;
+    }
+    
+    public String getToPrint(){
+    	return toPrint;
     }
 }

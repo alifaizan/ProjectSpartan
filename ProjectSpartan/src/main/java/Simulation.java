@@ -216,29 +216,41 @@ public class Simulation {
             while (user instanceof Consumer)
                 user = users.get(random.nextInt(users.size())); //Keep picking a random user until it is a producer
             documents.add(((Producer) user).newDoc("Document #" + String.valueOf(i)));
+            printToGUI(user.getToPrint());
         }
         printToGUI("-----------------------------");
     }
 
     private User runIteration() {
         boolean valid = false;
+        String temp = null;
         User user = this.users.get(random.nextInt(this.users.size()));
 
         printToGUI("\n" + user.getName() + " was randomly selected to perform a search.");
         while (!valid) {
             try {
-                numberOfSearchResults = gui.dialog("Please enter the number of documents you would like to search for (1-" + this.getNumberOfDocuments() + ") or 'q' to quit: ");
-                
+                temp = gui.dialogString("Please enter the number of documents you would like to search for (1-" + this.getNumberOfDocuments() + ") or click Cancel to quit: ");
+                numberOfSearchResults = Integer.parseInt(temp);
                 if (numberOfSearchResults > numberOfDocuments) {
                     printToGUI("You have requested a higher number of search results than there are documents! Using max number of documents instead.");
                     numberOfSearchResults = numberOfDocuments;
                 }
+                if(temp == null){
+                	this.quit = true;
+                	valid = true;
+                }
                 printToGUI("The simulator will show " + numberOfSearchResults + " search results.");
                 valid = true;
             } catch (Exception e) {
+            	if(temp == null){
+                	this.quit = true;
+                	valid = true;
+                }
+            	else{
             	 printToGUI("ERROR: Please only enter numeric characters or 'q'!");
             	 numberOfSearchResults = gui.dialog("Please enter the number of documents you would like to search for (1-" + this.getNumberOfDocuments() + ") or 'q' to quit: ");
-            }
+            	}
+           	}
         }
 
         return user;
