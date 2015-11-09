@@ -12,7 +12,8 @@ import java.util.Scanner;
 public class Simulation {
 
     private static final SecureRandom random = new SecureRandom();
-    private static int numberOfIterations, numberOfConsumers, numberOfProducers, numberOfDocuments, numberOfSearchResults, numberOfTags;
+    private static int numberOfConsumers, numberOfProducers, numberOfDocuments, numberOfSearchResults, numberOfTags;
+    private boolean quit;
     private List<Document> documents;
     private List<User> users;
 
@@ -46,11 +47,10 @@ public class Simulation {
 
         simulation.printSetup();
 
-        for (int i = 0; i < numberOfIterations; i++) {
+        while (!simulation.quit) {
+            simulation.runIteration();
             User user = simulation.users.get(random.nextInt(simulation.users.size()));
-            for (final Document document : user.act(simulation.getDocuments(), numberOfSearchResults)) {
-                user.likeDocument(document);
-            }
+            user.act(simulation.getDocuments(), numberOfSearchResults);
         }
 
         for (final User user : simulation.getUsers()) {
@@ -68,22 +68,6 @@ public class Simulation {
         boolean valid = false;
 
         System.out.println("Welcome to the Project Spartan simulation.");
-
-        while (!valid) {
-            try {
-                System.out.println("Please enter the number of iterations you would like the simulator to perform (1-1000): ");
-                numberOfIterations = Integer.parseInt(in.next());
-                if (numberOfIterations > 0 && numberOfIterations < 1001) {
-                    System.out.println("The simulator will run for " + numberOfIterations + " iterations.");
-                    valid = true;
-                } else {
-                    System.out.println("ERROR: Please enter a number in the range 1-1000!");
-                }
-            } catch (Exception e) {
-                System.out.println("ERROR: Please only enter numeric characters!");
-            }
-        }
-        valid = false;
 
         while (!valid) {
             try {
@@ -119,33 +103,13 @@ public class Simulation {
 
         while (!valid) {
             try {
-                System.out.println("Please enter the number of documents you would like the simulator to create (1-1000): ");
+                System.out.println("Please enter the number of documents you would like the simulator to create (1-10): ");
                 numberOfDocuments = Integer.parseInt(in.next());
-                if (numberOfDocuments > 0 && numberOfDocuments < 1001) {
+                if (numberOfDocuments > 0 && numberOfDocuments < 11) {
                     System.out.println("The simulator will create " + numberOfDocuments + " documents.");
                     valid = true;
                 } else {
-                    System.out.println("ERROR: Please enter a number in the range 1-1000!");
-                }
-            } catch (Exception e) {
-                System.out.println("ERROR: Please only enter numeric characters!");
-            }
-        }
-        valid = false;
-
-        while (!valid) {
-            try {
-                System.out.println("Please enter the number of search results you would like to show for each iteration (1-50): ");
-                numberOfSearchResults = Integer.parseInt(in.next());
-                if (numberOfSearchResults > 0 && numberOfSearchResults < 51) {
-                    if (numberOfSearchResults > numberOfDocuments) {
-                        System.out.println("You have requested a higher number of search results than there are documents! Using max number of documents instead.");
-                        numberOfSearchResults = numberOfDocuments;
-                    }
-                    System.out.println("The simulator will show " + numberOfSearchResults + " search results.");
-                    valid = true;
-                } else {
-                    System.out.println("ERROR: Please enter a number in the range 1-50!");
+                    System.out.println("ERROR: Please enter a number in the range 1-10!");
                 }
             } catch (Exception e) {
                 System.out.println("ERROR: Please only enter numeric characters!");
@@ -241,6 +205,34 @@ public class Simulation {
             documents.add(((Producer) user).newDoc("Document #" + String.valueOf(i)));
         }
         System.out.println("-----------------------------");
+    }
+
+    private void runIteration() {
+        Scanner in = new Scanner(System.in);
+        String input = "";
+        boolean valid = false;
+
+        System.out.println("A random user/producer is going to be selected to search.");
+        while (!valid) {
+            try {
+                System.out.println("Please enter the number of documents you would like to search for (1-" + this.getNumberOfDocuments() + ") or 'q' to quit: ");
+                input = in.next();
+                numberOfSearchResults = Integer.parseInt(input);
+                if (numberOfSearchResults > numberOfDocuments) {
+                    System.out.println("You have requested a higher number of search results than there are documents! Using max number of documents instead.");
+                    numberOfSearchResults = numberOfDocuments;
+                }
+                System.out.println("The simulator will show " + numberOfSearchResults + " search results.");
+                valid = true;
+            } catch (Exception e) {
+                if (input.equals("q")) {
+                    this.quit = true;
+                    valid = true;
+                } else {
+                    System.out.println("ERROR: Please only enter numeric characters!");
+                }
+            }
+        }
     }
 
     public int getNumberOfDocuments() {

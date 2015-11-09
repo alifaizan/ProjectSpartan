@@ -47,7 +47,7 @@ public class Producer extends User {
     public Document newDoc(String name) {
         Document d = new Document(name, this.getTaste(), this);
         created.add(d);
-        System.out.println(name + "  created");
+        System.out.println(name + " created by " + this.getName());
         return d;
     }
 
@@ -100,8 +100,8 @@ public class Producer extends User {
 
         int payoff = followers + totalDocumentLikes;
 
-        this.updatePayoffs(payoff);
         System.out.println(this.getName() + " now has a payoff of: " + String.valueOf(payoff) + ", from " + followers + " total followers and " + totalDocumentLikes + " total document likes.");
+        this.updatePayoffs(payoff);
     }
 
     public int totalLikes() {
