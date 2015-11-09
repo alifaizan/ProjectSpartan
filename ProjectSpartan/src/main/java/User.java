@@ -13,7 +13,7 @@ public abstract class User {
     //Instance Variables
     private Simulation sim;
     private String taste, name;
-    private Integer payoff;
+    private List<Integer> payoff;
     private List<User> followers;
     private List<User> following;
     private Set<Document> likedDocuments;
@@ -33,7 +33,7 @@ public abstract class User {
         this.name = name;
         this.taste = taste;
         this.sim = simulation;
-        payoff = 0;
+        payoff = new ArrayList<>();
         followers = new ArrayList<>();
         following = new ArrayList<>();
         likedDocuments = new HashSet<>();
@@ -65,6 +65,10 @@ public abstract class User {
         if (user instanceof Producer) {
             ((Producer) user).calculatePayoff();
         }
+    }
+
+    public void updatePayoff(int payoff) {
+        this.payoff.add(payoff);
     }
 
     /**
@@ -117,11 +121,11 @@ public abstract class User {
         this.following = following;
     }
 
-    public Integer getPayoff() {
+    public List<Integer> getPayoff() {
         return this.payoff;
     }
 
-    public void setPayoff(Integer payoff) {
+    public void setPayoff(List<Integer> payoff) {
         this.payoff = payoff;
     }
 }
