@@ -13,7 +13,7 @@ public abstract class User {
     //Instance Variables
     private Simulation sim;
     private String taste, name;
-    private List<Integer> payoff;
+    private List<Integer> payoffs;
     private List<User> followers;
     private List<User> following;
     private Set<Document> likedDocuments;
@@ -33,7 +33,7 @@ public abstract class User {
         this.name = name;
         this.taste = taste;
         this.sim = simulation;
-        payoff = new ArrayList<>();
+        payoffs = new ArrayList<>();
         followers = new ArrayList<>();
         following = new ArrayList<>();
         likedDocuments = new HashSet<>();
@@ -67,8 +67,18 @@ public abstract class User {
         }
     }
 
-    public void updatePayoff(int payoff) {
-        this.payoff.add(payoff);
+    public void updatePayoffs(int payoff) {
+        this.payoffs.add(payoff);
+    }
+
+    public String payoffHistory() {
+        String payoffString = "Payoff History for User " + this.getName() + ": ";
+        for (final Integer payoff : payoffs) {
+            payoffString += payoff + ", ";
+        }
+        payoffString = payoffString.substring(0, payoffString.length() - 2);
+
+        return payoffString;
     }
 
     /**
@@ -121,11 +131,11 @@ public abstract class User {
         this.following = following;
     }
 
-    public List<Integer> getPayoff() {
-        return this.payoff;
+    public List<Integer> getPayoffs() {
+        return this.payoffs;
     }
 
-    public void setPayoff(List<Integer> payoff) {
-        this.payoff = payoff;
+    public void setPayoffs(List<Integer> payoff) {
+        this.payoffs = payoff;
     }
 }

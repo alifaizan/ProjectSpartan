@@ -91,7 +91,7 @@ public class Consumer extends User {
             else if (document.getTag().equals(this.getTaste())) payoff++;
         }
 
-        this.updatePayoff(payoff);
+        this.updatePayoffs(payoff);
         System.out.println("This search gave " + this.getName() + " a payoff of: " + String.valueOf(payoff));
     }
 }

@@ -52,6 +52,11 @@ public class Simulation {
                 user.likeDocument(document);
             }
         }
+
+        for (final User user : simulation.getUsers()) {
+            System.out.println(user.payoffHistory());
+        }
+
         System.out.println("Simulation Terminated.");
     }
 
@@ -241,6 +246,7 @@ public class Simulation {
     public int getNumberOfDocuments() {
         return this.getDocuments().size();
     }
+
 
     //-----Getters and Setters------
     public List<Document> getDocuments() {
