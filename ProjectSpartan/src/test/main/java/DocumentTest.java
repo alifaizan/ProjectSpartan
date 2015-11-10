@@ -9,14 +9,23 @@ import org.junit.Test;
 
 public class DocumentTest {
 
+    Producer testProducer;
+    Document testDocument;
+
     @Before
     public void setUp() throws Exception {
-
+        Producer testProducer = new Producer(new Simulation(), "testName", "testTaste");
+        Document testDocument = new Document("testDocument", "testTag", testProducer);
     }
 
     @Test
     public void testLikeDocument() throws Exception {
 
+        //Make sure user isn't originally in liked list
+        assert !testDocument.getLikedBy().contains(testProducer);
+        testDocument.likeDocument(testProducer);
+        //Make sure user is in liked list after they like the document
+        assert testDocument.getLikedBy().contains(testProducer);
     }
 
     @Test
