@@ -16,11 +16,11 @@ public class Simulation {
     private static final int MAX_DOCUMENTS = 10;
     private static final int MAX_TAGS = 10;
     private static final SecureRandom random = new SecureRandom();
+    static GUI gui;
     private static int numberOfConsumers, numberOfProducers, numberOfDocuments, numberOfSearchResults, numberOfTags;
     private boolean quit;
     private List<Document> documents;
     private List<User> users;
-    static GUI gui;
 
     /**
      * Default constructor for Simulation class
@@ -75,72 +75,72 @@ public class Simulation {
 
         while (!valid) {
             try {
-            	numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-50): ");
+                numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
                 
                 if (numberOfConsumers > 0 && numberOfConsumers <= MAX_CONSUMERS) {
                     printToGUI("The simulator will create " + numberOfConsumers + " consumers.");
                     valid = true;
                 } else {
                     printToGUI("ERROR: Please enter a number in the range 1-" + MAX_CONSUMERS + "!");
-                    numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-50): ");
+                    numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
                 }
             } catch (Exception e) {
                 printToGUI("ERROR: Please only enter numeric characters!");
-                numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-50): ");
+                numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
             }
         }
         valid = false;
 
         while (!valid) {
             try {
-            	numberOfProducers = gui.dialog("Please enter the number of producers you would like the simulator to create (1-50): ");
+                numberOfProducers = gui.dialog("Please enter the number of producers you would like the simulator to create (1-" + MAX_PRODUCERS + "): ");
                 
                 if (numberOfProducers > 0 && numberOfProducers <= MAX_PRODUCERS) {
                     printToGUI("The simulator will create " + numberOfProducers + " producers.");
                     valid = true;
                 } else {
                     printToGUI("ERROR: Please enter a number in the range 1-" + MAX_PRODUCERS + "!");
-                    numberOfProducers = gui.dialog("Please enter the number of producers you would like the simulator to create (1-50): ");
+                    numberOfProducers = gui.dialog("Please enter the number of producers you would like the simulator to create (1-" + MAX_PRODUCERS + "): ");
                 }
             } catch (Exception e) {
                 printToGUI("ERROR: Please only enter numeric characters!");
-                numberOfProducers = gui.dialog("Please enter the number of producers you would like the simulator to create (1-50): ");
+                numberOfProducers = gui.dialog("Please enter the number of producers you would like the simulator to create (1-" + MAX_PRODUCERS + "): ");
             }
         }
         valid = false;
 
         while (!valid) {
             try {
-            	numberOfDocuments = gui.dialog("Please enter the number of documents you would like the simulator to create (1-10): ");
+                numberOfDocuments = gui.dialog("Please enter the number of documents you would like the simulator to create (1-" + MAX_DOCUMENTS + "): ");
                 
                 if (numberOfDocuments > 0 && numberOfDocuments <= MAX_DOCUMENTS) {
                     printToGUI("The simulator will create " + numberOfDocuments + " documents.");
                     valid = true;
                 } else {
                     printToGUI("ERROR: Please enter a number in the range 1-" + MAX_DOCUMENTS + "!");
-                    numberOfDocuments = gui.dialog("Please enter the number of documents you would like the simulator to create (1-10): ");
+                    numberOfDocuments = gui.dialog("Please enter the number of documents you would like the simulator to create (1-" + MAX_DOCUMENTS + "): ");
                 }
             } catch (Exception e) {
                 printToGUI("ERROR: Please only enter numeric characters!");
-                numberOfDocuments = gui.dialog("Please enter the number of documents you would like the simulator to create (1-10): ");
+                numberOfDocuments = gui.dialog("Please enter the number of documents you would like the simulator to create (1-" + MAX_DOCUMENTS + "): ");
             }
         }
         valid = false;
 
         while (!valid) {
             try {
-            	numberOfTags = gui.dialog("Please enter the number of tags you would like to use for the simulation (1-10): ");
+                numberOfTags = gui.dialog("Please enter the number of tags you would like to use for the simulation (1-" + MAX_TAGS + "): ");
                 
                 if (numberOfTags > 0 && numberOfTags <= MAX_TAGS) {
                     printToGUI("The simulator will use " + numberOfTags + " tags.");
                     valid = true;
                 } else {
                     printToGUI("ERROR: Please enter a number in the range 1-" + MAX_TAGS + "!");
-                    numberOfTags = gui.dialog("Please enter the number of tags you would like to use for the simulation (1-10): ");                    
+                    numberOfTags = gui.dialog("Please enter the number of tags you would like to use for the simulation (1-" + MAX_TAGS + "): ");
                 }
             } catch (Exception e) {
                 printToGUI("ERROR: Please only enter numeric characters!");
-                numberOfTags = gui.dialog("Please enter the number of tags you would like to use for the simulation (1-10): ");
+                numberOfTags = gui.dialog("Please enter the number of tags you would like to use for the simulation (1-" + MAX_TAGS + "): ");
             }
         }
     }
