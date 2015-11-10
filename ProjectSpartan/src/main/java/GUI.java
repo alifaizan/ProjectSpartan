@@ -11,10 +11,13 @@ public class GUI extends Simulation implements ActionListener{
 	JFrame frame;
 	JMenuBar menuBar;
 	JMenu simulation, test;
-	JMenuItem run, exit, runTest;
+	JMenuItem run, exit;
 	JTextArea display;
 	JScrollPane pane;
 	
+	/**
+	 * 	Constructor for the GUI class
+	 */
 	public GUI(){
 		frame = new JFrame("Milestone 2");
 		menuBar = new JMenuBar();
@@ -24,8 +27,6 @@ public class GUI extends Simulation implements ActionListener{
 		run.addActionListener(this);
 		exit = new JMenuItem("Exit");
 		exit.addActionListener(this);
-		runTest = new JMenuItem("Run Unit Tests");
-		runTest.addActionListener(this);
 		display = new JTextArea();
 		pane = new JScrollPane(display, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
@@ -40,17 +41,24 @@ public class GUI extends Simulation implements ActionListener{
 		//menus
 		menuBar.add(simulation);
 		simulation.add(run);
-		simulation.add(runTest);
 		simulation.add(exit);
 		
 	}
 	
+	/**
+	 * 	Creates a new Simulation 
+	 */
 	public void run(){
 		Simulation sim = new Simulation();
 		String[] args = new String[] {"123"};
 		sim.main(args);
 	}
 	
+	/**
+	 * 	Creates a JOptionPane and returns the user's input
+	 * @param s 	String for the JOptionPane
+	 * @return		Whatever the user input as an integer
+	 */
 	public int dialog(String s){
 		JOptionPane parameters = new JOptionPane("Simulation Parameters");
 		int input = Integer.parseInt(parameters.showInputDialog(s));
@@ -69,10 +77,10 @@ public class GUI extends Simulation implements ActionListener{
 		System.exit(0);
 	}
 	
-	public void unitTest(){
-		// TODO
-	}
-	
+	/**
+	 * 	Prints to the JTextArea in GUI
+	 * @param s		String to be printed
+	 */
 	public void print(String s){
 		display.append(s + "\n");
 	}
@@ -85,11 +93,6 @@ public class GUI extends Simulation implements ActionListener{
 			run();
 		if(e.getActionCommand().equals("Exit"))
 			stop();
-		if(e.getActionCommand().equals("Run Unit Tests"))
-			unitTest();
 	}
 	
-	public static void main(String[] args){
-		new GUI();
-	}
 }
