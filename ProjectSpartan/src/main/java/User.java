@@ -7,6 +7,7 @@ import java.util.*;
 
 public abstract class User {
 
+    String toPrint;
     //Instance Variables
     private Simulation sim;
     private String taste, name;
@@ -14,7 +15,6 @@ public abstract class User {
     private List<User> followers;
     private List<User> following;
     private Set<Document> likedDocuments;
-    String toPrint;
 
     //Constructor for User that is passed "sim" of type Simulation 
     //and a "str" of type String such as the users name
@@ -141,10 +141,6 @@ public abstract class User {
         return this.sim;
     }
 
-    public void setSim(Simulation sim) {
-        this.sim = sim;
-    }
-
     public String getTaste() {
         return this.taste;
     }
@@ -165,10 +161,6 @@ public abstract class User {
         return this.followers;
     }
 
-    public void setFollowers(List<User> followers) {
-        this.followers = followers;
-    }
-
     public List<User> getFollowing() {
         return this.following;
     }
@@ -181,23 +173,15 @@ public abstract class User {
         return this.payoffs;
     }
 
-    public void setPayoffs(List<Integer> payoff) {
-        this.payoffs = payoff;
-    }
-
     public Set<Document> getLikedDocuments() {
         return this.likedDocuments;
     }
 
-    public void setLikedDocuments(Set<Document> likedDocuments) {
-        this.likedDocuments = likedDocuments;
+    public String getToPrint() {
+        return toPrint;
     }
     
     public void setToPrint(String s){
     	toPrint = s;
-    }
-    
-    public String getToPrint(){
-    	return toPrint;
     }
 }
