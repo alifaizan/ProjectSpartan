@@ -74,10 +74,6 @@ public class Document implements Comparable<Document> {
         return this.likedBy;
     }
 
-    public void setLikedBy(Set<User> likedBy) {
-        this.likedBy = likedBy;
-    }
-
     public int getScore() {
         int score = 0;
 
