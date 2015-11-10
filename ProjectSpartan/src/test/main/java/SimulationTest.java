@@ -7,45 +7,30 @@ package main.java;
 import org.junit.Before;
 import org.junit.Test;
 
+
 public class SimulationTest {
+
+    public Simulation simulation;
+    public Document document;
 
     @Before
     public void setUp() throws Exception {
-
-    }
-
-    @Test
-    public void testRandomTag() throws Exception {
-
-    }
-
-    @Test
-    public void testMain() throws Exception {
-
+        simulation = new Simulation();
+        document = new Document("testDocument", "testTag", new Producer(simulation, "testProducer", "testTag"));
     }
 
     @Test
     public void testGetNumberOfDocuments() throws Exception {
-
+        assert simulation.getNumberOfDocuments() == 0;
     }
 
     @Test
     public void testGetDocuments() throws Exception {
-
-    }
-
-    @Test
-    public void testSetDocuments() throws Exception {
-
+        assert simulation.getDocuments().size() == 0;
     }
 
     @Test
     public void testGetUsers() throws Exception {
-
-    }
-
-    @Test
-    public void testSetUsers() throws Exception {
-
+        assert simulation.getUsers().size() == 0;
     }
 }

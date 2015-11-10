@@ -266,16 +266,8 @@ public class Simulation {
         return this.documents;
     }
 
-    public void setDocuments(List<Document> documents) {
-        this.documents = documents;
-    }
-
     public List<User> getUsers() {
         return this.users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 
     //-----Enums------
