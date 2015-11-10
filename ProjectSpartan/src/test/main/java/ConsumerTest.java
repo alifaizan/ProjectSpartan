@@ -21,16 +21,6 @@ public class ConsumerTest {
     }
 
     @Test
-    public void testSearch() throws Exception {
-
-    }
-
-    @Test
-    public void testUpdateLikesAndFollowers() throws Exception {
-
-    }
-
-    @Test
     public void testCalculatePayoff() throws Exception {
 
     }
