@@ -40,7 +40,8 @@ public class Simulation {
     }
 
     public static void main(String[] args) {
-    	gui = new GUI();
+    	Simulation sim = new Simulation();
+    	gui = new GUI(sim);
     	//printToGUI("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
     	//printToGUI("Please enter the number of producers you would like the simulator to create (1-" + MAX_PRODUCERS + "): ");
     	//printToGUI("Please enter the number of documents you would like the simulator to create (1-" + MAX_DOCUMENTS + "): ");
@@ -270,38 +271,54 @@ public class Simulation {
 
     private User runIteration() {
         boolean valid = false;
-        String temp = null;
         User user = this.users.get(random.nextInt(this.users.size()));
 
         printToGUI("\n" + user.getName() + " was randomly selected to perform a search.");
         while (!valid) {
             try {
-                temp = gui.dialogString("Please enter the number of documents you would like to search for (1-" + this.getNumberOfDocuments() + ") or click Cancel to quit: ");
-                numberOfSearchResults = Integer.parseInt(temp);
-                if (numberOfSearchResults > numberOfDocuments) {
-                    printToGUI("You have requested a higher number of search results than there are documents! Using max number of documents instead.");
-                    numberOfSearchResults = numberOfDocuments;
+                printToGUI("Please enter the number of documents you would like to search for (1-" + this.getNumberOfDocuments() + ") or click Cancel to quit: ");
+                boolean running = true;
+                while(running){
+                	if(gui.isSearchPressed()){
+                		valid = searching();
+                	}
                 }
-                if(temp == null){
-                	this.quit = true;
-                	valid = true;
-                }
-                printToGUI("The simulator will show " + numberOfSearchResults + " search results.");
-                valid = true;
+                
+                
             } catch (Exception e) {
-            	if(temp == null){
+            	/*if(temp == null){
                 	this.quit = true;
                 	valid = true;
-                }
-            	else{
+                }*/
+            	
             	 printToGUI("ERROR: Please only enter numeric characters or 'q'!");
-            	 numberOfSearchResults = gui.dialog("Please enter the number of documents you would like to search for (1-" + this.getNumberOfDocuments() + ") or 'q' to quit: ");
-            	}
+            	 gui.printError("Please enter the number of documents you would like to search for (1-" + this.getNumberOfDocuments() + ") or 'q' to quit: ");
+            	
            	}
         }
 
         return user;
     }
+
+	public boolean searching() {
+		boolean valid;
+		boolean running;
+		System.out.println("Search presssededsds");
+		numberOfSearchResults = gui.getSearchResults();
+		if (numberOfSearchResults > numberOfDocuments) {
+		    printToGUI("You have requested a higher number of search results than there are documents! Using max number of documents instead.");
+		    numberOfSearchResults = numberOfDocuments;
+		}
+		/*if(temp == null){
+			this.quit = true;
+			valid = true;
+		}*/
+		printToGUI("The simulator will show " + numberOfSearchResults + " search results.");
+		valid = true;
+		running = false;
+		gui.setSearchPressed(false);
+		return valid;
+	}
 
     public int getNumberOfDocuments() {
         return this.getDocuments().size();
