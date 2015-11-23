@@ -121,7 +121,24 @@ public abstract class User {
     public List<Document> search(List<Document> documentList, int numberToReturn) {
         ArrayList<Document> documentsToReturn = new ArrayList<>();
         addtoPrintStrings("Searching for top " + String.valueOf(numberToReturn) + " documents for " + this.getName() + "...");
-        Collections.sort(documentList, Document.likeSimilarity);
+        switch (this.getStrategy()) {
+            case DOCUMENT_POPULARITY:
+                Collections.sort(documentList, Document.documentPopularity);
+                break;
+            case USER_POPULARITY:
+                Collections.sort(documentList, Document.userPopularity);
+                break;
+            case USER_DISTANCE:
+                Collections.sort(documentList, Document.userDistance);
+                break;
+            case LIKE_SIMILARITY:
+                Collections.sort(documentList, Document.likeSimilarity);
+                break;
+            case FOLLOW_SIMILARITY:
+                Collections.sort(documentList, Document.followSimilarity);
+                break;
+        }
+
 
         for (int i = 0; i < numberToReturn; i++) {
             documentsToReturn.add(documentList.get(i));
@@ -208,15 +225,20 @@ public abstract class User {
 
     //-----Enums------
     public enum Strategies {
-        DOCUMENT_POPULARITY,
-        USER_POPULARITY,
-        USER_DISTANCE,
-        LIKE_SIMILARITY,
-        FOLLOW_SIMILARITY;
+        DOCUMENT_POPULARITY("DocumentPopularity"),
+        USER_POPULARITY("UserPopularity"),
+        USER_DISTANCE("UserDistance"),
+        LIKE_SIMILARITY("LikeSimilarity"),
+        FOLLOW_SIMILARITY("FollowSimilarity");
 
-        public Strategies getStrategies() {
-            return this;
+        private final String name;
+
+        private Strategies(String name) {
+            this.name = name;
         }
 
+        public String getName() {
+            return this.name;
+        }
     }
 }
