@@ -97,6 +97,10 @@ public class Producer extends User {
         return this.created;
     }
 
+    public void setProducerStrategy(Producer_Strategy strategy) {
+        this.producerStrategy = strategy;
+    }
+
     //-----Enums------
     public enum Producer_Strategy {
         A("A"),
