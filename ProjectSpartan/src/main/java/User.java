@@ -15,6 +15,7 @@ public abstract class User {
     private List<User> followers;
     private List<User> following;
     private Set<Document> likedDocuments;
+    private ArrayList<String> printStrings;
 
     //Constructor for User that is passed "sim" of type Simulation 
     //and a "str" of type String such as the users name
@@ -35,6 +36,7 @@ public abstract class User {
         followers = new ArrayList<>();
         following = new ArrayList<>();
         likedDocuments = new HashSet<>();
+        printStrings = new ArrayList<>();
     }
 
     //-----Abstract Methods to be Implemented Separately in Consumer and Producer classes-----
@@ -96,12 +98,16 @@ public abstract class User {
         documents.forEach((document) -> {
             if (document.getTag().equals(taste) && !document.getLikedBy().contains(this)) {
                 document.likeDocument(this);
-                System.out.println(this.getName() + " just liked: " + document.getName());
+                //System.out.println(this.getName() + " just liked: " + document.getName());
+                addtoPrintStrings(this.getName() + " just liked: " + document.getName());
+
             }
             document.getLikedBy().forEach((user) -> {
                 if (user instanceof Producer && user != this && !this.getFollowing().contains(user)) {
                     this.followUser(user);
-                    System.out.println(this.getName() + " just followed: " + user.getName());
+                    //System.out.println(this.getName() + " just followed: " + user.getName());
+                    addtoPrintStrings(this.getName() + " just followed: " + user.getName());
+
                 }
             });
         });
@@ -116,12 +122,13 @@ public abstract class User {
      */
     public List<Document> search(List<Document> documentList, int numberToReturn) {
         ArrayList<Document> documentsToReturn = new ArrayList<>();
-        System.out.println("Searching for top " + String.valueOf(numberToReturn) + " documents for " + this.getName() + "...");
+        addtoPrintStrings("Searching for top " + String.valueOf(numberToReturn) + " documents for " + this.getName() + "...");
         Collections.sort(documentList);
 
         for (int i = 0; i < numberToReturn; i++) {
             documentsToReturn.add(documentList.get(i));
-            System.out.println("Returning " + documentList.get(i).getName() + " with a score of: " + String.valueOf(documentList.get(i).getScore()));
+            addtoPrintStrings("Returning " + documentList.get(i).getName() + " with a score of: " + String.valueOf(documentList.get(i).getScore()));
+            
         }
 
         return documentsToReturn;
@@ -183,5 +190,13 @@ public abstract class User {
     
     public void setToPrint(String s){
     	toPrint = s;
+    }
+    
+    public ArrayList<String> getPrintStrings(){
+    	return printStrings;
+    }
+    
+    public void addtoPrintStrings(String s){
+    	printStrings.add(s);
     }
 }

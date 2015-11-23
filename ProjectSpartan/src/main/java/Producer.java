@@ -72,7 +72,9 @@ public class Producer extends User {
 
         int payoff = followers + totalDocumentLikes;
 
-        setToPrint(this.getName() + " now has a payoff of: " + String.valueOf(payoff) + ", from " + followers + " total followers and " + totalDocumentLikes + " total document likes.");
+        //System.out.println(this.getName() + " now has a payoff of: " + String.valueOf(payoff) + ", from " + followers + " total followers and " + totalDocumentLikes + " total document likes.");
+        addtoPrintStrings(this.getName() + " now has a payoff of: " + String.valueOf(payoff) + ", from " + followers + " total followers and " + totalDocumentLikes + " total document likes.");
+
         this.updatePayoffs(payoff);
     }
 

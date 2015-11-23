@@ -48,9 +48,9 @@ public class Simulation {
     	//printToGUI("Please enter the number of tags you would like to use for the simulation (1-" + MAX_TAGS + "): ");
     	printToGUI("Please enter all the parameters above and press Run Simulation");
     	gui.setTextFieldText(gui.consumerText, "Number of Consumers (1-" + MAX_CONSUMERS + "): ");
-    	gui.setTextFieldText(gui.producerText, "Number of Consumers (1-" + MAX_PRODUCERS + "): ");
-    	gui.setTextFieldText(gui.documentText, "Number of Consumers (1-" + MAX_DOCUMENTS + "): ");
-    	gui.setTextFieldText(gui.tagText, "Number of Consumers (1-" + MAX_TAGS + "): ");
+    	gui.setTextFieldText(gui.producerText, "Number of Producers (1-" + MAX_PRODUCERS + "): ");
+    	gui.setTextFieldText(gui.documentText, "Number of Documents (1-" + MAX_DOCUMENTS + "): ");
+    	gui.setTextFieldText(gui.tagText, "Number of Tags (1-" + MAX_TAGS + "): ");
     	boolean running = true;
     	while(running){
     		if(gui.isRunPressed()){
@@ -95,6 +95,9 @@ public class Simulation {
         while (!simulation.quit) {
             User user = simulation.runIteration();
             user.act(simulation.getDocuments(), numberOfSearchResults);
+            for(String s : user.getPrintStrings()){
+            	printToGUI(s);
+            }
         }
 
         for (final User user : simulation.getUsers()) {
@@ -199,7 +202,7 @@ public class Simulation {
         String toPrintDocument = "The documents which will be used are: \n";
         printToGUI("The tags which will be used are: ");
         for (int i = 0; i < numberOfTags; i++) {
-            System.out.print(Tags.values()[i].name + " ");
+            printToGUI(Tags.values()[i].name + " ");
         }
         printToGUI("");
         printToGUI("");

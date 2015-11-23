@@ -51,6 +51,7 @@ public class Consumer extends User {
         }
 
         this.updatePayoffs(payoff);
-        setToPrint("This search gave " + this.getName() + " a payoff of: " + String.valueOf(payoff));
+        addtoPrintStrings("This search gave " + this.getName() + " a payoff of: " + String.valueOf(payoff));
+       
     }
 }
