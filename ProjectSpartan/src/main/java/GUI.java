@@ -113,8 +113,8 @@ public class GUI implements ActionListener{
 	}
 	
 	public boolean isSearchPressed(){
-		/*if(searchPressed){System.out.println("true true");}
-		else{System.out.println("false");}*/
+		if(searchPressed){System.out.println();}
+		else{System.out.println();}
 		return searchPressed;
 	}
 	
@@ -206,7 +206,7 @@ public class GUI implements ActionListener{
 		if(e.getActionCommand().equals("Run Simulation!"))
 			runPressed = true;
 		if(e.getActionCommand().equals("Search"))
-			this.simulation.searching();
+			searchPressed = true;
 		
 	}
 	
