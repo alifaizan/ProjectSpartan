@@ -7,7 +7,6 @@ package main.java;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Simulation {
 
@@ -316,6 +315,10 @@ public class Simulation {
 
     public List<User> getUsers() {
         return this.users;
+    }
+
+    public void setNumberOfTags(int number) {
+        this.numberOfTags = number;
     }
 
     //-----Enums------

@@ -45,10 +45,6 @@ public abstract class User {
     //Allows the users to find the top documents and likes it based on users taste
     public abstract List<Document> act(List<Document> documentList, int numberToReturn);
 
-    //Calculates the payoff for the users. Either based off a search for the consumer or off followers/likes for a producer
-    public void calculatePayoff(List<Document> documents) {
-    }
-
     //Return true if the document passed is liked by the user
     //Returns false otherwise
     public boolean likes(Document doc) {

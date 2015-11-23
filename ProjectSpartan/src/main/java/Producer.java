@@ -35,7 +35,7 @@ public class Producer extends User {
 
         List<Document> relevantDocuments = search(documentList, numberToReturn);
 
-        calculatePayoff(relevantDocuments);
+        calculatePayoff();
 
         updateLikesAndFollowers(relevantDocuments);
 
@@ -92,7 +92,4 @@ public class Producer extends User {
         return this.created;
     }
 
-    public void setCreated(List<Document> created) {
-        this.created = created;
-    }
 }
