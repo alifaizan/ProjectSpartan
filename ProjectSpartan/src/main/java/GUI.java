@@ -169,7 +169,7 @@ public class GUI implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(e.getActionCommand());
+		//System.out.println(e.getActionCommand());
 		if(e.getActionCommand().equals("Run"))
 			run();
 		if(e.getActionCommand().equals("Exit"))
@@ -177,10 +177,5 @@ public class GUI implements ActionListener{
 		if(e.getActionCommand().equals("Run Simulation!"))
 			runPressed = true;
 	}
-	
-	public static void main(String[] args){
-		new GUI();
-	}
-	
 	
 }
