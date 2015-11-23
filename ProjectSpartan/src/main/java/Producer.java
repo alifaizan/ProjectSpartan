@@ -9,6 +9,7 @@ import java.util.List;
 public class Producer extends User {
 
     private List<Document> created;
+    private Producer_Strategy producerStrategy;
 
     /**
      * The default constructor for the Producer class
@@ -19,6 +20,7 @@ public class Producer extends User {
      */
     public Producer(Simulation simulation, String name, String taste) {
         super(simulation, name, taste);
+        producerStrategy = Producer_Strategy.A;
         created = new ArrayList<Document>();
         this.setFollowing(new ArrayList<>());
     }
@@ -37,7 +39,7 @@ public class Producer extends User {
 
         calculatePayoff();
 
-        updateLikesAndFollowers(relevantDocuments);
+        updateLikesAndFollowers(relevantDocuments, this.producerStrategy);
 
         return relevantDocuments;
     }
@@ -53,14 +55,17 @@ public class Producer extends User {
      * Likes given documents and follows associated users
      *
      * @param documents The documents to analyze
+     * @param strategy Producer strategy to follow for liking and following
      */
-    public void updateLikesAndFollowers(List<Document> documents) {
-        super.updateLikesAndFollowers(documents, this.getTaste());
+    public void updateLikesAndFollowers(List<Document> documents, Producer_Strategy strategy) {
+        if (strategy == Producer_Strategy.A) super.updateLikesAndFollowers(documents, this.getTaste());
 
-        String randomTag = this.getTaste(); //Find a taste other than the producers taste to like these documents as per project description
-        while (randomTag.equals(this.getTaste())) randomTag = Simulation.randomTag().toString();
+        else {
+            String randomTag = this.getTaste(); //Find a taste other than the producers taste to like these documents as per project description
+            while (randomTag.equals(this.getTaste())) randomTag = Simulation.randomTag().toString();
 
-        super.updateLikesAndFollowers(documents, randomTag);
+            super.updateLikesAndFollowers(documents, randomTag);
+        }
     }
 
     /**
@@ -90,6 +95,22 @@ public class Producer extends User {
 
     public List<Document> getCreated() {
         return this.created;
+    }
+
+    //-----Enums------
+    public enum Producer_Strategy {
+        A("A"),
+        B("B");
+
+        private final String name;
+
+        private Producer_Strategy(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return this.name;
+        }
     }
 
 }

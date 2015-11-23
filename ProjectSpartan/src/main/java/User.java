@@ -16,7 +16,7 @@ public abstract class User {
     private List<User> following;
     private Set<Document> likedDocuments;
     private ArrayList<String> printStrings;
-    private Strategies strategy;
+    private Search_Strategy strategy;
 
 
     //Constructor for User that is passed "sim" of type Simulation 
@@ -38,7 +38,7 @@ public abstract class User {
         following = new ArrayList<>();
         likedDocuments = new HashSet<>();
         printStrings = new ArrayList<>();
-        this.strategy = Strategies.LIKE_SIMILARITY;
+        this.strategy = Search_Strategy.LIKE_SIMILARITY;
     }
 
     //-----Abstract Methods to be Implemented Separately in Consumer and Producer classes-----
@@ -215,16 +215,16 @@ public abstract class User {
     	printStrings.add(s);
     }
 
-    public Strategies getStrategy() {
+    public Search_Strategy getStrategy() {
         return this.strategy;
     }
 
-    public void setStrategy(Strategies strategy) {
+    public void setStrategy(Search_Strategy strategy) {
         this.strategy = strategy;
     }
 
     //-----Enums------
-    public enum Strategies {
+    public enum Search_Strategy {
         DOCUMENT_POPULARITY("DocumentPopularity"),
         USER_POPULARITY("UserPopularity"),
         USER_DISTANCE("UserDistance"),
@@ -233,7 +233,7 @@ public abstract class User {
 
         private final String name;
 
-        private Strategies(String name) {
+        private Search_Strategy(String name) {
             this.name = name;
         }
 
