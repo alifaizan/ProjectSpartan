@@ -16,6 +16,8 @@ public abstract class User {
     private List<User> following;
     private Set<Document> likedDocuments;
     private ArrayList<String> printStrings;
+    private Strategies strategy;
+
 
     //Constructor for User that is passed "sim" of type Simulation 
     //and a "str" of type String such as the users name
@@ -23,8 +25,7 @@ public abstract class User {
 
     /**
      * Default constructor for User class
-     *
-     * @param simulation The associated simulation
+     *  @param simulation The associated simulation
      * @param name       The name of the producer
      * @param taste      The taste of the producer
      */
@@ -37,6 +38,7 @@ public abstract class User {
         following = new ArrayList<>();
         likedDocuments = new HashSet<>();
         printStrings = new ArrayList<>();
+        this.strategy = Strategies.LIKE_SIMILARITY;
     }
 
     //-----Abstract Methods to be Implemented Separately in Consumer and Producer classes-----
@@ -123,12 +125,12 @@ public abstract class User {
     public List<Document> search(List<Document> documentList, int numberToReturn) {
         ArrayList<Document> documentsToReturn = new ArrayList<>();
         addtoPrintStrings("Searching for top " + String.valueOf(numberToReturn) + " documents for " + this.getName() + "...");
-        Collections.sort(documentList);
+        Collections.sort(documentList, Document.likeSimilarity);
 
         for (int i = 0; i < numberToReturn; i++) {
             documentsToReturn.add(documentList.get(i));
-            addtoPrintStrings("Returning " + documentList.get(i).getName() + " with a score of: " + String.valueOf(documentList.get(i).getScore()));
-            
+            addtoPrintStrings("Returning " + documentList.get(i).getName());
+
         }
 
         return documentsToReturn;
@@ -191,12 +193,34 @@ public abstract class User {
     public void setToPrint(String s){
     	toPrint = s;
     }
-    
+
     public ArrayList<String> getPrintStrings(){
     	return printStrings;
     }
-    
+
     public void addtoPrintStrings(String s){
     	printStrings.add(s);
+    }
+
+    public Strategies getStrategy() {
+        return this.strategy;
+    }
+
+    public void setStrategy(Strategies strategy) {
+        this.strategy = strategy;
+    }
+
+    //-----Enums------
+    public enum Strategies {
+        DOCUMENT_POPULARITY,
+        USER_POPULARITY,
+        USER_DISTANCE,
+        LIKE_SIMILARITY,
+        FOLLOW_SIMILARITY;
+
+        public Strategies getStrategies() {
+            return this;
+        }
+
     }
 }

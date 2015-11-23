@@ -29,12 +29,6 @@ public class DocumentTest {
     }
 
     @Test
-    public void testCompareTo() throws Exception {
-        Document testDocument2 = new Document("testDocument2", "testTag", testProducer);
-        assert testDocument.compareTo(testDocument2) == 0;
-    }
-
-    @Test
     public void testGetTag() throws Exception {
         assert testDocument.getTag().equals("testTag");
     }
@@ -78,9 +72,4 @@ public class DocumentTest {
         assert testDocument.getLikedBy().size() == 1;
     }
 
-
-    @Test
-    public void testGetScore() throws Exception {
-        assert testDocument.getScore() == 0;
-    }
 }

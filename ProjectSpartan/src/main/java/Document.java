@@ -3,19 +3,53 @@ package main.java;//Name: Ali Faizan
 //Date: October 19,2015
 //Version #: 1
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Document implements Comparable<Document> {
+public class Document {
 
+    //------Comparators to be used for different search strategies------
+    static Comparator<Document> documentPopularity = new Comparator<Document>() {
+        @Override
+        public int compare(Document o1, Document o2) {
+            return o1.getLikedBy().size() - o2.getLikedBy().size();
+        }
+    };
+    static Comparator<Document> userPopularity = new Comparator<Document>() {
+        @Override
+        public int compare(Document o1, Document o2) {
+            return o1.getProducer().getFollowers().size() - o2.getProducer().getFollowers().size();
+        }
+    };
+    static Comparator<Document> userDistance = new Comparator<Document>() {
+        @Override
+        public int compare(Document o1, Document o2) {
+            return 0;
+        }
+    };
+    static Comparator<Document> likeSimilarity = new Comparator<Document>() {
+        @Override
+        public int compare(Document o1, Document o2) {
+            o1.getProducer().getLikedDocuments().retainAll(o2.getProducer().getLikedDocuments());
+            return o1.getProducer().getLikedDocuments().size();
+        }
+    };
+
+    //Constructor for Document that takes in a String
+    //Increments documentCounter and documentIDCount every time a document is created
+    static Comparator<Document> followSimilarity = new Comparator<Document>() {
+        @Override
+        public int compare(Document o1, Document o2) {
+            o1.getProducer().getFollowers().retainAll(o2.getProducer().getFollowers());
+            return o1.getProducer().getFollowers().size();
+        }
+    };
     //Instance Variables
     private String tag;
     private String name;
     private Set<User> likedBy;
     private Producer producer;
-
-    //Constructor for Document that takes in a String
-    //Increments documentCounter and documentIDCount every time a document is created
 
     /**
      * Default constructor for the Document class
@@ -39,10 +73,6 @@ public class Document implements Comparable<Document> {
     public void likeDocument(User user) {
         this.likedBy.add(user);
         this.getProducer().calculatePayoff();
-    }
-
-    public int compareTo(Document document) {
-        return document.getScore() - this.getScore();
     }
 
     //-----Getters and Setters------
@@ -72,17 +102,5 @@ public class Document implements Comparable<Document> {
 
     public Set<User> getLikedBy() {
         return this.likedBy;
-    }
-
-    public int getScore() {
-        int score = 0;
-
-        //Increase score by number of likes the document has
-        score += this.getLikedBy().size();
-
-        //Increase score by popularity of the documents producer
-        score += this.getProducer().getFollowers().size();
-
-        return score;
     }
 }
