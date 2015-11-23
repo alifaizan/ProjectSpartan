@@ -15,6 +15,7 @@ public class GUI implements ActionListener{
 	JMenuBar menuBar;
 	JMenu simulation, test;
 	JMenuItem run, exit;
+	JRadioButton strategy1, strategy2;
 	JTextArea display;
 	JScrollPane pane;
 	JTextField consumerText, producerText, documentText, tagText;
@@ -38,6 +39,8 @@ public class GUI implements ActionListener{
 		exit.addActionListener(this);
 		runSim = new JButton("Run Simulation!");
 		runSim.addActionListener(this);
+		strategy1 = new JRadioButton("Strategy 1");
+		strategy2 = new JRadioButton("Strategy 2");
 		display = new JTextArea();
 		pane = new JScrollPane(display, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		textFieldPanel = new JPanel();
@@ -67,8 +70,9 @@ public class GUI implements ActionListener{
 		frame.setSize(500, 500);
 		frame.setLayout(new BorderLayout());
 		frame.setJMenuBar(menuBar);
-		frame.add(pane, BorderLayout.CENTER);
+		frame.add(pane);
 		frame.add(textFieldPanel, BorderLayout.NORTH);
+		
 		textFieldPanel.add(consumerText);
 		textFieldPanel.add(consumerField);
 		textFieldPanel.add(producerText);
@@ -84,7 +88,6 @@ public class GUI implements ActionListener{
 		menuBar.add(simulation);
 		simulation.add(run);
 		simulation.add(exit);
-		
 	}
 	
 	/**
