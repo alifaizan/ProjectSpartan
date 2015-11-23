@@ -7,6 +7,7 @@ package main.java;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Simulation {
 
@@ -280,7 +281,19 @@ public class Simulation {
                 boolean running = true;
                 while(running){
                 	if(gui.isSearchPressed()){
-                		valid = searching();
+                		numberOfSearchResults = gui.getSearchResults();
+                		if (numberOfSearchResults > numberOfDocuments) {
+                		    printToGUI("You have requested a higher number of search results than there are documents! Using max number of documents instead.");
+                		    numberOfSearchResults = numberOfDocuments;
+                		}
+                		/*if(temp == null){
+                			this.quit = true;
+                			valid = true;
+                		}*/
+                		printToGUI("The simulator will show " + numberOfSearchResults + " search results.");
+                		valid = true;
+                		running = false;
+                		gui.setSearchPressed(false);
                 	}
                 }
                 
@@ -300,26 +313,6 @@ public class Simulation {
         return user;
     }
 
-	public boolean searching() {
-		boolean valid;
-		boolean running;
-		System.out.println("Search presssededsds");
-		numberOfSearchResults = gui.getSearchResults();
-		if (numberOfSearchResults > numberOfDocuments) {
-		    printToGUI("You have requested a higher number of search results than there are documents! Using max number of documents instead.");
-		    numberOfSearchResults = numberOfDocuments;
-		}
-		/*if(temp == null){
-			this.quit = true;
-			valid = true;
-		}*/
-		printToGUI("The simulator will show " + numberOfSearchResults + " search results.");
-		valid = true;
-		running = false;
-		gui.setSearchPressed(false);
-		return valid;
-	}
-
     public int getNumberOfDocuments() {
         return this.getDocuments().size();
     }
@@ -332,10 +325,6 @@ public class Simulation {
 
     public List<User> getUsers() {
         return this.users;
-    }
-
-    public void setNumberOfTags(int number) {
-        this.numberOfTags = number;
     }
 
     //-----Enums------
