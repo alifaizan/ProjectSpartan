@@ -21,11 +21,13 @@ public class GUI implements ActionListener{
 	JTextField consumerField, producerField, documentField, tagField;
 	JPanel textFieldPanel;
 	JButton runSim;
+	boolean runPressed;
 	
 	/**
 	 * 	Constructor for the GUI class
 	 */
 	public GUI(){
+		runPressed = false;
 		frame = new JFrame("Milestone 2");
 		menuBar = new JMenuBar();
 		simulation = new JMenu("Simulation");
@@ -94,6 +96,10 @@ public class GUI implements ActionListener{
 		sim.main(args);
 	}
 	
+	public boolean isRunPressed(){
+		return runPressed;
+	}
+	
 	/**
 	 * 	Creates a JOptionPane and returns the user's input
 	 * @param s 	String for the JOptionPane
@@ -111,8 +117,16 @@ public class GUI implements ActionListener{
 		return input;
 	}
 	
+	public void printError(String s){
+		JOptionPane.showMessageDialog(null, s, "Error",
+                JOptionPane.ERROR_MESSAGE);
+	}
+	
+	public void setTextFieldText(JTextField tf, String s){
+		tf.setText(s);
+	}
+	
 	public void stop(){
-		// TODO
 		print("Simulation terminated");
 		System.exit(0);
 	}
@@ -155,14 +169,13 @@ public class GUI implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		System.out.println(e.getActionCommand());
 		if(e.getActionCommand().equals("Run"))
 			run();
 		if(e.getActionCommand().equals("Exit"))
 			stop();
 		if(e.getActionCommand().equals("Run Simulation!"))
-			run();
+			runPressed = true;
 	}
 	
 	public static void main(String[] args){
