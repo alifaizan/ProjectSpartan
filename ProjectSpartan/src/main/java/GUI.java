@@ -11,27 +11,29 @@ import javax.swing.*;
 
 public class GUI implements ActionListener{
 
+	Simulation simulation;
 	JFrame frame;
 	JMenuBar menuBar;
-	JMenu simulation, test;
+	JMenu simulationMenu, test;
 	JMenuItem run, exit;
-	JRadioButton strategy1, strategy2;
 	JTextArea display;
 	JScrollPane pane;
-	JTextField consumerText, producerText, documentText, tagText;
-	JTextField consumerField, producerField, documentField, tagField;
+	JTextField consumerText, producerText, documentText, tagText, searchText;
+	JTextField consumerField, producerField, documentField, tagField, searchField;
 	JPanel textFieldPanel;
-	JButton runSim;
-	boolean runPressed;
+	JButton runSim, search;
+	boolean runPressed, searchPressed;
 	
 	/**
 	 * 	Constructor for the GUI class
 	 */
-	public GUI(){
+	public GUI(Simulation sim){
+		this.simulation = sim;
 		runPressed = false;
+		searchPressed = false;
 		frame = new JFrame("Milestone 2");
 		menuBar = new JMenuBar();
-		simulation = new JMenu("Simulation");
+		simulationMenu = new JMenu("Simulation");
 		test = new JMenu("Test");
 		run = new JMenuItem("Run");
 		run.addActionListener(this);
@@ -39,8 +41,8 @@ public class GUI implements ActionListener{
 		exit.addActionListener(this);
 		runSim = new JButton("Run Simulation!");
 		runSim.addActionListener(this);
-		strategy1 = new JRadioButton("Strategy 1");
-		strategy2 = new JRadioButton("Strategy 2");
+		search = new JButton("Search");
+		search.addActionListener(this);
 		display = new JTextArea();
 		pane = new JScrollPane(display, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		textFieldPanel = new JPanel();
@@ -62,6 +64,10 @@ public class GUI implements ActionListener{
 		tagText.setEditable(false);
 		tagField = new JTextField();
 		tagField.addActionListener(this);
+		searchText = new JTextField("Number of Documents to search");
+		searchText.setEditable(false);
+		searchField = new JTextField();
+		searchField.addActionListener(this);
 		
 		//Setting up the frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,13 +87,16 @@ public class GUI implements ActionListener{
 		textFieldPanel.add(documentField);
 		textFieldPanel.add(tagText);
 		textFieldPanel.add(tagField);
+		textFieldPanel.add(searchText);
+		textFieldPanel.add(searchField);
 		textFieldPanel.add(runSim);
+		textFieldPanel.add(search);
 		textFieldPanel.setLayout(new GridLayout(0,2));
 		
 		//menus
-		menuBar.add(simulation);
-		simulation.add(run);
-		simulation.add(exit);
+		menuBar.add(simulationMenu);
+		simulationMenu.add(run);
+		simulationMenu.add(exit);
 	}
 	
 	/**
@@ -101,6 +110,16 @@ public class GUI implements ActionListener{
 	
 	public boolean isRunPressed(){
 		return runPressed;
+	}
+	
+	public boolean isSearchPressed(){
+		/*if(searchPressed){System.out.println("true true");}
+		else{System.out.println("false");}*/
+		return searchPressed;
+	}
+	
+	public void setSearchPressed(boolean b){
+		searchPressed = b;
 	}
 	
 	/**
@@ -151,23 +170,30 @@ public class GUI implements ActionListener{
 	
 	public int getProducers(){
 		if(producerField.getText() == null)
-			JOptionPane.showMessageDialog(null, "Number of Consumers not entered!", "Error",
+			JOptionPane.showMessageDialog(null, "Number of Producers not entered!", "Error",
                     JOptionPane.ERROR_MESSAGE);
 		return Integer.parseInt(producerField.getText());
 	}
 	
 	public int getDocuments(){
 		if(documentField.getText() == null)
-			JOptionPane.showMessageDialog(null, "Number of Consumers not entered!", "Error",
+			JOptionPane.showMessageDialog(null, "Number of Documents not entered!", "Error",
                     JOptionPane.ERROR_MESSAGE);
 		return Integer.parseInt(documentField.getText());
 	}
 	
 	public int getTags(){
 		if(tagField.getText() == null)
-			JOptionPane.showMessageDialog(null, "Number of Consumers not entered!", "Error",
+			JOptionPane.showMessageDialog(null, "Number of Tags not entered!", "Error",
                     JOptionPane.ERROR_MESSAGE);
 		return Integer.parseInt(tagField.getText());
+	}
+	
+	public int getSearchResults(){
+		if(searchField.getText() == null)
+			JOptionPane.showMessageDialog(null, "Number of Search Results not entered!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+		return Integer.parseInt(searchField.getText());
 	}
 
 	@Override
@@ -179,6 +205,9 @@ public class GUI implements ActionListener{
 			stop();
 		if(e.getActionCommand().equals("Run Simulation!"))
 			runPressed = true;
+		if(e.getActionCommand().equals("Search"))
+			this.simulation.searching();
+		
 	}
 	
 }
