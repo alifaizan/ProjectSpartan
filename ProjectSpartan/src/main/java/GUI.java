@@ -1,4 +1,7 @@
 package main.java;
+//Name: Yash Patel
+//Student Number: 100943654
+//Date: November 7, 2015
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -6,7 +9,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-public class GUI extends Simulation implements ActionListener{
+public class GUI implements ActionListener{
 
 	JFrame frame;
 	JMenuBar menuBar;
@@ -14,6 +17,10 @@ public class GUI extends Simulation implements ActionListener{
 	JMenuItem run, exit;
 	JTextArea display;
 	JScrollPane pane;
+	JTextField consumerText, producerText, documentText, tagText;
+	JTextField consumerField, producerField, documentField, tagField;
+	JPanel textFieldPanel;
+	JButton runSim;
 	
 	/**
 	 * 	Constructor for the GUI class
@@ -27,16 +34,49 @@ public class GUI extends Simulation implements ActionListener{
 		run.addActionListener(this);
 		exit = new JMenuItem("Exit");
 		exit.addActionListener(this);
+		runSim = new JButton("Run Simulation!");
+		runSim.addActionListener(this);
 		display = new JTextArea();
 		pane = new JScrollPane(display, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		textFieldPanel = new JPanel();
+		
+		//Text fields
+		consumerText = new JTextField("Number of Consumers: ");
+		consumerText.setEditable(false);
+		consumerField = new JTextField();
+		consumerField.addActionListener(this);
+		producerText = new JTextField("Number of Producers: ");
+		producerText.setEditable(false);
+		producerField = new JTextField();
+		producerField.addActionListener(this);
+		documentText = new JTextField("Number of Documents: ");
+		documentText.setEditable(false);
+		documentField = new JTextField();
+		documentField.addActionListener(this);
+		tagText = new JTextField("Number of Tags: ");
+		tagText.setEditable(false);
+		tagField = new JTextField();
+		tagField.addActionListener(this);
 		
 		//Setting up the frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
 		frame.setSize(500, 500);
+		frame.setLayout(new BorderLayout());
 		frame.setJMenuBar(menuBar);
-		frame.add(pane);
+		frame.add(pane, BorderLayout.CENTER);
+		frame.add(textFieldPanel, BorderLayout.NORTH);
+		textFieldPanel.add(consumerText);
+		textFieldPanel.add(consumerField);
+		textFieldPanel.add(producerText);
+		textFieldPanel.add(producerField);
+		textFieldPanel.add(documentText);
+		textFieldPanel.add(documentField);
+		textFieldPanel.add(tagText);
+		textFieldPanel.add(tagField);
+		textFieldPanel.add(runSim);
+		textFieldPanel.setLayout(new GridLayout(0,2));
 		
 		//menus
 		menuBar.add(simulation);
@@ -84,6 +124,34 @@ public class GUI extends Simulation implements ActionListener{
 	public void print(String s){
 		display.append(s + "\n");
 	}
+	
+	public int getConsumers(){
+		if(consumerField.getText() == null)
+			JOptionPane.showMessageDialog(null, "Number of Consumers not entered!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+		return Integer.parseInt(consumerField.getText());
+	}
+	
+	public int getProducers(){
+		if(producerField.getText() == null)
+			JOptionPane.showMessageDialog(null, "Number of Consumers not entered!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+		return Integer.parseInt(producerField.getText());
+	}
+	
+	public int getDocuments(){
+		if(documentField.getText() == null)
+			JOptionPane.showMessageDialog(null, "Number of Consumers not entered!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+		return Integer.parseInt(documentField.getText());
+	}
+	
+	public int getTags(){
+		if(tagField.getText() == null)
+			JOptionPane.showMessageDialog(null, "Number of Consumers not entered!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+		return Integer.parseInt(tagField.getText());
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -93,6 +161,13 @@ public class GUI extends Simulation implements ActionListener{
 			run();
 		if(e.getActionCommand().equals("Exit"))
 			stop();
+		if(e.getActionCommand().equals("Run Simulation!"))
+			run();
 	}
+	
+	public static void main(String[] args){
+		new GUI();
+	}
+	
 	
 }
