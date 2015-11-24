@@ -7,6 +7,7 @@ package main.java;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Simulation {
 
@@ -17,12 +18,12 @@ public class Simulation {
     private static final SecureRandom random = new SecureRandom();
     static GUI gui;
     private static int numberOfConsumers, numberOfProducers, numberOfDocuments, numberOfSearchResults, numberOfTags;
-	private static List<String> userName;
-    private static String[] userArr;
-    public boolean stopPressed;
     private boolean quit;
     private List<Document> documents;
     private List<User> users;
+	private static List<String> consumerNames, producerNames;
+    private static String[] userArr;
+    public boolean stopPressed;
 
     /**
      * Default constructor for Simulation class
@@ -30,7 +31,8 @@ public class Simulation {
     public Simulation() {
         documents = new ArrayList<Document>();
         users = new ArrayList<User>();
-        userName = new ArrayList<>();
+        consumerNames = new ArrayList<>();
+        producerNames = new ArrayList<>();
         stopPressed = false;
     }
 
@@ -47,7 +49,7 @@ public class Simulation {
     public static void main(String[] args) {
     	Simulation sim = new Simulation();
     	gui = new GUI(sim);
-
+    	
     	printToGUI("Please enter all the parameters above and press Run Simulation");
     	gui.setTextFieldText(gui.consumerText, "Number of Consumers (1-" + MAX_CONSUMERS + "): ");
     	gui.setTextFieldText(gui.producerText, "Number of Producers (1-" + MAX_PRODUCERS + "): ");
@@ -70,9 +72,12 @@ public class Simulation {
         simulation.setupConsumers(numberOfConsumers);
         simulation.setupProducers(numberOfProducers);
         simulation.setupDocuments(numberOfDocuments);
-        String[] userArr = new String[userName.size()];
-        userName.toArray(userArr);
-        gui.setUsers(userArr);
+        String[] userArr = new String[consumerNames.size()];
+        consumerNames.toArray(userArr);
+        gui.setConsumers(userArr);
+        userArr = new String[producerNames.size()];
+        producerNames.toArray(userArr);
+        gui.setProducers(userArr);
         simulation.printSetup();
 
         while (!simulation.quit) {
@@ -82,7 +87,7 @@ public class Simulation {
             	printToGUI(s);
             }
         }
-
+        
         for (final User user : simulation.getUsers()) {
             printToGUI(user.payoffHistory());
         }
@@ -107,12 +112,14 @@ public class Simulation {
                     valid = true;
                 } else {
                     printToGUI("ERROR: Please enter a number in the range 1-" + MAX_CONSUMERS + "!");
+                    
                    // numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
                 }
             } catch (Exception e) {
                 //printToGUI("ERROR: Please only enter numeric characters!");
                 //numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
             	gui.printError("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
+            	
             }
         }
         valid = false;
@@ -215,7 +222,7 @@ public class Simulation {
         for (int i = 1; i < number + 1; i++) {
             Consumer consumer = new Consumer(this, "Consumer #" + String.valueOf(i), randomTag().toString());
             users.add(consumer);
-            userName.add(consumer.getName());
+            consumerNames.add(consumer.getName());
             printToGUI(consumer.getName() + "  created");
         }
         printToGUI("-----------------------------");
@@ -231,7 +238,7 @@ public class Simulation {
         for (int i = 1; i < number + 1; i++) {
             Producer producer = new Producer(this, "Producer #" + String.valueOf(i), randomTag().toString());
             users.add(producer);
-            userName.add(producer.getName());
+            producerNames.add(producer.getName());
             printToGUI(producer.getName() + "  created");
         }
         printToGUI("-----------------------------");
@@ -270,6 +277,10 @@ public class Simulation {
                 		    printToGUI("You have requested a higher number of search results than there are documents! Using max number of documents instead.");
                 		    numberOfSearchResults = numberOfDocuments;
                 		}
+                		/*if(temp == null){
+                			this.quit = true;
+                			valid = true;
+                		}*/
                 		printToGUI("The simulator will show " + numberOfSearchResults + " search results.");
                 		valid = true;
                 		running = false;
@@ -296,11 +307,11 @@ public class Simulation {
 
         return user;
     }
-
+    
     public boolean isStopPressed(){
     	return stopPressed;
     }
-
+    
     public void setStop(boolean b){
     	stopPressed = b;
     }
@@ -313,7 +324,6 @@ public class Simulation {
         this.numberOfTags = num;
     }
 
-
     //-----Getters and Setters------
     public List<Document> getDocuments() {
         return this.documents;
@@ -322,8 +332,12 @@ public class Simulation {
     public List<User> getUsers() {
         return this.users;
     }
-    public List<String> getUserName(){
-    	return this.userName;
+    public List<String> getConsumerNames(){
+    	return this.consumerNames;
+    }
+    
+    public List<String> getProducerNames(){
+    	return this.producerNames;
     }
 
     //-----Enums------
