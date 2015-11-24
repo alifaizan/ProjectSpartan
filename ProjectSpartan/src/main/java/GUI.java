@@ -3,15 +3,14 @@ package main.java;
 //Student Number: 100943654
 //Date: November 7, 2015
 
+import main.java.Producer.Producer_Strategy;
+import main.java.User.Search_Strategy;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
-import javax.swing.*;
-
-import main.java.Producer.Producer_Strategy;
-import main.java.User.Search_Strategy;
 
 public class GUI implements ActionListener{
 
@@ -208,12 +207,24 @@ public class GUI implements ActionListener{
                     JOptionPane.ERROR_MESSAGE);
 		return Integer.parseInt(consumerField.getText());
 	}
+
+	public void setConsumers(String[] s) {
+		DefaultComboBoxModel model = new DefaultComboBoxModel(s);
+		this.users = s;
+		consumers.setModel(model);
+	}
 	
 	public int getProducers(){
 		if(producerField.getText() == null)
 			JOptionPane.showMessageDialog(null, "Number of Producers not entered!", "Error",
                     JOptionPane.ERROR_MESSAGE);
 		return Integer.parseInt(producerField.getText());
+	}
+
+	public void setProducers(String[] s) {
+		DefaultComboBoxModel model = new DefaultComboBoxModel(s);
+		this.users = s;
+		producers.setModel(model);
 	}
 	
 	public int getDocuments(){
@@ -235,18 +246,6 @@ public class GUI implements ActionListener{
 			JOptionPane.showMessageDialog(null, "Number of Search Results not entered!", "Error",
                     JOptionPane.ERROR_MESSAGE);
 		return Integer.parseInt(searchField.getText());
-	}
-	
-	public void setConsumers(String[] s){
-		DefaultComboBoxModel model = new DefaultComboBoxModel(s);
-		this.users = s;
-		consumers.setModel(model);		
-	}
-	
-	public void setProducers(String[] s){
-		DefaultComboBoxModel model = new DefaultComboBoxModel(s);
-		this.users = s;
-		producers.setModel(model);
 	}
 	
 	public User getConsumer(){
@@ -282,7 +281,6 @@ public class GUI implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//System.out.println(e.getActionCommand());
 		if(e.getActionCommand().equals("Run"))
 			run();
 		if(e.getActionCommand().equals("Stop"))
