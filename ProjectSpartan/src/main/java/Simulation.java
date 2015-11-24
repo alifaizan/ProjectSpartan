@@ -21,6 +21,9 @@ public class Simulation {
     private boolean quit;
     private List<Document> documents;
     private List<User> users;
+	private static List<String> userName;
+    private static String[] userArr;
+    public boolean stopPressed;
 
     /**
      * Default constructor for Simulation class
@@ -28,6 +31,8 @@ public class Simulation {
     public Simulation() {
         documents = new ArrayList<Document>();
         users = new ArrayList<User>();
+        userName = new ArrayList<>();
+        stopPressed = false;
     }
 
     /**
@@ -43,10 +48,7 @@ public class Simulation {
     public static void main(String[] args) {
     	Simulation sim = new Simulation();
     	gui = new GUI(sim);
-    	//printToGUI("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
-    	//printToGUI("Please enter the number of producers you would like the simulator to create (1-" + MAX_PRODUCERS + "): ");
-    	//printToGUI("Please enter the number of documents you would like the simulator to create (1-" + MAX_DOCUMENTS + "): ");
-    	//printToGUI("Please enter the number of tags you would like to use for the simulation (1-" + MAX_TAGS + "): ");
+    	
     	printToGUI("Please enter all the parameters above and press Run Simulation");
     	gui.setTextFieldText(gui.consumerText, "Number of Consumers (1-" + MAX_CONSUMERS + "): ");
     	gui.setTextFieldText(gui.producerText, "Number of Producers (1-" + MAX_PRODUCERS + "): ");
@@ -59,27 +61,6 @@ public class Simulation {
     			runSim();
     		}
     	}
-    	
-        /*userInteraction();
-
-        printToGUI("Beginning Simulation...");
-        Simulation simulation = new Simulation();
-        simulation.setupConsumers(numberOfConsumers);
-        simulation.setupProducers(numberOfProducers);
-        simulation.setupDocuments(numberOfDocuments);
-
-        simulation.printSetup();
-
-        while (!simulation.quit) {
-            User user = simulation.runIteration();
-            user.act(simulation.getDocuments(), numberOfSearchResults);
-        }
-
-        for (final User user : simulation.getUsers()) {
-            printToGUI(user.payoffHistory());
-        }
-
-        printToGUI("Simulation Terminated.");	*/
     }
     
     public static void runSim(){
@@ -90,7 +71,9 @@ public class Simulation {
         simulation.setupConsumers(numberOfConsumers);
         simulation.setupProducers(numberOfProducers);
         simulation.setupDocuments(numberOfDocuments);
-
+        String[] userArr = new String[userName.size()];
+        userName.toArray(userArr);
+        gui.setUsers(userArr);
         simulation.printSetup();
 
         while (!simulation.quit) {
@@ -100,7 +83,7 @@ public class Simulation {
             	printToGUI(s);
             }
         }
-
+        
         for (final User user : simulation.getUsers()) {
             printToGUI(user.payoffHistory());
         }
@@ -125,12 +108,14 @@ public class Simulation {
                     valid = true;
                 } else {
                     printToGUI("ERROR: Please enter a number in the range 1-" + MAX_CONSUMERS + "!");
+                    
                    // numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
                 }
             } catch (Exception e) {
                 //printToGUI("ERROR: Please only enter numeric characters!");
                 //numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
             	gui.printError("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
+            	
             }
         }
         valid = false;
@@ -233,6 +218,7 @@ public class Simulation {
         for (int i = 1; i < number + 1; i++) {
             Consumer consumer = new Consumer(this, "Consumer #" + String.valueOf(i), randomTag().toString());
             users.add(consumer);
+            userName.add(consumer.getName());
             printToGUI(consumer.getName() + "  created");
         }
         printToGUI("-----------------------------");
@@ -248,6 +234,7 @@ public class Simulation {
         for (int i = 1; i < number + 1; i++) {
             Producer producer = new Producer(this, "Producer #" + String.valueOf(i), randomTag().toString());
             users.add(producer);
+            userName.add(producer.getName());
             printToGUI(producer.getName() + "  created");
         }
         printToGUI("-----------------------------");
@@ -295,14 +282,18 @@ public class Simulation {
                 		running = false;
                 		gui.setSearchPressed(false);
                 	}
+                	if(isStopPressed()){
+                		this.quit = true;
+                		valid = true;
+                	}
                 }
                 
                 
             } catch (Exception e) {
-            	/*if(temp == null){
+            	if(isStopPressed()){
                 	this.quit = true;
                 	valid = true;
-                }*/
+                }
             	
             	 printToGUI("ERROR: Please only enter numeric characters or 'q'!");
             	 gui.printError("Please enter the number of documents you would like to search for (1-" + this.getNumberOfDocuments() + ") or 'q' to quit: ");
@@ -311,6 +302,14 @@ public class Simulation {
         }
 
         return user;
+    }
+    
+    public boolean isStopPressed(){
+    	return stopPressed;
+    }
+    
+    public void setStop(boolean b){
+    	stopPressed = b;
     }
 
     public int getNumberOfDocuments() {
@@ -325,6 +324,9 @@ public class Simulation {
 
     public List<User> getUsers() {
         return this.users;
+    }
+    public List<String> getUserName(){
+    	return this.userName;
     }
 
     //-----Enums------

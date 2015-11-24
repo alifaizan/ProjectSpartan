@@ -9,20 +9,24 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import main.java.User.Search_Strategy;
+
 public class GUI implements ActionListener{
 
 	Simulation simulation;
 	JFrame frame;
 	JMenuBar menuBar;
 	JMenu simulationMenu, test;
-	JMenuItem run, exit;
+	JMenuItem run, exit, stop;
 	JTextArea display;
 	JScrollPane pane;
 	JTextField consumerText, producerText, documentText, tagText, searchText;
 	JTextField consumerField, producerField, documentField, tagField, searchField;
 	JPanel textFieldPanel;
-	JButton runSim, search;
-	boolean runPressed, searchPressed;
+	JButton runSim, search, changeStrategy;
+	JComboBox strategy, user;
+	String[] users;
+	boolean runPressed, searchPressed, stopPressed;
 	
 	/**
 	 * 	Constructor for the GUI class
@@ -31,18 +35,23 @@ public class GUI implements ActionListener{
 		this.simulation = sim;
 		runPressed = false;
 		searchPressed = false;
+		stopPressed = false;
 		frame = new JFrame("Milestone 2");
 		menuBar = new JMenuBar();
 		simulationMenu = new JMenu("Simulation");
 		test = new JMenu("Test");
 		run = new JMenuItem("Run");
 		run.addActionListener(this);
+		stop = new JMenuItem("Stop");
+		stop.addActionListener(this);
 		exit = new JMenuItem("Exit");
 		exit.addActionListener(this);
 		runSim = new JButton("Run Simulation!");
 		runSim.addActionListener(this);
 		search = new JButton("Search");
 		search.addActionListener(this);
+		changeStrategy = new JButton("Change Strategy");
+		changeStrategy.addActionListener(this);
 		display = new JTextArea();
 		pane = new JScrollPane(display, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		textFieldPanel = new JPanel();
@@ -69,6 +78,16 @@ public class GUI implements ActionListener{
 		searchField = new JTextField();
 		searchField.addActionListener(this);
 		
+		String[] strategies = {"DocumentPopularity", "UserPopularity", "UserDistance", "LikeSimilarity", "FollowSimilarity"};
+		strategy = new JComboBox(strategies);
+		strategy.addActionListener(this);
+		strategy.setEditable(false);
+		strategy.addActionListener(this);
+		users = new String[]{};
+		user = new JComboBox(users);
+		user.setEditable(false);
+		user.addActionListener(this);
+		
 		//Setting up the frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
@@ -91,12 +110,17 @@ public class GUI implements ActionListener{
 		textFieldPanel.add(searchField);
 		textFieldPanel.add(runSim);
 		textFieldPanel.add(search);
+		textFieldPanel.add(strategy);
+		textFieldPanel.add(user);
+		textFieldPanel.add(changeStrategy);
 		textFieldPanel.setLayout(new GridLayout(0,2));
 		
 		//menus
 		menuBar.add(simulationMenu);
 		simulationMenu.add(run);
+		simulationMenu.add(stop);
 		simulationMenu.add(exit);
+		
 	}
 	
 	/**
@@ -113,8 +137,7 @@ public class GUI implements ActionListener{
 	}
 	
 	public boolean isSearchPressed(){
-		if(searchPressed){System.out.println();}
-		else{System.out.println();}
+		System.out.println();
 		return searchPressed;
 	}
 	
@@ -148,10 +171,12 @@ public class GUI implements ActionListener{
 		tf.setText(s);
 	}
 	
-	public void stop(){
+	public void exit(){
 		print("Simulation terminated");
 		System.exit(0);
 	}
+	
+	
 	
 	/**
 	 * 	Prints to the JTextArea in GUI
@@ -195,19 +220,43 @@ public class GUI implements ActionListener{
                     JOptionPane.ERROR_MESSAGE);
 		return Integer.parseInt(searchField.getText());
 	}
+	
+	public void setUsers(String[] s){
+		DefaultComboBoxModel model = new DefaultComboBoxModel(s);
+		this.users = s;
+		user.setModel(model);		
+	}
+	
+	public User getUser(){
+		User selected = simulation.getUsers().get(0);
+		java.util.List<String> listedUsers = simulation.getUserName();
+		for(int i=0; i <= simulation.getUsers().size(); i++){
+			if(simulation.getUsers().get(i).getName().equals(listedUsers.get(i))){
+				selected = simulation.getUsers().get(i);
+			}
+		}
+		return selected;
+	}
+	
+	public void changeStrategy(){
+		getUser().setStrategy(Search_Strategy.valueOf(strategy.getActionCommand()));
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		//System.out.println(e.getActionCommand());
 		if(e.getActionCommand().equals("Run"))
 			run();
+		if(e.getActionCommand().equals("Stop"))
+			simulation.setStop(true);
 		if(e.getActionCommand().equals("Exit"))
-			stop();
+			exit();
 		if(e.getActionCommand().equals("Run Simulation!"))
 			runPressed = true;
 		if(e.getActionCommand().equals("Search"))
 			searchPressed = true;
-		
+		if(e.getActionCommand().equals("Change Strategy"))
+			changeStrategy();		
 	}
 	
 }
