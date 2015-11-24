@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Graph extends JPanel {
     private static final int WIDTH = 600;
@@ -18,15 +17,7 @@ public class Graph extends JPanel {
         this.scores = scores;
     }
 
-    public static void createAndShowGui(List<Integer> scores2) {
-        List<Integer> scores = new ArrayList<Integer>();
-        Random random = new Random();
-        int maxDataPoints = 16;
-        int maxScore = 20;
-        for (int i = 0; i < maxDataPoints; i++) {
-            scores.add(random.nextInt(maxScore));
-        }
-
+    public static void createAndShowGui(List<Integer> scores) {
         Graph graph = new Graph(scores);
         graph.getMax();
 
