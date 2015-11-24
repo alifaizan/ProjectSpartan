@@ -7,7 +7,6 @@ package main.java;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Simulation {
 
@@ -18,12 +17,12 @@ public class Simulation {
     private static final SecureRandom random = new SecureRandom();
     static GUI gui;
     private static int numberOfConsumers, numberOfProducers, numberOfDocuments, numberOfSearchResults, numberOfTags;
-    private boolean quit;
-    private List<Document> documents;
-    private List<User> users;
 	private static List<String> userName;
     private static String[] userArr;
     public boolean stopPressed;
+    private boolean quit;
+    private List<Document> documents;
+    private List<User> users;
 
     /**
      * Default constructor for Simulation class
@@ -48,7 +47,7 @@ public class Simulation {
     public static void main(String[] args) {
     	Simulation sim = new Simulation();
     	gui = new GUI(sim);
-    	
+
     	printToGUI("Please enter all the parameters above and press Run Simulation");
     	gui.setTextFieldText(gui.consumerText, "Number of Consumers (1-" + MAX_CONSUMERS + "): ");
     	gui.setTextFieldText(gui.producerText, "Number of Producers (1-" + MAX_PRODUCERS + "): ");
@@ -83,7 +82,7 @@ public class Simulation {
             	printToGUI(s);
             }
         }
-        
+
         for (final User user : simulation.getUsers()) {
             printToGUI(user.payoffHistory());
         }
@@ -108,14 +107,12 @@ public class Simulation {
                     valid = true;
                 } else {
                     printToGUI("ERROR: Please enter a number in the range 1-" + MAX_CONSUMERS + "!");
-                    
                    // numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
                 }
             } catch (Exception e) {
                 //printToGUI("ERROR: Please only enter numeric characters!");
                 //numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
             	gui.printError("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
-            	
             }
         }
         valid = false;
@@ -273,10 +270,6 @@ public class Simulation {
                 		    printToGUI("You have requested a higher number of search results than there are documents! Using max number of documents instead.");
                 		    numberOfSearchResults = numberOfDocuments;
                 		}
-                		/*if(temp == null){
-                			this.quit = true;
-                			valid = true;
-                		}*/
                 		printToGUI("The simulator will show " + numberOfSearchResults + " search results.");
                 		valid = true;
                 		running = false;
@@ -303,17 +296,21 @@ public class Simulation {
 
         return user;
     }
-    
+
     public boolean isStopPressed(){
     	return stopPressed;
     }
-    
+
     public void setStop(boolean b){
     	stopPressed = b;
     }
 
     public int getNumberOfDocuments() {
         return this.getDocuments().size();
+    }
+
+    public void setNumberOfTags(int num) {
+        this.numberOfTags = num;
     }
 
 

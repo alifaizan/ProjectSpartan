@@ -3,13 +3,13 @@ package main.java;
 //Student Number: 100943654
 //Date: November 7, 2015
 
+import main.java.User.Search_Strategy;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.*;
-
-import main.java.User.Search_Strategy;
+import java.util.ArrayList;
 
 public class GUI implements ActionListener{
 
@@ -23,7 +23,7 @@ public class GUI implements ActionListener{
 	JTextField consumerText, producerText, documentText, tagText, searchText;
 	JTextField consumerField, producerField, documentField, tagField, searchField;
 	JPanel textFieldPanel;
-	JButton runSim, search, changeStrategy;
+	JButton runSim, search, changeStrategy, graph;
 	JComboBox strategy, user;
 	String[] users;
 	boolean runPressed, searchPressed, stopPressed;
@@ -36,7 +36,7 @@ public class GUI implements ActionListener{
 		runPressed = false;
 		searchPressed = false;
 		stopPressed = false;
-		frame = new JFrame("Milestone 2");
+		frame = new JFrame("Milestone 3");
 		menuBar = new JMenuBar();
 		simulationMenu = new JMenu("Simulation");
 		test = new JMenu("Test");
@@ -52,6 +52,9 @@ public class GUI implements ActionListener{
 		search.addActionListener(this);
 		changeStrategy = new JButton("Change Strategy");
 		changeStrategy.addActionListener(this);
+		graph = new JButton("Graph");
+		graph.addActionListener(this);
+		graph.setEnabled(false);
 		display = new JTextArea();
 		pane = new JScrollPane(display, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		textFieldPanel = new JPanel();
@@ -87,7 +90,7 @@ public class GUI implements ActionListener{
 		user = new JComboBox(users);
 		user.setEditable(false);
 		user.addActionListener(this);
-		
+
 		//Setting up the frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
@@ -110,6 +113,7 @@ public class GUI implements ActionListener{
 		textFieldPanel.add(searchField);
 		textFieldPanel.add(runSim);
 		textFieldPanel.add(search);
+		textFieldPanel.add(graph);
 		textFieldPanel.add(strategy);
 		textFieldPanel.add(user);
 		textFieldPanel.add(changeStrategy);
@@ -120,7 +124,6 @@ public class GUI implements ActionListener{
 		simulationMenu.add(run);
 		simulationMenu.add(stop);
 		simulationMenu.add(exit);
-		
 	}
 	
 	/**
@@ -176,8 +179,6 @@ public class GUI implements ActionListener{
 		System.exit(0);
 	}
 	
-	
-	
 	/**
 	 * 	Prints to the JTextArea in GUI
 	 * @param s		String to be printed
@@ -220,13 +221,13 @@ public class GUI implements ActionListener{
                     JOptionPane.ERROR_MESSAGE);
 		return Integer.parseInt(searchField.getText());
 	}
-	
+
 	public void setUsers(String[] s){
 		DefaultComboBoxModel model = new DefaultComboBoxModel(s);
 		this.users = s;
-		user.setModel(model);		
+		user.setModel(model);
 	}
-	
+
 	public User getUser(){
 		User selected = simulation.getUsers().get(0);
 		java.util.List<String> listedUsers = simulation.getUserName();
@@ -237,7 +238,7 @@ public class GUI implements ActionListener{
 		}
 		return selected;
 	}
-	
+
 	public void changeStrategy(){
 		getUser().setStrategy(Search_Strategy.valueOf(strategy.getActionCommand()));
 	}
@@ -256,7 +257,10 @@ public class GUI implements ActionListener{
 		if(e.getActionCommand().equals("Search"))
 			searchPressed = true;
 		if(e.getActionCommand().equals("Change Strategy"))
-			changeStrategy();		
+			changeStrategy();
+		if (e.getActionCommand().equals("Graph"))
+			Graph.createAndShowGui(new ArrayList<>());
+
 	}
 	
 }

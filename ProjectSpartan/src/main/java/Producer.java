@@ -39,7 +39,7 @@ public class Producer extends User {
 
         calculatePayoff();
 
-        updateLikesAndFollowers(relevantDocuments, this.producerStrategy);
+        updateLikesAndFollowers(relevantDocuments);
 
         return relevantDocuments;
     }
@@ -55,10 +55,9 @@ public class Producer extends User {
      * Likes given documents and follows associated users
      *
      * @param documents The documents to analyze
-     * @param strategy Producer strategy to follow for liking and following
      */
-    public void updateLikesAndFollowers(List<Document> documents, Producer_Strategy strategy) {
-        if (strategy == Producer_Strategy.A) super.updateLikesAndFollowers(documents, this.getTaste());
+    public void updateLikesAndFollowers(List<Document> documents) {
+        if (this.producerStrategy == Producer_Strategy.A) super.updateLikesAndFollowers(documents, this.getTaste());
 
         else {
             String randomTag = this.getTaste(); //Find a taste other than the producers taste to like these documents as per project description

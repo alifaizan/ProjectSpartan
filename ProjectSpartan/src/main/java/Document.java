@@ -9,6 +9,7 @@ import java.util.Set;
 
 public class Document {
 
+
     //------Comparators to be used for different search strategies------
     static Comparator<Document> documentPopularity = new Comparator<Document>() {
         @Override
@@ -35,9 +36,6 @@ public class Document {
             return o1.getProducer().getLikedDocuments().size();
         }
     };
-
-    //Constructor for Document that takes in a String
-    //Increments documentCounter and documentIDCount every time a document is created
     static Comparator<Document> followSimilarity = new Comparator<Document>() {
         @Override
         public int compare(Document o1, Document o2) {
@@ -50,7 +48,6 @@ public class Document {
     private String name;
     private Set<User> likedBy;
     private Producer producer;
-
     /**
      * Default constructor for the Document class
      *
