@@ -61,7 +61,7 @@ public class Producer extends User {
 
         else {
             String randomTag = this.getTaste(); //Find a taste other than the producers taste to like these documents as per project description
-            while (randomTag.equals(this.getTaste())) randomTag = Simulation.randomTag().toString();
+            while (randomTag.equals(this.getTaste())) randomTag = getSim().randomTag().toString();
 
             super.updateLikesAndFollowers(documents, randomTag);
         }

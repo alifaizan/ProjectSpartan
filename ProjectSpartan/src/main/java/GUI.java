@@ -14,11 +14,15 @@ import java.util.ArrayList;
 
 public class GUI implements ActionListener{
 
+	private static final int MAX_PRODUCERS = 50;
+	private static final int MAX_CONSUMERS = 50;
+	private static final int MAX_DOCUMENTS = 10;
+	private static final int MAX_TAGS = 10;
 	Simulation simulation;
 	JFrame frame;
 	JMenuBar menuBar;
 	JMenu simulationMenu, test;
-	JMenuItem run, exit, stop;
+	JMenuItem exit, stop;
 	JTextArea display;
 	JScrollPane pane;
 	JTextField consumerText, producerText, documentText, tagText, searchText;
@@ -28,7 +32,7 @@ public class GUI implements ActionListener{
 	JComboBox consumerStrategy, consumers, producerStrategy, producers;
 	String[] users;
 	boolean runPressed, searchPressed, stopPressed;
-	
+
 	/**
 	 * 	Constructor for the GUI class
 	 */
@@ -41,8 +45,6 @@ public class GUI implements ActionListener{
 		menuBar = new JMenuBar();
 		simulationMenu = new JMenu("Simulation");
 		test = new JMenu("Test");
-		run = new JMenuItem("Run");
-		run.addActionListener(this);
 		stop = new JMenuItem("Stop");
 		stop.addActionListener(this);
 		exit = new JMenuItem("Exit");
@@ -59,7 +61,7 @@ public class GUI implements ActionListener{
 		display = new JTextArea();
 		pane = new JScrollPane(display, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		textFieldPanel = new JPanel();
-		
+
 		//Text fields
 		consumerText = new JTextField("Number of Consumers: ");
 		consumerText.setEditable(false);
@@ -81,7 +83,7 @@ public class GUI implements ActionListener{
 		searchText.setEditable(false);
 		searchField = new JTextField();
 		searchField.addActionListener(this);
-		
+
 		String[] consStrategies = {"DocumentPopularity", "UserPopularity", "UserDistance", "LikeSimilarity", "FollowSimilarity"};
 		consumerStrategy = new JComboBox(consStrategies);
 		consumerStrategy.addActionListener(this);
@@ -99,7 +101,7 @@ public class GUI implements ActionListener{
 		producers = new JComboBox(users);
 		producers.setEditable(false);
 		producers.addActionListener(this);
-		
+
 		//Setting up the frame
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
@@ -109,7 +111,7 @@ public class GUI implements ActionListener{
 		frame.setJMenuBar(menuBar);
 		frame.add(pane);
 		frame.add(textFieldPanel, BorderLayout.NORTH);
-		
+
 		textFieldPanel.add(consumerText);
 		textFieldPanel.add(consumerField);
 		textFieldPanel.add(producerText);
@@ -129,35 +131,80 @@ public class GUI implements ActionListener{
 		textFieldPanel.add(changeStrategy);
 		textFieldPanel.add(graph);
 		textFieldPanel.setLayout(new GridLayout(0,2));
-		
+
 		//menus
 		menuBar.add(simulationMenu);
-		simulationMenu.add(run);
 		simulationMenu.add(stop);
 		simulationMenu.add(exit);
-		
+
 	}
-	
-	/**
-	 * 	Creates a new Simulation 
-	 */
-	public void run(){
+
+	public static void main(String[] args) {
 		Simulation sim = new Simulation();
-		String[] args = new String[] {"123"};
-		sim.main(args);
+		GUI gui = new GUI(sim);
+
 	}
-	
-	public boolean isRunPressed(){
-		return runPressed;
+
+	/**
+	 * Obtains parameter values from users
+	 */
+	private boolean validateInitialInputs() {
+		boolean valid = true;
+		int numberOfConsumers, numberOfProducers, numberOfDocuments, numberOfTags;
+
+		try {
+			numberOfConsumers = getConsumers();
+			if (numberOfConsumers < 0 || numberOfConsumers > MAX_CONSUMERS) {
+				printError("ERROR: Please enter a Consumer total in the range 1-" + MAX_CONSUMERS + "!");
+				valid = false;
+			}
+			simulation.setNumberOfConsumers(numberOfConsumers);
+
+			numberOfProducers = getProducers();
+			if (numberOfProducers < 0 || numberOfProducers > MAX_PRODUCERS) {
+				printError("ERROR: Please enter a Producer total in the range 1-" + MAX_PRODUCERS + "!");
+				valid = false;
+			}
+			simulation.setNumberOfProducers(numberOfProducers);
+
+			numberOfDocuments = getDocuments();
+			if (numberOfDocuments < 0 || numberOfDocuments > MAX_DOCUMENTS) {
+				printError("ERROR: Please enter a Document total in the range 1-" + MAX_DOCUMENTS + "!");
+				valid = false;
+			}
+			simulation.setNumberOfDocuments(numberOfDocuments);
+
+			numberOfTags = getTags();
+			if (numberOfTags < 0 || numberOfTags > MAX_TAGS) {
+				printError("ERROR: Please enter a Tag total in the range 1-" + MAX_TAGS + "!");
+				valid = false;
+			}
+			simulation.setNumberOfTags(numberOfTags);
+
+		} catch (Exception e) {
+			printError("ERROR: Please only enter numeric characters and leave no fields blank!");
+			valid = false;
+		}
+
+		return valid;
 	}
-	
-	public boolean isSearchPressed(){
-		System.out.println();
-		return searchPressed;
-	}
-	
-	public void setSearchPressed(boolean b){
-		searchPressed = b;
+
+	public boolean validateSearchInput() {
+		boolean valid = true;
+		int numberOfSearchResults = 0;
+
+		try {
+			numberOfSearchResults = getTags();
+			if (numberOfSearchResults > simulation.getNumberOfDocuments()) {
+				printError("You have requested a higher number of search results than there are documents! Using max number of documents instead.");
+			}
+			simulation.setNumberOfTags(numberOfSearchResults);
+		} catch (Exception e) {
+			printError("ERROR: Please only enter numeric characters and leave no fields blank!");
+			valid = false;
+		}
+
+		return valid;
 	}
 	
 	/**
@@ -191,8 +238,6 @@ public class GUI implements ActionListener{
 		System.exit(0);
 	}
 	
-	
-	
 	/**
 	 * 	Prints to the JTextArea in GUI
 	 * @param s		String to be printed
@@ -200,7 +245,7 @@ public class GUI implements ActionListener{
 	public void print(String s){
 		display.append(s + "\n");
 	}
-	
+
 	public int getConsumers(){
 		if(consumerField.getText() == null)
 			JOptionPane.showMessageDialog(null, "Number of Consumers not entered!", "Error",
@@ -213,7 +258,7 @@ public class GUI implements ActionListener{
 		this.users = s;
 		consumers.setModel(model);
 	}
-	
+
 	public int getProducers(){
 		if(producerField.getText() == null)
 			JOptionPane.showMessageDialog(null, "Number of Producers not entered!", "Error",
@@ -274,26 +319,27 @@ public class GUI implements ActionListener{
 		Producer prod = (Producer)getProducer();
 		prod.setProducerStrategy(Producer_Strategy.valueOf(consumerStrategy.getActionCommand()));
 	}
-	
+
 	public void changeConsumerStrategy(){
 		getConsumer().setStrategy(Search_Strategy.valueOf(consumerStrategy.getActionCommand()));
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("Run"))
-			run();
 		if(e.getActionCommand().equals("Stop"))
-			simulation.setStop(true);
 		if(e.getActionCommand().equals("Exit"))
 			exit();
 		if(e.getActionCommand().equals("Run Simulation!"))
-			runPressed = true;
+			if (validateInitialInputs() && validateSearchInput()) {
+				simulation.runSim();
+			}
 		if(e.getActionCommand().equals("Search"))
-			searchPressed = true;
+			if (validateSearchInput()) {
+				simulation.search();
+			}
 		if(e.getActionCommand().equals("Change Strategy")){
 			changeProducerStrategy();
-			changeConsumerStrategy();		
+			changeConsumerStrategy();
 		}
 		if (e.getActionCommand().equals("Graph"))
 			Graph.createAndShowGui(new ArrayList<>());

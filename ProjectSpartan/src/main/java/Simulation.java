@@ -7,23 +7,17 @@ package main.java;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Simulation {
 
-    private static final int MAX_PRODUCERS = 50;
-    private static final int MAX_CONSUMERS = 50;
-    private static final int MAX_DOCUMENTS = 10;
-    private static final int MAX_TAGS = 10;
     private static final SecureRandom random = new SecureRandom();
-    static GUI gui;
-    private static int numberOfConsumers, numberOfProducers, numberOfDocuments, numberOfSearchResults, numberOfTags;
+    public boolean stopPressed;
+    private int numberOfConsumers, numberOfProducers, numberOfDocuments, numberOfSearchResults, numberOfTags;
     private boolean quit;
     private List<Document> documents;
     private List<User> users;
-	private static List<String> consumerNames, producerNames;
-    private static String[] userArr;
-    public boolean stopPressed;
+    private List<String> consumerNames, producerNames;
+    private String[] userArr;
 
     /**
      * Default constructor for Simulation class
@@ -36,156 +30,40 @@ public class Simulation {
         stopPressed = false;
     }
 
+    public static void printToGUI(String s) {
+        //gui.print(s);
+    }
+    
     /**
      * Randomly selects a tag from the enumerated class
      *
      * @return A random tag
      */
-    public static Simulation.Tags randomTag() {
+    public Simulation.Tags randomTag() {
         int index = random.nextInt(numberOfTags);
         return Tags.class.getEnumConstants()[index];
     }
 
-    public static void main(String[] args) {
-    	Simulation sim = new Simulation();
-    	gui = new GUI(sim);
-    	
-    	printToGUI("Please enter all the parameters above and press Run Simulation");
-    	gui.setTextFieldText(gui.consumerText, "Number of Consumers (1-" + MAX_CONSUMERS + "): ");
-    	gui.setTextFieldText(gui.producerText, "Number of Producers (1-" + MAX_PRODUCERS + "): ");
-    	gui.setTextFieldText(gui.documentText, "Number of Documents (1-" + MAX_DOCUMENTS + "): ");
-    	gui.setTextFieldText(gui.tagText, "Number of Tags (1-" + MAX_TAGS + "): ");
-    	boolean running = true;
-    	while(running){
-    		if(gui.isRunPressed()){
-    			running = false;
-    			runSim();
-    		}
-    	}
-    }
-    
-    public static void runSim(){
-    	userInteraction();
+    public void runSim(){
 
-        printToGUI("Beginning Simulation...");
-        Simulation simulation = new Simulation();
-        simulation.setupConsumers(numberOfConsumers);
-        simulation.setupProducers(numberOfProducers);
-        simulation.setupDocuments(numberOfDocuments);
+        setupConsumers(numberOfConsumers);
+        setupProducers(numberOfProducers);
+        setupDocuments(numberOfDocuments);
         String[] userArr = new String[consumerNames.size()];
         consumerNames.toArray(userArr);
-        gui.setConsumers(userArr);
         userArr = new String[producerNames.size()];
         producerNames.toArray(userArr);
-        gui.setProducers(userArr);
-        simulation.printSetup();
+        printSetup();
+    }
 
-        while (!simulation.quit) {
-            User user = simulation.runIteration();
-            user.act(simulation.getDocuments(), numberOfSearchResults);
-            for(String s : user.getPrintStrings()){
-            	printToGUI(s);
-            }
-        }
-        
-        for (final User user : simulation.getUsers()) {
+    public void terminate() {
+        for (final User user : getUsers()) {
             printToGUI(user.payoffHistory());
         }
 
         printToGUI("Simulation Terminated.");
     }
 
-    /**
-     * Obtains parameter values from users
-     */
-    private static void userInteraction() {
-        boolean valid = false;
-
-        printToGUI("Welcome to the Project Spartan simulation.");
-
-        while (!valid) {
-            try {
-                //numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
-                numberOfConsumers = gui.getConsumers();
-                if (numberOfConsumers > 0 && numberOfConsumers <= MAX_CONSUMERS) {
-                    printToGUI("The simulator will create " + numberOfConsumers + " consumers.");
-                    valid = true;
-                } else {
-                    printToGUI("ERROR: Please enter a number in the range 1-" + MAX_CONSUMERS + "!");
-                    
-                   // numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
-                }
-            } catch (Exception e) {
-                //printToGUI("ERROR: Please only enter numeric characters!");
-                //numberOfConsumers = gui.dialog("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
-            	gui.printError("Please enter the number of consumers you would like the simulator to create (1-" + MAX_CONSUMERS + "): ");
-            	
-            }
-        }
-        valid = false;
-
-        while (!valid) {
-            try {
-                //numberOfProducers = gui.dialog("Please enter the number of producers you would like the simulator to create (1-" + MAX_PRODUCERS + "): ");
-                numberOfProducers = gui.getProducers();
-                
-                if (numberOfProducers > 0 && numberOfProducers <= MAX_PRODUCERS) {
-                    printToGUI("The simulator will create " + numberOfProducers + " producers.");
-                    valid = true;
-                } else {
-                    printToGUI("ERROR: Please enter a number in the range 1-" + MAX_PRODUCERS + "!");
-                    //numberOfProducers = gui.dialog("Please enter the number of producers you would like the simulator to create (1-" + MAX_PRODUCERS + "): ");
-                    gui.printError("Please enter the number of producers you would like the simulator to create (1-" + MAX_PRODUCERS + "): ");
-                }
-            } catch (Exception e) {
-                printToGUI("ERROR: Please only enter numeric characters!");
-                //numberOfProducers = gui.dialog("Please enter the number of producers you would like the simulator to create (1-" + MAX_PRODUCERS + "): ");
-            }
-        }
-        valid = false;
-
-        while (!valid) {
-            try {
-                //numberOfDocuments = gui.dialog("Please enter the number of documents you would like the simulator to create (1-" + MAX_DOCUMENTS + "): ");
-                numberOfDocuments = gui.getDocuments();
-                
-                if (numberOfDocuments > 0 && numberOfDocuments <= MAX_DOCUMENTS) {
-                    printToGUI("The simulator will create " + numberOfDocuments + " documents.");
-                    valid = true;
-                } else {
-                    printToGUI("ERROR: Please enter a number in the range 1-" + MAX_DOCUMENTS + "!");
-                    //numberOfDocuments = gui.dialog("Please enter the number of documents you would like the simulator to create (1-" + MAX_DOCUMENTS + "): ");
-                    gui.printError("Please enter the number of documents you would like the simulator to create (1-" + MAX_DOCUMENTS + "): ");
-                }
-            } catch (Exception e) {
-                printToGUI("ERROR: Please only enter numeric characters!");
-                //numberOfDocuments = gui.dialog("Please enter the number of documents you would like the simulator to create (1-" + MAX_DOCUMENTS + "): ");
-            }
-        }
-        valid = false;
-
-        while (!valid) {
-            try {
-                //numberOfTags = gui.dialog("Please enter the number of tags you would like to use for the simulation (1-" + MAX_TAGS + "): ");
-                numberOfTags = gui.getTags();
-                
-                if (numberOfTags > 0 && numberOfTags <= MAX_TAGS) {
-                    printToGUI("The simulator will use " + numberOfTags + " tags.");
-                    valid = true;
-                } else {
-                    printToGUI("ERROR: Please enter a number in the range 1-" + MAX_TAGS + "!");
-                    numberOfTags = gui.dialog("Please enter the number of tags you would like to use for the simulation (1-" + MAX_TAGS + "): ");
-                }
-            } catch (Exception e) {
-                printToGUI("ERROR: Please only enter numeric characters!");
-                numberOfTags = gui.dialog("Please enter the number of tags you would like to use for the simulation (1-" + MAX_TAGS + "): ");
-            }
-        }
-    }
-
-    public static void printToGUI(String s){
-    	gui.print(s);
-    }
     private void printSetup() {
         String toPrintConsumer = "The consumers which will be used are: \n";
         String toPrintProducer = "The producers which will be used are: \n";
@@ -261,67 +139,26 @@ public class Simulation {
         printToGUI("-----------------------------");
     }
 
-    private User runIteration() {
+    public User search() {
         boolean valid = false;
         User user = this.users.get(random.nextInt(this.users.size()));
 
         printToGUI("\n" + user.getName() + " was randomly selected to perform a search.");
-        while (!valid) {
-            try {
-                printToGUI("Please enter the number of documents you would like to search for (1-" + this.getNumberOfDocuments() + ") or click Cancel to quit: ");
-                boolean running = true;
-                while(running){
-                	if(gui.isSearchPressed()){
-                		numberOfSearchResults = gui.getSearchResults();
-                		if (numberOfSearchResults > numberOfDocuments) {
-                		    printToGUI("You have requested a higher number of search results than there are documents! Using max number of documents instead.");
-                		    numberOfSearchResults = numberOfDocuments;
-                		}
-                		/*if(temp == null){
-                			this.quit = true;
-                			valid = true;
-                		}*/
-                		printToGUI("The simulator will show " + numberOfSearchResults + " search results.");
-                		valid = true;
-                		running = false;
-                		gui.setSearchPressed(false);
-                	}
-                	if(isStopPressed()){
-                		this.quit = true;
-                		valid = true;
-                	}
-                }
-                
-                
-            } catch (Exception e) {
-            	if(isStopPressed()){
-                	this.quit = true;
-                	valid = true;
-                }
-            	
-            	 printToGUI("ERROR: Please only enter numeric characters or 'q'!");
-            	 gui.printError("Please enter the number of documents you would like to search for (1-" + this.getNumberOfDocuments() + ") or 'q' to quit: ");
-            	
-           	}
+
+        user.act(getDocuments(), numberOfSearchResults);
+        for (String s : user.getPrintStrings()) {
+            printToGUI(s);
         }
 
         return user;
-    }
-    
-    public boolean isStopPressed(){
-    	return stopPressed;
-    }
-    
-    public void setStop(boolean b){
-    	stopPressed = b;
     }
 
     public int getNumberOfDocuments() {
         return this.getDocuments().size();
     }
 
-    public void setNumberOfTags(int num) {
-        this.numberOfTags = num;
+    public void setNumberOfDocuments(int numberOfDocuments) {
+        this.numberOfDocuments = numberOfDocuments;
     }
 
     //-----Getters and Setters------
@@ -338,6 +175,38 @@ public class Simulation {
     
     public List<String> getProducerNames(){
     	return this.producerNames;
+    }
+
+    public int getNumberOfConsumers() {
+        return numberOfConsumers;
+    }
+
+    public void setNumberOfConsumers(int numberOfConsumers) {
+        this.numberOfConsumers = numberOfConsumers;
+    }
+
+    public int getNumberOfProducers() {
+        return numberOfProducers;
+    }
+
+    public void setNumberOfProducers(int numberOfProducers) {
+        this.numberOfProducers = numberOfProducers;
+    }
+
+    public int getNumberOfSearchResults() {
+        return numberOfSearchResults;
+    }
+
+    public void setNumberOfSearchResults(int numberOfSearchResults) {
+        this.numberOfSearchResults = numberOfSearchResults;
+    }
+
+    public int getNumberOfTags() {
+        return numberOfTags;
+    }
+
+    public void setNumberOfTags(int num) {
+        this.numberOfTags = num;
     }
 
     //-----Enums------
