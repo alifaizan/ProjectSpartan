@@ -53,6 +53,7 @@ public class GUI implements ActionListener{
 		runSim.addActionListener(this);
 		search = new JButton("Search");
 		search.addActionListener(this);
+		search.setEnabled(false);
 		changeStrategy = new JButton("Change Strategy");
 		changeStrategy.addActionListener(this);
 		graph = new JButton("Graph");
@@ -316,10 +317,16 @@ public class GUI implements ActionListener{
 		if(e.getActionCommand().equals("Run Simulation!"))
 			if (validateInitialInputs() && validateSearchInput()) {
 				print(simulation.runSim());
+				consumerField.setEnabled(false);
+				producerField.setEnabled(false);
+				documentField.setEnabled(false);
+				tagField.setEnabled(false);
+				runSim.setEnabled(false);
+				search.setEnabled(true);
 			}
 		if(e.getActionCommand().equals("Search"))
 			if (validateSearchInput()) {
-				simulation.search();
+				print(simulation.search());
 			}
 		if(e.getActionCommand().equals("Change Strategy")){
 			changeProducerStrategy();

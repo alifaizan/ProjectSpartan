@@ -23,7 +23,7 @@ public class SimulationTest {
 
     @Test
     public void testGetNumberOfDocuments() throws Exception {
-        assert simulation.getNumberOfDocuments() == 0;
+        assert simulation.getHowManyDocuments() == 0;
     }
 
     @Test

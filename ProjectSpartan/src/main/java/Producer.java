@@ -33,7 +33,7 @@ public class Producer extends User {
      * @return List of documents that have been sorted and analyzed
      */
     public List<Document> act(List<Document> documentList, int numberToReturn) {
-        this.getSim().getDocuments().add(this.newDoc("Document #" + String.valueOf(this.getSim().getNumberOfDocuments() + 1)));
+        this.getSim().getDocuments().add(this.newDoc("Document #" + String.valueOf(this.getSim().getHowManyDocuments() + 1)));
 
         List<Document> relevantDocuments = search(documentList, numberToReturn);
 

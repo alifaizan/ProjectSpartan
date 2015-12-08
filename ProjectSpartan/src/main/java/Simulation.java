@@ -148,29 +148,35 @@ public class Simulation {
         return toReturn;
     }
 
-    public User search() {
+    public String search() {
+        String toReturn = "";
         boolean valid = false;
         User user = this.users.get(random.nextInt(this.users.size()));
 
-        printToGUI("\n" + user.getName() + " was randomly selected to perform a search.");
+        toReturn += ("\n" + user.getName() + " was randomly selected to perform a search.\n");
 
         user.act(getDocuments(), numberOfSearchResults);
         for (String s : user.getPrintStrings()) {
-            printToGUI(s);
+            toReturn += (s + "\n");
         }
 
-        return user;
+        return toReturn;
+    }
+
+    public int getHowManyDocuments() {
+        return this.getDocuments().size();
     }
 
     public int getNumberOfDocuments() {
-        return this.getDocuments().size();
+        return numberOfDocuments;
     }
+
+    //-----Getters and Setters------
 
     public void setNumberOfDocuments(int numberOfDocuments) {
         this.numberOfDocuments = numberOfDocuments;
     }
 
-    //-----Getters and Setters------
     public List<Document> getDocuments() {
         return this.documents;
     }
