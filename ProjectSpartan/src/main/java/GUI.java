@@ -191,37 +191,21 @@ public class GUI implements ActionListener{
 
 	public boolean validateSearchInput() {
 		boolean valid = true;
-		int numberOfSearchResults = 0;
+		int numberOfSearchResults;
 
 		try {
-			numberOfSearchResults = getTags();
+			numberOfSearchResults = getSearchResults();
 			if (numberOfSearchResults > simulation.getNumberOfDocuments()) {
 				printError("You have requested a higher number of search results than there are documents! Using max number of documents instead.");
+				numberOfSearchResults = simulation.getNumberOfDocuments();
 			}
-			simulation.setNumberOfTags(numberOfSearchResults);
+			simulation.setNumberOfSearchResults(numberOfSearchResults);
 		} catch (Exception e) {
 			printError("ERROR: Please only enter numeric characters and leave no fields blank!");
 			valid = false;
 		}
 
 		return valid;
-	}
-	
-	/**
-	 * 	Creates a JOptionPane and returns the user's input
-	 * @param s 	String for the JOptionPane
-	 * @return		Whatever the user input as an integer
-	 */
-	public int dialog(String s){
-		JOptionPane parameters = new JOptionPane("Simulation Parameters");
-		int input = Integer.parseInt(parameters.showInputDialog(s));
-		return input;
-	}
-	
-	public String dialogString(String s){
-		JOptionPane parameters = new JOptionPane("Simulation Parameters");
-		String input = (parameters.showInputDialog(s));
-		return input;
 	}
 	
 	public void printError(String s){
@@ -316,7 +300,7 @@ public class GUI implements ActionListener{
 	}
 	
 	public void changeProducerStrategy(){
-		Producer prod = (Producer)getProducer();
+		Producer prod = (Producer) getProducer();
 		prod.setProducerStrategy(Producer_Strategy.valueOf(consumerStrategy.getActionCommand()));
 	}
 
@@ -331,7 +315,7 @@ public class GUI implements ActionListener{
 			exit();
 		if(e.getActionCommand().equals("Run Simulation!"))
 			if (validateInitialInputs() && validateSearchInput()) {
-				simulation.runSim();
+				print(simulation.runSim());
 			}
 		if(e.getActionCommand().equals("Search"))
 			if (validateSearchInput()) {

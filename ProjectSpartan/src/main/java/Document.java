@@ -100,4 +100,8 @@ public class Document {
     public Set<User> getLikedBy() {
         return this.likedBy;
     }
+
+    public void setLikedBy(Set<User> likedBy) {
+        this.likedBy = likedBy;
+    }
 }

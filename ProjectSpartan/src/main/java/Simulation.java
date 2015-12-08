@@ -13,11 +13,10 @@ public class Simulation {
     private static final SecureRandom random = new SecureRandom();
     public boolean stopPressed;
     private int numberOfConsumers, numberOfProducers, numberOfDocuments, numberOfSearchResults, numberOfTags;
-    private boolean quit;
     private List<Document> documents;
     private List<User> users;
     private List<String> consumerNames, producerNames;
-    private String[] userArr;
+    private User lastActed;
 
     /**
      * Default constructor for Simulation class
@@ -44,16 +43,19 @@ public class Simulation {
         return Tags.class.getEnumConstants()[index];
     }
 
-    public void runSim(){
+    public String runSim() {
+        String toReturn = "";
 
-        setupConsumers(numberOfConsumers);
-        setupProducers(numberOfProducers);
-        setupDocuments(numberOfDocuments);
+        toReturn += setupConsumers(numberOfConsumers);
+        toReturn += setupProducers(numberOfProducers);
+        toReturn += setupDocuments(numberOfDocuments);
         String[] userArr = new String[consumerNames.size()];
         consumerNames.toArray(userArr);
         userArr = new String[producerNames.size()];
         producerNames.toArray(userArr);
-        printSetup();
+        toReturn += printSetup();
+
+        return toReturn;
     }
 
     public void terminate() {
@@ -64,30 +66,28 @@ public class Simulation {
         printToGUI("Simulation Terminated.");
     }
 
-    private void printSetup() {
-        String toPrintConsumer = "The consumers which will be used are: \n";
-        String toPrintProducer = "The producers which will be used are: \n";
-        String toPrintDocument = "The documents which will be used are: \n";
-        printToGUI("The tags which will be used are: ");
+    private String printSetup() {
+        String toReturn = "";
+        toReturn += "The consumers which will be used are: \n";
+        toReturn += "The producers which will be used are: \n";
+        toReturn += "The documents which will be used are: \n";
+        toReturn += "The tags which will be used are: ";
         for (int i = 0; i < numberOfTags; i++) {
             printToGUI(Tags.values()[i].name + " ");
         }
-        printToGUI("");
-        printToGUI("");
+
+        toReturn += "\n";
 
         for (final User user : users) {
-            if (user instanceof Consumer) toPrintConsumer += user.getName() + " - " + user.getTaste() + ", ";
-            if (user instanceof Producer) toPrintProducer += user.getName() + " - " + user.getTaste() + ", ";
+            if (user instanceof Consumer) toReturn += user.getName() + " - " + user.getTaste() + ", ";
+            if (user instanceof Producer) toReturn += user.getName() + " - " + user.getTaste() + ", ";
         }
 
         for (final Document document : documents) {
-            toPrintDocument += document.getName() + " - " + document.getTag() + ", ";
+            toReturn += document.getName() + " - " + document.getTag() + ", ";
         }
 
-        printToGUI(toPrintConsumer.substring(0, toPrintConsumer.length() - 2)); //format to get rid of extra trailing comma
-        printToGUI(toPrintProducer.substring(0, toPrintProducer.length() - 2));
-        printToGUI(toPrintDocument.substring(0, toPrintDocument.length() - 2));
-        printToGUI("");
+        return toReturn;
     }
 
     /**
@@ -95,15 +95,18 @@ public class Simulation {
      *
      * @param number The amount of consumers to create
      */
-    private void setupConsumers(int number) {
-        printToGUI("Setting up Consumers: ");
+    private String setupConsumers(int number) {
+        String toReturn = "";
+        toReturn += ("Setting up Consumers: \n");
         for (int i = 1; i < number + 1; i++) {
             Consumer consumer = new Consumer(this, "Consumer #" + String.valueOf(i), randomTag().toString());
             users.add(consumer);
             consumerNames.add(consumer.getName());
-            printToGUI(consumer.getName() + "  created");
+            toReturn += (consumer.getName() + "  created\n");
         }
-        printToGUI("-----------------------------");
+        toReturn += ("-----------------------------\n");
+
+        return toReturn;
     }
 
     /**
@@ -111,15 +114,18 @@ public class Simulation {
      *
      * @param number The amount of producers to create
      */
-    private void setupProducers(int number) {
-        printToGUI("Setting up Producers: ");
+    private String setupProducers(int number) {
+        String toReturn = "";
+        toReturn += ("Setting up Producers: \n");
         for (int i = 1; i < number + 1; i++) {
             Producer producer = new Producer(this, "Producer #" + String.valueOf(i), randomTag().toString());
             users.add(producer);
             producerNames.add(producer.getName());
-            printToGUI(producer.getName() + "  created");
+            toReturn += (producer.getName() + "  created\n");
         }
-        printToGUI("-----------------------------");
+        toReturn += ("-----------------------------\n");
+
+        return toReturn;
     }
 
     /**
@@ -127,16 +133,19 @@ public class Simulation {
      *
      * @param number The amount of documents to create
      */
-    private void setupDocuments(int number) {
-        printToGUI("Setting up Documents: ");
+    private String setupDocuments(int number) {
+        String toReturn = "";
+        toReturn += ("Setting up Documents: ");
         for (int i = 1; i < number + 1; i++) {
             User user = users.get(random.nextInt(users.size()));
             while (user instanceof Consumer)
                 user = users.get(random.nextInt(users.size())); //Keep picking a random user until it is a producer
             documents.add(((Producer) user).newDoc("Document #" + String.valueOf(i)));
-            printToGUI(user.getToPrint());
+            toReturn += (user.getToPrint() + "\n");
         }
-        printToGUI("-----------------------------");
+        toReturn += ("-----------------------------\n");
+
+        return toReturn;
     }
 
     public User search() {

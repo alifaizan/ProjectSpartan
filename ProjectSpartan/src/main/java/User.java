@@ -17,6 +17,8 @@ public abstract class User {
     private Set<Document> likedDocuments;
     private ArrayList<String> printStrings;
     private Search_Strategy strategy;
+    private ArrayList<Document> lastLiked;
+    private ArrayList<User> lastFollowed;
 
 
     //Constructor for User that is passed "sim" of type Simulation 
@@ -38,6 +40,8 @@ public abstract class User {
         following = new ArrayList<>();
         likedDocuments = new HashSet<>();
         printStrings = new ArrayList<>();
+        lastLiked = new ArrayList<>();
+        lastFollowed = new ArrayList<>();
         this.strategy = Search_Strategy.LIKE_SIMILARITY;
     }
 
@@ -70,6 +74,10 @@ public abstract class User {
         this.payoffs.add(payoff);
     }
 
+    public void removeLastPayoff() {
+        this.payoffs.remove(this.payoffs.size() - 1);
+    }
+
     public String payoffHistory() {
         String payoffString = "Payoff History for User " + this.getName() + ": ";
         for (final Integer payoff : payoffs) {
@@ -93,22 +101,41 @@ public abstract class User {
      * @param documents The documents to analyze
      */
     public void updateLikesAndFollowers(List<Document> documents, String taste) {
+        ArrayList<Document> likedDoc = new ArrayList<>();
+        ArrayList<User> followedUser = new ArrayList<>();
+
         documents.forEach((document) -> {
             if (document.getTag().equals(taste) && !document.getLikedBy().contains(this)) {
                 document.likeDocument(this);
-                //System.out.println(this.getName() + " just liked: " + document.getName());
+                likedDoc.add(document);
                 addtoPrintStrings(this.getName() + " just liked: " + document.getName());
 
             }
             document.getLikedBy().forEach((user) -> {
                 if (user instanceof Producer && user != this && !this.getFollowing().contains(user)) {
                     this.followUser(user);
-                    //System.out.println(this.getName() + " just followed: " + user.getName());
+                    followedUser.add(user);
                     addtoPrintStrings(this.getName() + " just followed: " + user.getName());
 
                 }
             });
         });
+
+        this.setLastLiked(likedDoc);
+        this.setLastFollowed(followedUser);
+    }
+
+    public void unlikeAndUnfollowPrevious() {
+        for (final Document document : lastLiked) {
+            Set<User> newLikedUsers = document.getLikedBy();
+            newLikedUsers.remove(this);
+            document.setLikedBy(newLikedUsers);
+        }
+
+        for (final User user : lastFollowed) {
+            user.getFollowers().remove(user);
+            this.following.remove(user);
+        }
     }
 
     /**
@@ -221,6 +248,22 @@ public abstract class User {
 
     public void setStrategy(Search_Strategy strategy) {
         this.strategy = strategy;
+    }
+
+    public ArrayList<Document> getLastLiked() {
+        return lastLiked;
+    }
+
+    public void setLastLiked(ArrayList<Document> lastLiked) {
+        this.lastLiked = lastLiked;
+    }
+
+    public ArrayList<User> getLastFollowed() {
+        return lastFollowed;
+    }
+
+    public void setLastFollowed(ArrayList<User> lastFollowed) {
+        this.lastFollowed = lastFollowed;
     }
 
     //-----Enums------

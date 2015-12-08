@@ -44,6 +44,17 @@ public class Producer extends User {
         return relevantDocuments;
     }
 
+    public void undoAct() {
+        //Remove document that was created
+        getSim().getDocuments().remove(getSim().getDocuments().size() - 1);
+        created.remove(created.size() - 1);
+
+        //remove last payoff
+        this.removeLastPayoff();
+
+        this.unlikeAndUnfollowPrevious();
+    }
+
     public Document newDoc(String name) {
         Document d = new Document(name, this.getTaste(), this);
         created.add(d);
@@ -70,16 +81,15 @@ public class Producer extends User {
     /**
      * Calculates payoff based on total followers and likes between all produced documents
      */
-    public void calculatePayoff() {
+    public String calculatePayoff() {
         int followers = this.getFollowers().size();
         int totalDocumentLikes = this.totalLikes();
 
         int payoff = followers + totalDocumentLikes;
 
-        //System.out.println(this.getName() + " now has a payoff of: " + String.valueOf(payoff) + ", from " + followers + " total followers and " + totalDocumentLikes + " total document likes.");
-        addtoPrintStrings(this.getName() + " now has a payoff of: " + String.valueOf(payoff) + ", from " + followers + " total followers and " + totalDocumentLikes + " total document likes.");
-
         this.updatePayoffs(payoff);
+
+        return this.getName() + " now has a payoff of: " + String.valueOf(payoff) + ", from " + followers + " total followers and " + totalDocumentLikes + " total document likes.";
     }
 
     public int totalLikes() {
