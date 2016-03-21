@@ -1,7 +1,6 @@
 package main.java;
 //Name: Yash Patel
 //Student Number: 100943654
-//Date: November 7, 2015
 
 import main.java.Producer.Producer_Strategy;
 import main.java.User.Search_Strategy;
@@ -58,7 +57,7 @@ public class GUI implements ActionListener{
 		changeStrategy.addActionListener(this);
 		graph = new JButton("Graph");
 		graph.addActionListener(this);
-		graph.setEnabled(false);
+		graph.setEnabled(true);
 		display = new JTextArea();
 		pane = new JScrollPane(display, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		textFieldPanel = new JPanel();
@@ -332,8 +331,10 @@ public class GUI implements ActionListener{
 			changeProducerStrategy();
 			changeConsumerStrategy();
 		}
-		if (e.getActionCommand().equals("Graph"))
-			Graph.createAndShowGui(new ArrayList<>());
+		if (e.getActionCommand().equals("Graph")){
+			for(User user : simulation.getUsers())
+				Graph.createAndShowGui(user.getPayoffs());
+		}
 	}
 	
 }

@@ -1,12 +1,14 @@
-package main.java;
+package test.main.java;
 //Name: Zameer Masjedee
 //Student Number: 100888893
 //Date: November 5th,2015
 //Version #: 1
 
+import main.java.Consumer;
+
 import org.junit.Before;
 import org.junit.Test;
-
+import main.java.*;
 import java.util.ArrayList;
 
 

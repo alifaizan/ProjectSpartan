@@ -1,7 +1,4 @@
-package main.java;//Name: Ali Faizan
-//Student Number: 10095765
-//Date: October 19,2015
-//Version #: 1
+package main.java;
 
 import java.util.*;
 

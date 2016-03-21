@@ -1,4 +1,4 @@
-package main.java;
+package test.main.java;
 //Name: Zameer Masjedee
 //Student Number: 100888893
 //Date: November 5th,2015
@@ -6,7 +6,7 @@ package main.java;
 
 import org.junit.Before;
 import org.junit.Test;
-
+import main.java.*;
 public class UserTest {
 
     public Producer testProducer;

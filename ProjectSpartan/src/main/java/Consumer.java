@@ -1,7 +1,5 @@
 package main.java;//Name: Yash Patel
 //Student Number: 100943654
-//Date: October 19,2015
-//Version #: 1
 
 import java.util.ArrayList;
 import java.util.List;
